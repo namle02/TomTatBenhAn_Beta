@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Converter\" />
+    <Folder Include="Repos\Mappers\Interface\" />
+    <Folder Include="Repos\Mappers\Implement\" />
+    <Folder Include="Repos\Model\" />
+    <Folder Include="Repos\Dto\" />
+    <Folder Include="Services\Interface\" />
+    <Folder Include="Services\Implement\" />
+    <Folder Include="ViewModel\ControlViewModel\" />
+    <Folder Include="ViewModel\PageViewModel\" />
+    <Folder Include="View\ControlView\" />
+    <Folder Include="View\PageView\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
