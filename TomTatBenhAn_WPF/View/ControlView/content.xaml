@@ -362,7 +362,7 @@
                         HorizontalAlignment="Left"
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Không thay đổi"
-                        FontSize="18"
+                        FontSize="17"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                     <CheckBox
                         Grid.Row="0"
