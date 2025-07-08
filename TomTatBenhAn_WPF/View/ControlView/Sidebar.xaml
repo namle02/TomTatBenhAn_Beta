@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+
     <Border
         Margin="10,5,10,10"
         Padding="12"
@@ -16,22 +17,19 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <!--  Form nội dung  -->
                 <RowDefinition Height="Auto" />
-                <!--  Button dính đáy  -->
             </Grid.RowDefinitions>
 
-            <!--  PHẦN FORM  -->
+            <!--  FORM  -->
             <StackPanel Grid.Row="0">
-                <!--  Các TextBox, ComboBox như cũ  -->
                 <TextBox
                     Margin="0,0,0,10"
                     materialDesign:HintAssist.Hint="Người sử dụng"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="18"
                     IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
                 <TextBox
                     Margin="0,0,0,10"
                     materialDesign:HintAssist.Hint="Phòng ban"
@@ -48,31 +46,58 @@
                     IsReadOnly="True"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}" />
 
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Margin="0,0,5,0" materialDesign:CheckBoxAssist.CheckBoxSize="30" />
+                <!--  Số bệnh án với CheckBox bên trong  -->
+                <Grid Height="56" Margin="0,0,0,10">
+
                     <TextBox
-                        Grid.Column="1"
+                        x:Name="txtSoBenhAn"
+                        Padding="36,0,10,0"
                         materialDesign:HintAssist.Hint="Số bệnh án"
+                        materialDesign:HintAssist.IsFloating="True"
                         FontSize="18"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    <CheckBox
+                        Width="24"
+                        Height="24"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Panel.ZIndex="1"
+                        Background="green"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="✔"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="green"
+                        IsThreeState="False" />
+                </Grid>
+                <!--  Mã y tế cũng có CheckBox  -->
+                <Grid Height="56" Margin="0,0,0,10">
+
+                    <TextBox
+                        Padding="36,0,10,0"
+                        materialDesign:HintAssist.Hint="Mã y tế"
+                        materialDesign:HintAssist.IsFloating="True"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    <CheckBox
+                        Width="24"
+                        Height="24"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Panel.ZIndex="1"
+                        Background="green"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="✔"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="green"
+                        IsThreeState="False" />
                 </Grid>
 
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Margin="0,0,5,0" materialDesign:CheckBoxAssist.CheckBoxSize="30" />
-                    <TextBox
-                        Grid.Column="1"
-                        materialDesign:HintAssist.Hint="Mã y tế"
-                        FontSize="18"
-                        Style="{StaticResource MaterialDesignOutlinedTextBox}" />
-                </Grid>
 
                 <TextBox
                     Margin="0,10,0,0"
@@ -87,6 +112,7 @@
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
                 <ComboBox
                     Margin="0,10,0,0"
                     materialDesign:HintAssist.Hint="Chọn số bệnh án cần xem"
@@ -95,6 +121,7 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}" />
             </StackPanel>
 
+<<<<<<< Updated upstream
             <!--  PHẦN BUTTON DÍNH DƯỚI  -->
             <StackPanel
                 Grid.Row="1"
@@ -105,6 +132,14 @@
                     Height="45"
                     Margin="0,0,0,10"
                     Background="#2f84d0"
+=======
+            <!--  BUTTONS  -->
+            <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                <Button
+                    Height="45"
+                    HorizontalAlignment="Stretch"
+                    Background="#2e83cf"
+>>>>>>> Stashed changes
                     BorderThickness="0"
                     Content="Tóm tắt bệnh án"
                     FontSize="18"
@@ -113,9 +148,13 @@
 
                 <Button
                     Height="45"
-                    Margin="0,0,0,10"
+                    Margin="0,10,0,0"
                     HorizontalAlignment="Stretch"
+<<<<<<< Updated upstream
                     Background="#2f84d0"
+=======
+                    Background="#2e83cf"
+>>>>>>> Stashed changes
                     BorderThickness="0"
                     Content="Gợi ý phác đồ"
                     FontSize="18"
@@ -124,19 +163,19 @@
 
                 <Button
                     Height="45"
-                    Margin="0,0,0,10"
+                    Margin="0,10,0,0"
                     HorizontalAlignment="Stretch"
+<<<<<<< Updated upstream
                     Background="#2f84d0"
+=======
+                    Background="#2e83cf"
+>>>>>>> Stashed changes
                     BorderThickness="0"
                     Content="Xuất file"
                     FontSize="18"
                     FontWeight="Bold"
                     Foreground="White" />
-
-
             </StackPanel>
         </Grid>
     </Border>
-
-
 </UserControl>
