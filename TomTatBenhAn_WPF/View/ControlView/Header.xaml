@@ -12,13 +12,8 @@
             Grid.Row="0"
             Grid.ColumnSpan="2"
             Padding="16"
-<<<<<<< Updated upstream
             Background="#2f84d0"
             Foreground="White"
-=======
-            Background="#2e83cf"
-            Foreground="white"
->>>>>>> Stashed changes
             Mode="Custom">
             <DockPanel>
                 <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges">
@@ -33,11 +28,7 @@
                     <TextBlock
                         Margin="20,0,0,0"
                         VerticalAlignment="Center"
-<<<<<<< Updated upstream
                         FontSize="27"
-=======
-                        FontSize="25"
->>>>>>> Stashed changes
                         FontWeight="Bold"
                         Text="TÓM TẮT BỆNH ÁN" />
                 </StackPanel>
