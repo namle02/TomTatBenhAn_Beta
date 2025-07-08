@@ -1,0 +1,18 @@
+﻿<UserControl
+    x:Class="TomTatBenhAn_WPF.View.ControlView.Footer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TomTatBenhAn_WPF.View.ControlView"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Border Background="Gray">
+            <TextBlock HorizontalAlignment="Center">ứng dụng tóm tắt bệnh án</TextBlock>
+        </Border>
+
+    </Grid>
+</UserControl>
