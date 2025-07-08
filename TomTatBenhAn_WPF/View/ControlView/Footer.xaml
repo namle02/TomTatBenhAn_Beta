@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <Grid>
         <Border Background="Gray">
-            <TextBlock HorizontalAlignment="Center" >ứng dụng tóm tắt bệnh án</TextBlock>
+            <TextBlock HorizontalAlignment="Center">ứng dụng tóm tắt bệnh án</TextBlock>
         </Border>
 
     </Grid>

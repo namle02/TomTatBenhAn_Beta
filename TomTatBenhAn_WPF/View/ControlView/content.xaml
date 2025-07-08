@@ -9,255 +9,409 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <ScrollViewer Background="#FFFFFF">
 
-    <Grid>
+        <Grid Margin="0,0,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="6*" />
-
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <!--  🔹 Header  -->
-        <Border
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Padding="10">
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBlock
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Text="Chức năng chính" />
-                <StackPanel
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <Ellipse
-                        Width="10"
-                        Height="10"
-                        Margin="0,0,5,0"
-                        Fill="Green" />
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Foreground="Green"
-                        Text="Đã kết nối máy chủ" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
-        <!--  🔹 Middle Left  -->
-        <Border
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="5"
-            Padding="10">
-            <StackPanel>
+            <!--  Hành chính  -->
+            <StackPanel Grid.Column="0">
+                <Label
+                    Margin="10,0,0,0"
+                    Content="I. HÀNH CHÍNH"
+                    FontSize="25"
+                    FontWeight="Bold" />
                 <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Người sử dụng"
-                    materialDesign:HintAssist.IsFloating="True"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
-
-                <TextBox
-                    Margin="0,0,0,10"
+                    Margin="10"
                     materialDesign:HintAssist.Hint="Tên bệnh nhân"
                     materialDesign:HintAssist.IsFloating="True"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Giới tính"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Địa chỉ cư trú"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Số thẻ BHYT"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Số căn cước/Hộ Chiếu/ Mã định danh"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Vào viện ngày"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Ra viện ngày"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBox
+                    Margin="10,52,10,10"
+                    materialDesign:HintAssist.Hint="Ngày sinh"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Tuổi"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Dân tộc"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
 
                 <TextBox
+                    Margin="10"
                     materialDesign:HintAssist.Hint="Số bệnh án"
                     materialDesign:HintAssist.IsFloating="True"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
-            </StackPanel>
-        </Border>
-
-        <!--  🔹 Middle Right  -->
-        <Border
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="5"
-            Padding="10">
-            <StackPanel>
-                <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Phòng ban"
-                    materialDesign:HintAssist.IsFloating="True"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
-
-                <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Số thẻ bảo hiểm y tế"
-                    materialDesign:HintAssist.IsFloating="True"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="" />
-
-                <Button
-                    Width="150"
-                    Height="35"
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Center"
-                    Background="#007BFF"
-                    BorderThickness="0"
-                    Content="Tóm tắt bệnh án"
+                    AcceptsReturn="True"
+                    FontSize="16"
                     FontWeight="Bold"
-                    Foreground="White" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Mã y tế"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
             </StackPanel>
 
-        </Border>
 
-        <!--  🔹 Bottom Left  -->
-        <Border
-            Grid.Row="2"
-            Grid.ColumnSpan="2"
-            Margin="5"
-            Padding="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="4*" />
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="5*" />
+            <!--  Chẩn đoán  -->
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <Label
+                    Margin="10,0,0,0"
+                    Content="II. CHẨN ĐOÁN"
+                    FontSize="25"
+                    FontWeight="Bold" />
+                <Label
+                    Margin="20,0,0,0"
+                    Content="1. Chẩn đoán vào viện"
+                    FontSize="16"
+                    FontWeight="Bold" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Bệnh chính"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Bệnh kèm theo"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <Label
+                    Margin="20,0,0,0"
+                    Content="2. Chẩn đoán ra viện"
+                    FontSize="16"
+                    FontWeight="Bold" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Bệnh chính"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Bệnh kèm theo"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <TextBox
+                    Margin="10,82,10,10"
+                    materialDesign:HintAssist.Hint="Mã ICD"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Mã ICD"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                    Margin="10,38,10,10"
+                    materialDesign:HintAssist.Hint="Mã ICD"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
 
-                </Grid.RowDefinitions>
-                <Border Grid.Column="0">
-                    <TextBlock
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Kết quả" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Mã ICD"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+            </StackPanel>
 
-                </Border>
+            <!--  Tóm tắt quá trình điều trị  -->
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                <Label
+                    Margin="10,0,0,0"
+                    Content="III. TÓM TẮT QUÁ TRÌNH ĐIỀU TRỊ"
+                    FontSize="25"
+                    FontWeight="Bold" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Lý do vào viện"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Quá trình bệnh lý và diễn biến lâm sàng (Đặc điểm khởi phát, các triệu chứng lâm sàng, diễn biến bệnh):"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Tiền sử bệnh"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Những dấu hiệu lâm sàng chính được ghi nhận"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
 
-                <!--  Hành chính  -->
-                <Border
-                    Grid.Row="1"
-                    Margin="5"
-                    Padding="10"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    CornerRadius="6">
+                <!--  Phương pháp điều trị  -->
+                <Label
+                    Margin="10,0,0,0"
+                    Content="Phương pháp điều trị"
+                    FontSize="16"
+                    FontWeight="Bold" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Margin="30,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="Nội khoa: "
+                        FontSize="18" />
+                    <CheckBox
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Không"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Style="{StaticResource MaterialDesignCheckBox}">
 
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Hành chính" />
-                        <TextBlock>
-                            <Run Foreground="SlateBlue" Text="Bệnh án số: " />
-                            <Run Text="" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Foreground="SlateBlue" Text="Mã y tế: " />
-                            <Run Text="" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Foreground="SlateBlue" Text="Ngày vào viện: " />
-                            <Run Text="" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Foreground="SlateBlue" Text="Ngày ra viện: " />
-                            <Run Text="" />
-                        </TextBlock>
-                    </StackPanel>
-                </Border>
+                        <TextBox
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="Có, ghi rõ"
+                            materialDesign:HintAssist.IsFloating="True"
+                            AcceptsReturn="True"
+                            FontSize="18"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap" />
+                    </CheckBox>
 
-                <!--  Chuẩn đoán vào viện  -->
-                <Border
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="5"
-                    Padding="10"
-                    VerticalAlignment="Top"
-                    BorderBrush="black"
-                    BorderThickness="1"
-                    CornerRadius="6">
+                    <Label
+                        Grid.Row="1"
+                        Margin="30,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="Phẫu thuật, thủ thuật:"
+                        FontSize="18" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Không"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Style="{StaticResource MaterialDesignCheckBox}">
+                        <TextBox
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="Có, ghi rõ"
+                            materialDesign:HintAssist.IsFloating="True"
+                            AcceptsReturn="True"
+                            FontSize="18"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap" />
+                    </CheckBox>
+                </Grid>
 
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Chuẩn đoán vào viện" />
-                        <TextBlock Foreground="#5C6BC0" Text="Bệnh chính:" />
-                        <TextBlock Text="MÃ ICD :" />
-                        <TextBlock Foreground="#5C6BC0" Text="Bệnh kèm theo:" />
-                        <TextBlock Text="MÃ ICD :" />
-                    </StackPanel>
-                </Border>
+                <!--  Tình trạng người bệnh ra viện  -->
+                <Label
+                    Margin="10,0,0,0"
+                    Content="Tình trạng người bệnh ra viện:"
+                    FontSize="16"
+                    FontWeight="Bold" />
+                <Grid Margin="50,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <CheckBox
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Khỏi"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Đỡ"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Không thay đổi"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Nặng hơn"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                    <CheckBox
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Tử vong"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
 
-                <!--  Chuẩn đoán ra viện  -->
-                <Border
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="5"
-                    Padding="10"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    CornerRadius="6">
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Chuẩn đoán ra viện" />
-                        <TextBlock Foreground="#5C6BC0" Text="Bệnh chính:" />
-                        <TextBlock Text="MÃ ICD :" />
-                        <TextBlock Foreground="#5C6BC0" Text="Bệnh kèm theo:" />
-                        <TextBlock Text="MÃ ICD :" />
-                    </StackPanel>
-                </Border>
-                <Border Grid.Row="2">
-                    <TextBlock
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Lí do vào viện" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Tiên lượng nặng xin về"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
 
-                </Border>
-                <!--<Lí do vào viện>-->
-                <Border
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3">
-                    <TabControl>
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Content="Chưa xác định"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignCheckBox}" />
+                </Grid>
 
-                        <TabItem Header="Quá trình">
-                            <TextBlock Margin="10" Text="This is the content of Page 1" />
-                        </TabItem>
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Hướng điều trị và các chế độ tiếp theo"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+
+        </Grid>
 
 
-                        <TabItem Header="Tóm tắt kết quả xét nghiệm">
-                            <TextBlock Margin="10" Text="This is the content of Page 2" />
-                        </TabItem>
-
-
-                        <TabItem Header="Phương pháp điều trị">
-                            <TextBlock Margin="10" Text="This is the content of Page 3" />
-                        </TabItem>
-
-                        <TabItem Header="Tình trạng người bệnh ra viện">
-                            <TextBlock Margin="10" Text="This is the content of Page 4" />
-                        </TabItem>
-                    </TabControl>
-                </Border>
-            </Grid>
-        </Border>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
