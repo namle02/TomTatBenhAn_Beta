@@ -52,28 +52,30 @@
                     <!--  Match Material textbox height  -->
                     <!--  TextBox bên dưới  -->
                     <TextBox
-                        x:Name="txtSoBenhAn"
                         Padding="36,0,10,0"
                         materialDesign:HintAssist.Hint="Số bệnh án"
                         materialDesign:HintAssist.IsFloating="True"
                         FontSize="18"
+                        IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox1}"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}" />
 
                     <!--  CheckBox đè lên  -->
                     <CheckBox
+                        x:Name="MaterialDesignFilledTextBoxEnabledComboBox1"
                         Width="24"
                         Height="24"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Panel.ZIndex="1"
-                        Background="White"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                        Background="Green"
                         BorderBrush="Black"
                         BorderThickness="1"
                         Content="✔"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="green"
+                        Foreground="White"
                         IsThreeState="False" />
                 </Grid>
 
@@ -85,17 +87,20 @@
                         materialDesign:HintAssist.Hint="Mã y tế"
                         materialDesign:HintAssist.IsFloating="True"
                         FontSize="18"
+                        IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox2}"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}" />
 
                     <!--  CheckBox đè lên  -->
                     <CheckBox
+                        x:Name="MaterialDesignFilledTextBoxEnabledComboBox2"
                         Width="22"
                         Height="22"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Panel.ZIndex="1"
-                        Background="White"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                        Background="Green"
                         BorderBrush="Gray"
                         BorderThickness="1"
                         FontSize="16"
