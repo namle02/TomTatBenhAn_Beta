@@ -12,8 +12,8 @@
             Grid.Row="0"
             Grid.ColumnSpan="2"
             Padding="16"
-            Background="#FF97ECB6"
-            Foreground="Black"
+            Background="#2f84d0"
+            Foreground="White"
             Mode="Custom">
             <DockPanel>
                 <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges">
@@ -26,9 +26,9 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
-                        Margin="16,0,0,0"
+                        Margin="20,0,0,0"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="27"
                         FontWeight="Bold"
                         Text="TÓM TẮT BỆNH ÁN" />
                 </StackPanel>
