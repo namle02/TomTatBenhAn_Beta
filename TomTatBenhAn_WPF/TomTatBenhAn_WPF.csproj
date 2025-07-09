@@ -9,13 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScripts\HanhChinh.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\HanhChinh.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Converter\" />
-    <Folder Include="Repos\Mappers\Interface\" />
-    <Folder Include="Repos\Mappers\Implement\" />
-    <Folder Include="Repos\Model\" />
     <Folder Include="Repos\Dto\" />
-    <Folder Include="Services\Interface\" />
-    <Folder Include="Services\Implement\" />
     <Folder Include="ViewModel\ControlViewModel\" />
     <Folder Include="ViewModel\PageViewModel\" />
   </ItemGroup>

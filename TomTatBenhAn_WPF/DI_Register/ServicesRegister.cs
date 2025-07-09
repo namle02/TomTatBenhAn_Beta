@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TomTatBenhAn_WPF.Repos.Mappers.Implement;
+using TomTatBenhAn_WPF.Repos.Mappers.Interface;
+using TomTatBenhAn_WPF.Services.Implement;
+using TomTatBenhAn_WPF.Services.Interface;
 
 namespace TomTatBenhAn_WPF.DI_Register
 {
@@ -11,7 +10,9 @@ namespace TomTatBenhAn_WPF.DI_Register
     {
         public static void Register(IServiceCollection services)
         {
-
+            services.AddTransient<IFileServices, FileServices>();
+            services.AddTransient<IDataMapper, DataMapper>();
+            services.AddSingleton<IConfigServices, ConfigServices>();
         }
     }
 }

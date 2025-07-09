@@ -113,7 +113,8 @@
                     materialDesign:HintAssist.Hint="Bác sĩ tóm tắt bệnh án"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="18"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="TsBs. Vũ Trung Kiên" />
 
                 <TextBox
                     Margin="0,10,0,0"
