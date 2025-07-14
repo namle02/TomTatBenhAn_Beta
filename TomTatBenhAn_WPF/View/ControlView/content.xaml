@@ -6,10 +6,8 @@
     xmlns:local="clr-namespace:TomTatBenhAn_WPF.View.ControlView"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  
     mc:Ignorable="d">
-    <ScrollViewer Background="#FFFFFF"
-              FocusVisualStyle="{x:Null}">
+    <ScrollViewer Background="#FFFFFF" FocusVisualStyle="{x:Null}">
 
         <Grid Margin="0,0,10,0">
             <Grid.ColumnDefinitions>
@@ -35,49 +33,56 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.TenBenhNhan}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Giới tính"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.GioiTinh}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Địa chỉ cư trú"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.DiaChi}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Số thẻ BHYT"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.BHYT}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Số căn cước/Hộ Chiếu/ Mã định danh"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.CCCD}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Vào viện ngày"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.VaoVien}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Ra viện ngày"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.RaVien}" />
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBox
@@ -86,21 +91,24 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.NgaySinh}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Tuổi"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.Tuoi}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Dân tộc"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.DanToc}" />
 
                 <TextBox
                     Margin="10"
@@ -109,7 +117,8 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.SoBenhAn}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Mã y tế"
@@ -117,7 +126,8 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding PatientInfo.MaYTe}" />
             </StackPanel>
 
 

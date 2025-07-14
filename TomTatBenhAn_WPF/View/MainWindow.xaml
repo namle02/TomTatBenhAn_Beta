@@ -29,10 +29,16 @@
         <control:Header Grid.Column="0" Grid.ColumnSpan="2" />
 
         <!--  SIDEBAR  -->
-        <control:Sidebar Grid.Row="1" Grid.Column="0" />
+        <control:Sidebar
+            Grid.Row="1"
+            Grid.Column="0"
+            DataContext="{Binding SideBarVM}" />
 
         <!--  CONTENT  -->
-        <control:content Grid.Row="1" Grid.Column="1" />
+        <control:content
+            Grid.Row="1"
+            Grid.Column="1"
+            DataContext="{Binding ContentVM}" />
 
         <!--  FOOTER  -->
         <control:Footer

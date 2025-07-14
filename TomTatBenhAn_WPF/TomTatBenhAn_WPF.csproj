@@ -13,14 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SqlScripts\HanhChinh.sql" />
+	  <EmbeddedResource Include="SqlScripts\HanhChinh.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Converter\" />
     <Folder Include="Repos\Dto\" />
-    <Folder Include="ViewModel\ControlViewModel\" />
-    <Folder Include="ViewModel\PageViewModel\" />
   </ItemGroup>
 
   <ItemGroup>

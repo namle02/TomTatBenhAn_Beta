@@ -55,6 +55,7 @@
                         Padding="36,0,10,0"
                         materialDesign:HintAssist.Hint="Số bệnh án"
                         materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding SoBenhAnInput, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="18"
                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox1}"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}" />
@@ -142,6 +143,7 @@
                     Background="#2f84d0"
                     BorderThickness="0"
                     Content="Tóm tắt bệnh án"
+                    Command="{Binding GetDataCommand}"
                     FontSize="18"
                     FontWeight="Bold"
                     Foreground="White" />

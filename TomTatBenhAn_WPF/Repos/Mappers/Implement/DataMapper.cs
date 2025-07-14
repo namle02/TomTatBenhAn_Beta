@@ -22,7 +22,8 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
             {
                 HanhChinhModel ThongTinHanhChinh = new HanhChinhModel();
                 string connectionString = _configServices.Get("Db_String");
-                string query = _fileServices.GetQuery("HanhChinh.sql");
+                string rawquery = _fileServices.GetQuery("HanhChinh.sql");
+                string query = rawquery.Replace("@SoBenhAn_Params", SoBenhAn);
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand(query, connection);
@@ -31,6 +32,14 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                     while (await reader.ReadAsync())
                     {
                         // Gán dữ liệu từ sql vào model
+                        ThongTinHanhChinh.TenBenhNhan = reader["TenBN"].ToString();
+                        ThongTinHanhChinh.NgaySinh= reader["NgaySinh"] == DBNull.Value ? null : reader["NgaySinh"].ToString();
+                        ThongTinHanhChinh.Tuoi = reader["Tuoi"] == DBNull.Value ? null : Convert.ToInt32( reader["Tuoi"]);
+                        ThongTinHanhChinh.GioiTinh = reader["GioiTinh"] == DBNull.Value ? null : reader["GioiTinh"].ToString();
+                        ThongTinHanhChinh.DiaChi = reader["DiaChi"] == DBNull.Value ? null : reader["DiaChi"].ToString();
+                        ThongTinHanhChinh.BHYT = reader["SoBHYT"] == DBNull.Value ? null : reader["SoBHYT"].ToString();
+                        ThongTinHanhChinh.DanToc = reader["DanToc"] == DBNull.Value ? null : reader["DanToc"].ToString();
+
                     }
                     return ThongTinHanhChinh;
                 }

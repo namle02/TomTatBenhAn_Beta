@@ -1,18 +1,32 @@
-﻿namespace TomTatBenhAn_WPF.Repos.Model
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace TomTatBenhAn_WPF.Repos.Model
 {
-    public class HanhChinhModel
+    public partial class HanhChinhModel : ObservableObject
     {
-        public string? TenBenhNhan { get; set; }
-        public DateTime? NgaySinh { get; set; }
-        public string? GioiTinh { get; set; }
-        public int? Tuoi { get; set; }
-        public string? DiaChi { get; set; }
-        public string? DanToc { get; set; }
-        public string? BHYT { get; set; }
-        public string? CCCD { get; set; }
-        public string? SoBenhAn { get; set; }
-        public string? MaYTe { get; set; }
-        public DateTime? VaoVien { get; set; }
-        public DateTime? RaVien { get; set; }
+        [ObservableProperty]
+        private string? tenBenhNhan;
+        [ObservableProperty]
+        private string? ngaySinh ;
+        [ObservableProperty]
+        private string? gioiTinh ;
+        [ObservableProperty]
+        private int? tuoi ;
+        [ObservableProperty]
+        private string? diaChi ;
+        [ObservableProperty]
+        private string? danToc ;
+        [ObservableProperty]
+        private string? bHYT ;
+        [ObservableProperty]
+        private string? cCCD ;
+        [ObservableProperty]
+        private string? soBenhAn ;
+        [ObservableProperty]
+        private string? maYTe ;
+        [ObservableProperty]
+        private DateTime? vaoVien ;
+        [ObservableProperty]
+        private DateTime? raVien ;
     }
-}
+}   

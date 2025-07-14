@@ -27,7 +27,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
         {
             try
             {
-                using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(FileName);
+                using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"TomTatBenhAn_WPF.SqlScripts.{FileName}");
                 if(stream == null)
                 {
                     throw new FileNotFoundException($"Không tìm thấy file sql: {FileName}");

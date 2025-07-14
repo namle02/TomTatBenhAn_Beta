@@ -6,23 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TomTatBenhAn_WPF.ViewModel.ControlViewModel;
 
 namespace TomTatBenhAn_WPF.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string? hello;
+        private SideBarViewModel sideBarVM;
 
-        public MainViewModel()
-        {
-            Hello = "xin chào";
-        }
+        [ObservableProperty]
+        private ContentViewModel contentVM;
 
-        [RelayCommand]
-        private void ShowMessage()
+        public MainViewModel(SideBarViewModel _sideBarViewModel, ContentViewModel _contentVM)
         {
-            MessageBox.Show(Hello + " b?n");
+            sideBarVM = _sideBarViewModel;
+            contentVM = _contentVM;
         }
     }
 }
