@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using TomTatBenhAn_WPF.Message;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
-using TomTatBenhAn_WPF.Repos.Model;
+
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
@@ -28,11 +28,11 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 
             // Nhận lại mục đã chọn từ ContentViewModel để hiển thị
             WeakReferenceMessenger.Default.Register<LoadDataMessage>(this, (r, m) =>
-            {
-                SelectedSoBenhAn = SoBenhAnList.FirstOrDefault(x =>
-                    x.soBenhAn?.Trim().Equals(m.Value.soBenhAn?.Trim(), StringComparison.OrdinalIgnoreCase) == true
-                );
-            });
+           {
+               SelectedSoBenhAn = SoBenhAnList.FirstOrDefault(x =>
+                   x.soBenhAn?.Trim().Equals(m.Value.soBenhAn?.Trim(), StringComparison.OrdinalIgnoreCase) == true
+               );
+           });
         }
 
         // Đổ vào ComboBox
@@ -42,16 +42,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         private LoadData? selectedSoBenhAn;
 
         [ObservableProperty]
-        private string soBenhAn;
+        private string soBenhAn = string.Empty;
 
         [ObservableProperty]
-        private string maYTe;
+        private string maYTe = string.Empty;
 
-       
+
         [ObservableProperty]
         private bool isSoBenhAnChecked;
 
-    
+
         [ObservableProperty]
         private bool isMaYTeChecked;
 
@@ -60,7 +60,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         {
             if (value != null)
             {
-                WeakReferenceMessenger.Default.Send(new LoadData(value.soBenhAn, value.maYTe));
+                WeakReferenceMessenger.Default.Send(new LoadData(value.soBenhAn!, value.maYTe!));
             }
         }
 
@@ -68,12 +68,12 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         {
             if (value)
             {
-               
-                IsMaYTeChecked = false;  
+
+                IsMaYTeChecked = false;
             }
             else
             {
-                
+
                 SoBenhAn = string.Empty;
             }
         }
@@ -82,12 +82,12 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         {
             if (value)
             {
-                
-                IsSoBenhAnChecked = false; 
+
+                IsSoBenhAnChecked = false;
             }
             else
             {
-                
+
                 MaYTe = string.Empty;
             }
         }

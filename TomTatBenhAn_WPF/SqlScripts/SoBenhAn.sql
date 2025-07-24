@@ -1,3 +1,2 @@
-select SoBenhAn from BenhAn ba
-left join DM_BenhNhan bn on bn.BenhNhan_Id = ba.BenhNhan_Id
-where bn.SoVaoVien = N'@SoVaoVien_Params'
+select SoBenhAn from BenhAn
+where BenhNhan_Id = ( select BenhNhan_Id from DM_BenhNhan where SoVaoVien = @SoVaoVien_Params )

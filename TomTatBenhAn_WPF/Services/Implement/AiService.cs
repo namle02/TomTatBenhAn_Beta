@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
+﻿using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using TomTatBenhAn_WPF.Repos.Model;
 using TomTatBenhAn_WPF.Services.Interface;
 
@@ -236,8 +232,8 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 string responseJson = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine("Final Prompt:\n" + finalPrompt);
-                Console.WriteLine("Response:\n" + responseJson);
+                //Console.WriteLine("Final Prompt:\n" + finalPrompt);
+                //Console.WriteLine("Response:\n" + responseJson);
 
                 using var doc = JsonDocument.Parse(responseJson);
                 string aiText = doc.RootElement

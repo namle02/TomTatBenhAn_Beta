@@ -1,18 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using TomTatBenhAn_WPF.Services.Interface;
 
 namespace TomTatBenhAn_WPF.Services.Implement
 {
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Windows;
-
+    
     public class LoadingService : ILoadingService
     {
         private Visibility _isLoading = Visibility.Collapsed;

@@ -18,7 +18,7 @@ namespace TomTatBenhAn_WPF.Message
         }
         public override string ToString()
         {
-            return soBenhAn; 
+            return soBenhAn!; 
         }
 
     }
