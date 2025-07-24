@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace TomTatBenhAn_WPF.Repos.Model
 {
-    public partial  class HanhChinhModel: ObservableObject
+     public partial class DienBienModel:ObservableObject
     {
-        public string? ThoiGianVaoVien {  get; set; }
-        public string? ThoiGianRaVien { get; set; }
-        public string? KetQuaDieuTri {  get; set; }
-
+        public string? DienBien {  get; set; }
+        public string? LoiDanThayThuoc {  get; set; }
     }
 }

@@ -14,6 +14,9 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddTransient<IDataMapper, DataMapper>();
             services.AddSingleton<IConfigServices, ConfigServices>();
             services.AddSingleton<IDataMapper, DataMapper>();
+            services.AddSingleton<IAiService,AiService>();
+            services.AddSingleton<ILoadingService, LoadingService>();
+
 
         }
     }

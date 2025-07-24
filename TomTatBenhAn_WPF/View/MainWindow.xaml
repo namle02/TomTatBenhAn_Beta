@@ -32,7 +32,8 @@
         <control:Sidebar
             Grid.Row="1"
             Grid.Column="0"
-            DataContext="{Binding SideBarVM}" />
+            DataContext="{Binding SideBarVM}"
+            Loaded="Sidebar_Loaded" />
 
         <!--  CONTENT  -->
         <control:content

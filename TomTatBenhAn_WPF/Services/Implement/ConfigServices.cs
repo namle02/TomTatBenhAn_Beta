@@ -22,8 +22,8 @@ namespace TomTatBenhAn_WPF.Services.Implement
         {
             try
             {
-                string encryptedUrl = ConfigurationManager.AppSettings["ApiSheet"];
-                string key = ConfigurationManager.AppSettings["KeyDecrypt"];
+                string encryptedUrl = ConfigurationManager.AppSettings["ApiSheet"]!;
+                string key = ConfigurationManager.AppSettings["KeyDecrypt"]!;
 
                 if (string.IsNullOrWhiteSpace(encryptedUrl) || string.IsNullOrWhiteSpace(key))
                     throw new ConfigurationErrorsException("ApiSheet hoặc KeyDecrypt bị thiếu trong App.config.");

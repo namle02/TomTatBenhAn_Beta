@@ -9,21 +9,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScripts\BenhAnType.sql" />
+    <None Remove="SqlScripts\chuandoanravaovien.sql" />
+    <None Remove="SqlScripts\DienBien.sql" />
     <None Remove="SqlScripts\HanhChinh.sql" />
+    <None Remove="SqlScripts\KetQuaXetNghiemCLS.sql" />
+    <None Remove="SqlScripts\SoBenhAn.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\BenhAnType.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <EmbeddedResource Include="SqlScripts\chuandoanravaovien.sql" />
+	  <EmbeddedResource Include="SqlScripts\DienBien.sql" />
 	  <EmbeddedResource Include="SqlScripts\HanhChinh.sql" />
+	  <EmbeddedResource Include="SqlScripts\SoBenhAn.sql" />
+	  <EmbeddedResource Include="SqlScripts\ThongTinBenhNhan.sql" />
+	  <EmbeddedResource Include="SqlScripts\KetQuaXetNghiemCLS.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Converter\" />
     <Folder Include="Repos\Dto\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />

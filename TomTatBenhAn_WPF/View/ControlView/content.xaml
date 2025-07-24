@@ -6,8 +6,13 @@
     xmlns:local="clr-namespace:TomTatBenhAn_WPF.View.ControlView"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:extensions="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+
+
     mc:Ignorable="d">
-    <ScrollViewer Background="#FFFFFF" FocusVisualStyle="{x:Null}">
+
+    <Grid>
+        <ScrollViewer Background="#FFFFFF" FocusVisualStyle="{x:Null}">
 
         <Grid Margin="0,0,10,0">
             <Grid.ColumnDefinitions>
@@ -34,7 +39,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.TenBenhNhan}" />
+                    Text="{Binding PatientInfo.TenBenhNhan, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Giới tính"
@@ -42,7 +47,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.GioiTinh}" />
+                    Text="{Binding PatientInfo.GioiTinh, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Địa chỉ cư trú"
@@ -50,7 +55,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.DiaChi}" />
+                    Text="{Binding PatientInfo.DiaChi, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Số thẻ BHYT"
@@ -58,7 +63,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.BHYT}" />
+                    Text="{Binding PatientInfo.BHYT, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Số căn cước/Hộ Chiếu/ Mã định danh"
@@ -66,7 +71,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.CCCD}" />
+                    Text="{Binding PatientInfo.CCCD, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Vào viện ngày"
@@ -74,7 +79,8 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.VaoVien}" />
+                    Text="{Binding HanhChinhInfo.ThoiGianVaoVien, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_8" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Ra viện ngày"
@@ -82,7 +88,8 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.RaVien}" />
+                    Text="{Binding HanhChinhInfo.ThoiGianRaVien, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_9" />
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBox
@@ -92,7 +99,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.NgaySinh}" />
+                    Text="{Binding PatientInfo.NgaySinh, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Tuổi"
@@ -100,7 +107,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.Tuoi}" />
+                    Text="{Binding PatientInfo.Tuoi, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Dân tộc"
@@ -108,7 +115,7 @@
                     AcceptsReturn="True"
                     FontSize="16"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.DanToc}" />
+                    Text="{Binding PatientInfo.DanToc, Mode=TwoWay}" />
 
                 <TextBox
                     Margin="10"
@@ -118,7 +125,7 @@
                     FontSize="16"
                     FontWeight="Bold"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.SoBenhAn}" />
+                    Text="{Binding PatientInfo.SoBenhAn, Mode=TwoWay}" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Mã y tế"
@@ -127,7 +134,7 @@
                     FontSize="16"
                     FontWeight="Bold"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PatientInfo.MaYTe}" />
+                    Text="{Binding PatientInfo.MaYTe, Mode=TwoWay}" />
             </StackPanel>
 
 
@@ -149,14 +156,17 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.benhChinhVaoVien, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Bệnh kèm theo"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.benhPhuVaoVien, Mode=TwoWay}" />
                 <Label
                     Margin="20,0,0,0"
                     Content="2. Chẩn đoán ra viện"
@@ -168,14 +178,17 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.benhChinhRaVien, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_1" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Bệnh kèm theo"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.benhPhuRaVien, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1">
                 <TextBox
@@ -184,21 +197,26 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.icdVaoKhoaChinh, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_2" />
                 <TextBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="Mã ICD"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.icdVaoKhoaPhu, Mode=TwoWay}" />
                 <TextBox
                     Margin="10,38,10,10"
                     materialDesign:HintAssist.Hint="Mã ICD"
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.icdRaVienChinh, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_3" />
 
                 <TextBox
                     Margin="10"
@@ -206,7 +224,8 @@
                     materialDesign:HintAssist.IsFloating="True"
                     AcceptsReturn="True"
                     FontSize="16"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChuanDoanInfo.icdRaVienPhu, Mode=TwoWay}" />
             </StackPanel>
 
             <!--  Tóm tắt quá trình điều trị  -->
@@ -223,6 +242,8 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChiTietBenhAnInfo.LyDoVaoVien, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_4"
                     TextWrapping="Wrap" />
                 <TextBox
                     Margin="10"
@@ -231,6 +252,8 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding Ai_TomTatQuaTrinhBenhLy}"
+                    TextChanged="TextBox_TextChanged_5"
                     TextWrapping="Wrap" />
                 <TextBox
                     Margin="10"
@@ -239,6 +262,8 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChiTietBenhAnInfo.TienSuBenh, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_7"
                     TextWrapping="Wrap" />
                 <TextBox
                     Margin="10"
@@ -247,6 +272,8 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding Ai_DauHieuLamSang}"
+                    TextChanged="TextBox_TextChanged_6"
                     TextWrapping="Wrap" />
                 <TextBox
                     Margin="10"
@@ -255,6 +282,8 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding AiResultKQXN}"
+                    TextChanged="TextBox_TextChanged_10"
                     TextWrapping="Wrap" />
 
                 <!--  Phương pháp điều trị  -->
@@ -330,7 +359,18 @@
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             TextWrapping="Wrap" />
                     </CheckBox>
+
                 </Grid>
+                <TextBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Phương Pháp Điều Trị"
+                    materialDesign:HintAssist.IsFloating="True"
+                    AcceptsReturn="True"
+                    FontSize="18"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ChiTietBenhAnInfo.HuongDieuTri, Mode=TwoWay}"
+                    TextChanged="TextBox_TextChanged_10"
+                    TextWrapping="Wrap" />
 
                 <!--  Tình trạng người bệnh ra viện  -->
                 <Label
@@ -355,8 +395,10 @@
                         Grid.Column="0"
                         HorizontalAlignment="Left"
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                        Checked="CheckBox_Checked"
                         Content="Khỏi"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedKhoi, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                     <CheckBox
                         Grid.Row="0"
@@ -365,6 +407,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Đỡ"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedDo}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                     <CheckBox
                         Grid.Row="0"
@@ -373,6 +416,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Không thay đổi"
                         FontSize="17"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedKhongThayDoi, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                     <CheckBox
                         Grid.Row="0"
@@ -381,6 +425,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Nặng hơn"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedNangHon, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                     <CheckBox
                         Grid.Row="0"
@@ -389,6 +434,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Tử vong"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedTuVong, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
 
                     <CheckBox
@@ -398,6 +444,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Tiên lượng nặng xin về"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedTienLuongNangXinVe, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
 
                     <CheckBox
@@ -407,6 +454,7 @@
                         materialDesign:CheckBoxAssist.CheckBoxSize="30"
                         Content="Chưa xác định"
                         FontSize="18"
+                        IsChecked="{Binding CheckBoxInfo.IsCheckedChuaXacDinh, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignCheckBox}" />
                 </Grid>
 
@@ -417,6 +465,7 @@
                     AcceptsReturn="True"
                     FontSize="18"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding AiResultDienBien, Mode=TwoWay}"
                     TextWrapping="Wrap" />
             </StackPanel>
 
@@ -424,4 +473,23 @@
 
 
     </ScrollViewer>
+        <Grid Background="#80000000"
+      Visibility="{Binding IsLoading}"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar Width="200"
+                     Height="20"
+                     IsIndeterminate="True"
+                     Foreground="DodgerBlue"
+                     Style="{x:Null}" />
+                <TextBlock Text="Đang tải dữ liệu..."
+                   Foreground="White"
+                   FontSize="18"
+                   Margin="0,20,0,0"
+                   HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
 </UserControl>
