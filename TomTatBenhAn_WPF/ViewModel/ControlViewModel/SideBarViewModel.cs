@@ -2,8 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using System.Windows;
 using TomTatBenhAn_WPF.Message;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
+using TomTatBenhAn_WPF.View.ControlView;
 
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
@@ -24,7 +27,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 {
                     SoBenhAnList.Add(item);
                 }
+
+                // Hiển thị item đầu tiên nhưng không chọn
+                if (SoBenhAnList.Count > 0)
+                {
+                    PreviewSoBenhAn = SoBenhAnList[0].soBenhAn;
+                    SelectedSoBenhAn = null;
+                }
             });
+
+
 
             // Nhận lại mục đã chọn từ ContentViewModel để hiển thị
             WeakReferenceMessenger.Default.Register<LoadDataMessage>(this, (r, m) =>
@@ -34,7 +46,8 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                );
            });
         }
-
+        [ObservableProperty]
+        private string? previewSoBenhAn;
         // Đổ vào ComboBox
         public ObservableCollection<LoadData> SoBenhAnList { get; set; } = new();
 
@@ -92,13 +105,26 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
         }
 
+        private readonly Regex _soBenhAnRegex = new Regex(@"^\d{2}\.\d{6}$");
 
-        // Nhấn nút "Lấy dữ liệu"
+        
+        private readonly Regex _maYTeRegex = new Regex(@"^\d{8}$");
+      
         [RelayCommand]
         private void GetData()
         {
+            // Validate SoBenhAn if user entered something
             if (!string.IsNullOrWhiteSpace(SoBenhAn))
             {
+                if (!_soBenhAnRegex.IsMatch(SoBenhAn))
+                {
+                    MessageBox.Show("Số bệnh án không đúng định dạng",
+                                    "Lỗi định dạng",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning);
+                    return;
+                }
+
                 SoBenhAnList.Clear();
                 SelectedSoBenhAn = null;
 
@@ -106,10 +132,21 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 return;
             }
 
+            // Validate MaYTe if user entered something
             if (!string.IsNullOrWhiteSpace(MaYTe))
             {
+                if (!_maYTeRegex.IsMatch(MaYTe))
+                {
+                    MessageBox.Show("Mã y tế không đúng định dạng ",
+                                    "Lỗi định dạng",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning);
+                    return;
+                }
+
                 WeakReferenceMessenger.Default.Send(new LoadData(null, MaYTe));
             }
         }
+       
     }
 }

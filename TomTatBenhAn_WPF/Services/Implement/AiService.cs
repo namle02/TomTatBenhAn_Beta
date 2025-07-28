@@ -203,7 +203,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                 new
                 {
-                    role = "user", // ✅ Rất quan trọng
+                    role = "user", 
                     parts = new[]
                     {
                         new { text = finalPrompt }

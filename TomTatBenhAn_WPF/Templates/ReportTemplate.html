@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Bản tóm tắt hồ sơ bệnh án</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 14px;
+            margin: 40px;
+            line-height: 1.5;
+            color: #000;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+            .header .left {
+                text-align: left;
+                width: 50%;
+            }
+
+            .header .right {
+                text-align: right;
+                width: 50%;
+            }
+
+        h2.title {
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 15px 0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 15px;
+            text-decoration: underline;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .indent {
+            margin-left: 20px;
+        }
+
+        .checkbox {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+            .signature strong {
+                display: block;
+                margin-top: 30px;
+            }
+
+        .content-block {
+            white-space: pre-line;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            UBND TỈNH QUẢNG NINH<br>
+            BỆNH VIỆN VIỆT NAM - THỤY ĐIỂN<br>
+            <strong>UÔNG BÍ</strong><br>
+            Số: {{SoBenhAn}}
+        </div>
+        <div class="right">
+            CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
+            <em>Độc lập - Tự do - Hạnh phúc</em><br>
+            MS: 03/TT25.2025
+        </div>
+    </div>
+
+    <h2 class="title">BẢN TÓM TẮT HỒ SƠ BỆNH ÁN</h2>
+
+    <!-- I. HÀNH CHÍNH -->
+    <div class="section-title">I. HÀNH CHÍNH</div>
+    <p>1. Họ và tên: {{TenBenhNhan}}</p>
+    <p>2. Ngày sinh: {{NgaySinh}} &nbsp;&nbsp; Tuổi: {{Tuoi}}</p>
+    <p>3. Giới tính: {{GioiTinh}} &nbsp;&nbsp; 4. Dân tộc: {{DanToc}}</p>
+    <p>5. Địa chỉ cư trú: {{DiaChi}}</p>
+    <p>6. Số thẻ BHYT: {{BHYT}}</p>
+    <p>7. Số căn cước/HC: {{CCCD}}</p>
+    <p>8. Bệnh án số: {{SoBenhAn}} &nbsp;&nbsp; Mã y tế: {{MaYTe}}</p>
+    <p>9. Vào viện ngày: {{VaoVien}} &nbsp;&nbsp; Ra viện ngày: {{RaVien}}</p>
+
+    <!-- II. CHẨN ĐOÁN -->
+    <div class="section-title">II. CHẨN ĐOÁN</div>
+    <p>Bệnh chính vào viện: {{BenhChinhVaoVien}} </p>
+    <p>Mã ICD: {{IcdBenhChinhVaoVien}}</p>
+    <p>Bệnh phụ vào viện: {{BenhPhuVaoVien}} </p>
+    <p>Mã ICD: {{IcdBenhPhuVaoVien}}</p>
+    <p>Bệnh chính ra viện: {{BenhChinhRaVien}}</p>
+    <p>Mã ICD: {{IcdBenhChinhRaVien}}</p>
+    <p>Bệnh phụ ra viện: {{BenhPhuRaVien}} </p>
+    <p>Mã ICD: {{IcdBenhPhuRaVien}}</p>
+
+    <!-- III. TÓM TẮT QUÁ TRÌNH ĐIỀU TRỊ -->
+    <div class="section-title">III. TÓM TẮT QUÁ TRÌNH ĐIỀU TRỊ</div>
+    <p><strong>Lý do vào viện:</strong> {{LiDoVaoVien}}</p>
+    <p><strong>Quá trình bệnh lý và diễn biến lâm sàng:</strong></p>
+    <div class="content-block">{{AiQuaTrinh}}</div>
+    <p><strong>Tiền Sử Bệnh:</strong></p>
+    <div class="content-block">{{TienSuBenh}}</div>
+
+    <p><strong>Những dấu hiệu lâm sàng chính:</strong></p>
+    <div class="content-block">{{DauHieuLamSang}}</div>
+
+    <p><strong>Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán:</strong></p>
+    <div class="content-block">{{KetQuaXetNghiemCLS}}</div>
+
+    <p><strong>Phương pháp điều trị:</strong></p>
+    <div class="content-block">{{PhuongPhapDieuTri}}</div>
+
+    <p><strong>Tình trạng người bệnh ra viện:</strong> {{HuongDieuTri}}</p>
+
+    <!-- Signature -->
+    <div class="signature">
+        Uông Bí, ngày {{NgayIn}} năm {{NamIn}}<br>
+        <strong>ĐẠI DIỆN CƠ SỞ KCB<br>TRƯỞNG PHÒNG KHTH</strong>
+        <strong>TsBs. Vũ Trung Kiên</strong>
+    </div>
+</body>
+</html>

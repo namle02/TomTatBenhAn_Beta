@@ -25,8 +25,6 @@ namespace TomTatBenhAn_WPF.Repos.Model
 
         public string? MaYTe { get; set; }
 
-        public string? VaoVien { get; set; }
-
-        public string? RaVien { get; set; }
+        
     }
 }   

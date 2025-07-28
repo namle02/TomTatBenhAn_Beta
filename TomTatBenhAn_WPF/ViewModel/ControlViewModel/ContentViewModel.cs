@@ -77,6 +77,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 
                     //   xử lý
                     PatientInfo = await _dataMapper.GetThongTinBenhNhanData(message.soBenhAn);
+                    
                     ChuanDoanInfo = await _dataMapper.GetChuanDoanData(message.soBenhAn);
                     BenhAnTypeInfo = await _dataMapper.GetBenhAnTypeData(message.soBenhAn);
                     AiKQXNClsList = await _dataMapper.GetKetQuaXetNghiemModelData(message.soBenhAn);
@@ -114,7 +115,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                         var allLoiDan = string.Join("\n", DienBienInfo.Select(d => d.LoiDanThayThuoc));
 
                         var aiDienBienDict = await _aiService.HuongDieuTriAsync(allDienBien, allLoiDan);
-                        AiResultDienBien = string.Join("\n", aiDienBienDict.Select(kv => $"{kv.Key}: {kv.Value}"));
+                        AiResultDienBien = string.Join("\n", aiDienBienDict.Select(kv => $" {kv.Value}"));
                     }
                     else
                     {
@@ -130,7 +131,9 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 
                    
                     _loadingService.Hide();
+                    WeakReferenceMessenger.Default.Send(new ReportDataMessage(PatientInfo));
                 }
+               
             }
             catch (Exception ex)
             {
@@ -140,5 +143,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 _loadingService.Hide(); // đảm bảo luôn tắt loading nếu lỗi
             }
         }
+
+       
     }
 }

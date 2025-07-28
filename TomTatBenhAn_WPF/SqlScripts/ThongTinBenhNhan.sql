@@ -11,7 +11,8 @@
   SUBSTRING(xncp.SoBHYT, 0, 16) SoBHYT, 
   ba.NgayVaoVien,
   ba.NgayRaVien,
-  td.Dictionary_Name DanToc 
+  td.Dictionary_Name DanToc ,
+  dmbn.sovaovien MaYTe
 FROM 
   dbo.BenhAn ba 
   LEFT JOIN dbo.XacNhanChiPhi xncp ON ba.BenhAn_Id = xncp.BenhAn_Id 

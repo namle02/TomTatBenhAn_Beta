@@ -107,11 +107,21 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                         ThongTinBenhNhan.TenBenhNhan = reader["TenBN"].ToString();
                         ThongTinBenhNhan.NgaySinh = reader["NgaySinh"] == DBNull.Value ? null : reader["NgaySinh"].ToString();
                         ThongTinBenhNhan.Tuoi = reader["Tuoi"] == DBNull.Value ? null : Convert.ToInt32(reader["Tuoi"]);
-                        ThongTinBenhNhan.GioiTinh = reader["GioiTinh"] == DBNull.Value ? null : reader["GioiTinh"].ToString();
+                        var gioiTinhValue = reader["GioiTinh"] == DBNull.Value ? null : reader["GioiTinh"].ToString();
+                        if (gioiTinhValue == "T")
+                        {
+                            gioiTinhValue = "Nam";
+                        }
+                        else if (gioiTinhValue == "G")
+                        {
+                            gioiTinhValue = "Nữ";
+                        }
+                        ThongTinBenhNhan.GioiTinh = gioiTinhValue;
                         ThongTinBenhNhan.DiaChi = reader["DiaChi"] == DBNull.Value ? null : reader["DiaChi"].ToString();
                         ThongTinBenhNhan.BHYT = reader["SoBHYT"] == DBNull.Value ? null : reader["SoBHYT"].ToString();
                         ThongTinBenhNhan.DanToc = reader["DanToc"] == DBNull.Value ? null : reader["DanToc"].ToString();
-                        
+                        ThongTinBenhNhan.MaYTe = reader["MaYTe"] == DBNull.Value ? null : reader["MaYTe"].ToString();
+
 
                     }
                     return ThongTinBenhNhan;

@@ -9,12 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Repos\ReportTemplate.html" />
     <None Remove="SqlScripts\BenhAnType.sql" />
     <None Remove="SqlScripts\chuandoanravaovien.sql" />
     <None Remove="SqlScripts\DienBien.sql" />
     <None Remove="SqlScripts\HanhChinh.sql" />
     <None Remove="SqlScripts\KetQuaXetNghiemCLS.sql" />
     <None Remove="SqlScripts\SoBenhAn.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\ReportTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +49,7 @@
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
