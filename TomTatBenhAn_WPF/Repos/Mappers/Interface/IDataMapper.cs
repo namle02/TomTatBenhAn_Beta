@@ -14,7 +14,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Interface
         Task<ThongTinBenhNhan> GetThongTinBenhNhanData(string SoBenhAn);
         Task<ChuanDoanModel> GetChuanDoanData(string SoBenhAn);
         Task<BenhAnTypeModel> GetBenhAnTypeData(string SoBenhAn);
-        Task<BenhAnChiTietModel> GetBenhAnChiTietAsync(string loaiBenhAn, string benhAnTongQuatId);
+        Task<BenhAnChiTietModel> GetBenhAnChiTietAsync(string loaiBenhAn, string benhAnTongQuatId,string TiepNhanId);
         Task<List<KetQuaXetNghiemCLSModel>> GetKetQuaXetNghiemModelData(string SoBenhAn);
         Task<HanhChinhModel> GetHanhChinhData(string SoBenhAn);
         Task<CheckBoxModel> UpdateCheckBoxesFromKetQuaDieuTri(string ketQuaDieuTri);

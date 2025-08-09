@@ -1,17 +1,11 @@
-SELECT 
-  TOP 1 Lower(lba.TenLoaiBenhAn) LoaiBenhAn, 
-  batq.BenhAnTongQuat_Id 
-FROM 
-  dbo.BenhAnTongQuat batq 
-  LEFT JOIN ehosdict.DM_LoaiBenhAn lba ON batq.LoaiBenhAn_Id = lba.LoaiBenhAn_Id 
-WHERE 
-  batq.BenhAn_Id = (
-    SELECT 
-      BenhAn_Id 
-    FROM 
-      dbo.BenhAn 
-    WHERE 
-      SoBenhAn = N'@SoBenhAn_Params'
-  ) 
-ORDER BY 
-  batq.NgayTao ASC
+SELECT TOP 1
+    LOWER(lba.TenLoaiBenhAn) AS LoaiBenhAn,
+    batq.BenhAnTongQuat_Id,
+    ba.TiepNhan_Id
+FROM dbo.BenhAn ba
+LEFT JOIN dbo.BenhAnTongQuat batq 
+    ON ba.BenhAn_Id = batq.BenhAn_Id
+LEFT JOIN ehosdict.DM_LoaiBenhAn lba 
+    ON batq.LoaiBenhAn_Id = lba.LoaiBenhAn_Id
+WHERE ba.SoBenhAn = N'@SoBenhAn_Params'
+ORDER BY batq.NgayTao ASC;

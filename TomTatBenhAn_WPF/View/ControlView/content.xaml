@@ -299,18 +299,21 @@
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
                             Content="Không"
+                            IsChecked="{Binding CheckBoxInfo.CheckBoxNoiKhoaFalse, Mode=TwoWay}"
                             FontSize="18"
                             Style="{StaticResource MaterialDesignCheckBox}" />
                         <CheckBox
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
+                             IsChecked="{Binding CheckBoxInfo.CheckBoxNoiKhoaTrue, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}">
 
                             <TextBox
                                 Margin="10"
                                 materialDesign:HintAssist.Hint="Có, ghi rõ"
                                 materialDesign:HintAssist.IsFloating="True"
+                                Text="{Binding ChiTietBenhAnInfo.LydoNoiKhoaTrue, Mode=TwoWay}"
                                 AcceptsReturn="True"
                                 FontSize="18"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -329,11 +332,13 @@
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
                             Content="Không"
+                             IsChecked="{Binding CheckBoxInfo.CheckBoxPTTTFalse, Mode=TwoWay}"
                             FontSize="18"
                             Style="{StaticResource MaterialDesignCheckBox}" />
                         <CheckBox
                             Grid.Row="1"
                             Grid.Column="2"
+                             IsChecked="{Binding CheckBoxInfo.CheckBoxPTTTTrue, Mode=TwoWay}"
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
                             Style="{StaticResource MaterialDesignCheckBox}">
@@ -341,6 +346,7 @@
                                 Margin="10"
                                 materialDesign:HintAssist.Hint="Có, ghi rõ"
                                 materialDesign:HintAssist.IsFloating="True"
+                                 Text="{Binding ChiTietBenhAnInfo.LydoPTTTTrue, Mode=TwoWay}"
                                 AcceptsReturn="True"
                                 FontSize="18"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -442,7 +448,15 @@
                             IsChecked="{Binding CheckBoxInfo.IsCheckedChuaXacDinh, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}" />
                     </Grid>
-
+                    <TextBox
+    Margin="10"
+    materialDesign:HintAssist.Hint="Tình trạng ra viện:"
+    materialDesign:HintAssist.IsFloating="True"
+    AcceptsReturn="True"
+    FontSize="18"
+    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+    Text="{Binding TinhTrangRaVien, Mode=TwoWay}"
+    TextWrapping="Wrap" />
                     <TextBox
                         Margin="10"
                         materialDesign:HintAssist.Hint="Hướng điều trị và các chế độ tiếp theo"
@@ -450,7 +464,7 @@
                         AcceptsReturn="True"
                         FontSize="18"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding AiResultDienBien, Mode=TwoWay}"
+                        Text="{Binding HuongDieuTriTiepTheo, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </StackPanel>
 

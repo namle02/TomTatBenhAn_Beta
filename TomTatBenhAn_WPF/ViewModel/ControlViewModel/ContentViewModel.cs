@@ -28,6 +28,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             WeakReferenceMessenger.Default.Register<LoadData>(this);
         }
 
+
         [ObservableProperty] private ThongTinBenhNhan patientInfo = new();
         [ObservableProperty] private ChuanDoanModel chuanDoanInfo = new();
         [ObservableProperty] private BenhAnTypeModel benhAnTypeInfo = new();
@@ -43,6 +44,8 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         [ObservableProperty] private string aiResultQuaTrinhBenhLy = string.Empty;
         [ObservableProperty] private string aiResultKQXN = string.Empty;
         [ObservableProperty] private string aiResultDienBien = string.Empty;
+        [ObservableProperty] private string tinhTrangRaVien;
+        [ObservableProperty] private string huongDieuTriTiepTheo;
 
         public Visibility IsLoading => _loadingService.IsLoading;
 
@@ -85,11 +88,12 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     DienBienInfo = await _dataMapper.GetDienBienData(message.soBenhAn);
 
                     if (!string.IsNullOrWhiteSpace(BenhAnTypeInfo.LoaiBenhAn) &&
-                        !string.IsNullOrWhiteSpace(BenhAnTypeInfo.BenhAnTongQuatId))
+                        !string.IsNullOrWhiteSpace(BenhAnTypeInfo.BenhAnTongQuatId)|| !string.IsNullOrWhiteSpace(BenhAnTypeInfo.TiepNhanId))
                     {
                         ChiTietBenhAnInfo = await _dataMapper.GetBenhAnChiTietAsync(
                             BenhAnTypeInfo.LoaiBenhAn,
-                            BenhAnTypeInfo.BenhAnTongQuatId
+                            BenhAnTypeInfo.BenhAnTongQuatId,
+                            BenhAnTypeInfo.TiepNhanId
                         );
 
                         if (!string.IsNullOrWhiteSpace(ChiTietBenhAnInfo.QuaTrinhBenhLy))
@@ -115,11 +119,19 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                         var allLoiDan = string.Join("\n", DienBienInfo.Select(d => d.LoiDanThayThuoc));
 
                         var aiDienBienDict = await _aiService.HuongDieuTriAsync(allDienBien, allLoiDan);
-                        AiResultDienBien = string.Join("\n", aiDienBienDict.Select(kv => $" {kv.Value}"));
+
+
+                        TinhTrangRaVien = aiDienBienDict.GetValueOrDefault("TinhTrangRaVien", "⚠️ Không tóm tắt được tình trạng ra viện");
+                        HuongDieuTriTiepTheo = aiDienBienDict.GetValueOrDefault("HuongDieuTriTiepTheo", "⚠️ Không tóm tắt được hướng điều trị tiếp theo");
+
+                        // (Nếu bạn vẫn cần chuỗi gộp thì có thể giữ AiResultDienBien như cũ)
+                        AiResultDienBien = $"{TinhTrangRaVien}\nHướng điều trị tiếp theo: {HuongDieuTriTiepTheo}";
                     }
                     else
                     {
-                        AiResultDienBien = "⚠️ Không có dữ liệu diễn biến bệnh để tóm tắt hướng điều trị.";
+                        TinhTrangRaVien = "⚠️ Không có dữ liệu diễn biến bệnh để tóm tắt tình trạng ra viện.";
+                        HuongDieuTriTiepTheo = "⚠️ Không có dữ liệu để tóm tắt hướng điều trị tiếp theo.";
+                        AiResultDienBien = $"{TinhTrangRaVien}\n{HuongDieuTriTiepTheo}";
                     }
 
                     var model = await _dataMapper.UpdateCheckBoxesFromKetQuaDieuTri(HanhChinhInfo.KetQuaDieuTri);

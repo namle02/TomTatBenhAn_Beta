@@ -121,6 +121,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                         ThongTinBenhNhan.BHYT = reader["SoBHYT"] == DBNull.Value ? null : reader["SoBHYT"].ToString();
                         ThongTinBenhNhan.DanToc = reader["DanToc"] == DBNull.Value ? null : reader["DanToc"].ToString();
                         ThongTinBenhNhan.MaYTe = reader["MaYTe"] == DBNull.Value ? null : reader["MaYTe"].ToString();
+                        ThongTinBenhNhan.SoBenhAn = reader["SoBenhAn"] == DBNull.Value ? null : reader["SoBenhAn"].ToString();
 
 
                     }
@@ -152,6 +153,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
 
                         benhAnType.LoaiBenhAn = reader["LoaiBenhAn"] == DBNull.Value ? null : reader["LoaiBenhAn"].ToString();
                         benhAnType.BenhAnTongQuatId = reader["BenhAnTongQuat_Id"] == DBNull.Value ? null : reader["BenhAnTongQuat_Id"].ToString();
+                        benhAnType.TiepNhanId = reader["TiepNhan_Id"] == DBNull.Value ? null : reader["TiepNhan_Id"].ToString();
 
                     }
                     return benhAnType;
@@ -165,52 +167,67 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
         }
 
 
-        public async Task<BenhAnChiTietModel> GetBenhAnChiTietAsync(string loaiBenhAn, string benhAnTongQuatId)
-{
-    try
-    {
-        if (string.IsNullOrWhiteSpace(loaiBenhAn) || string.IsNullOrWhiteSpace(benhAnTongQuatId))
-            throw new ArgumentException("Thiếu thông tin loại bệnh án hoặc ID.");
-
-        // 🔹 Lấy câu truy vấn từ QueryStorage
-        if (!QueryStorage.Instance.Storage.TryGetValue(loaiBenhAn.ToLower(), out object? rawQueryObj))
-            throw new Exception($"Không tìm thấy câu truy vấn cho loại bệnh án: {loaiBenhAn}");
-
-        string sqlQuery = rawQueryObj?.ToString()?.Replace("@ID", benhAnTongQuatId);
-        if (string.IsNullOrWhiteSpace(sqlQuery))
-            throw new Exception("Câu truy vấn SQL rỗng sau khi thay thế ID.");
-
-        string connectionString = _configServices.Get("Db_String");
-
-        BenhAnChiTietModel benhAnChiTiet = new BenhAnChiTietModel();
-
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        public async Task<BenhAnChiTietModel> GetBenhAnChiTietAsync(string loaiBenhAn, string benhAnTongQuatId, string tiepNhanId)
         {
-            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+            try
             {
-                await connection.OpenAsync();
+                string sqlQuery = string.Empty;
 
-               
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                // 🔹 Trường hợp có LoaiBenhAn và BenhAnTongQuatId
+                if (!string.IsNullOrWhiteSpace(loaiBenhAn) && !string.IsNullOrWhiteSpace(benhAnTongQuatId))
                 {
-                    if (await reader.ReadAsync())
+                    if (!QueryStorage.Instance.Storage.TryGetValue(loaiBenhAn.ToLower(), out object? rawQueryObj))
+                        throw new Exception($"Không tìm thấy câu truy vấn cho loại bệnh án: {loaiBenhAn}");
+
+                    sqlQuery = rawQueryObj?.ToString()?.Replace("@ID", benhAnTongQuatId);
+                }
+                else
+                {
+                    // 🔹 Trường hợp fallback: Dùng TiepNhanId thay cho @TiepNhan_Id
+                    if (string.IsNullOrWhiteSpace(tiepNhanId))
+                        throw new ArgumentException("Thiếu thông tin ID bệnh án hoặc tiếp nhận.");
+
+                    if (!QueryStorage.Instance.Storage.TryGetValue("Khám bệnh vào viện", out object? rawQueryObj))
+                        throw new Exception("Không tìm thấy câu truy vấn mặc định cho trường hợp dùng TiepNhan_Id.");
+                
+
+                    sqlQuery = rawQueryObj?.ToString()?.Replace("@TiepNhan_Id", tiepNhanId);
+                }
+
+                if (string.IsNullOrWhiteSpace(sqlQuery))
+                    throw new Exception("Câu truy vấn SQL rỗng sau khi thay thế ID.");
+
+                string connectionString = _configServices.Get("Db_String");
+
+                BenhAnChiTietModel benhAnChiTiet = new BenhAnChiTietModel();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                     {
-                        benhAnChiTiet.LyDoVaoVien = reader["LyDoVaoVien"]?.ToString();
-                        benhAnChiTiet.QuaTrinhBenhLy = reader["QuaTrinhBenhLy"]?.ToString();
-                        benhAnChiTiet.TienSuBenh = reader["TienSuBenh"]?.ToString();
-                        benhAnChiTiet.HuongDieuTri = reader["HuongDieuTri"]?.ToString();
+                        await connection.OpenAsync();
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                benhAnChiTiet.LyDoVaoVien = reader["LyDoVaoVien"]?.ToString();
+                                benhAnChiTiet.QuaTrinhBenhLy = reader["QuaTrinhBenhLy"]?.ToString();
+                                benhAnChiTiet.TienSuBenh = reader["TienSuBenh"]?.ToString();
+                                benhAnChiTiet.HuongDieuTri = reader["HuongDieuTri"]?.ToString();
+                            }
+                        }
                     }
                 }
+
+                return benhAnChiTiet;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi lấy chi tiết bệnh án: " + ex.Message, ex);
             }
         }
 
-        return benhAnChiTiet;
-    }
-    catch (Exception ex)
-    {
-        throw new Exception("Lỗi khi lấy chi tiết bệnh án: " + ex.Message, ex);
-    }
-}
 
 
         public async Task<List<KetQuaXetNghiemCLSModel>> GetKetQuaXetNghiemModelData(string SoBenhAn)

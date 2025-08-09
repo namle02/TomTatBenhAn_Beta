@@ -181,7 +181,8 @@
                     Content="Tóm tắt bệnh án"
                     FontSize="18"
                     FontWeight="Bold"
-                    Foreground="White" />
+                    Foreground="White"
+                    IsDefault="True" />
 
                 <Button
                     Height="45"
