@@ -27,5 +27,14 @@ namespace TomTatBenhAn_WPF.Repos.Model
         public bool checkBox1;
         [ObservableProperty]
         public bool checkBox2;
+        [ObservableProperty]
+        public bool checkBoxNoiKhoaFalse;
+        [ObservableProperty]
+        public bool checkBoxNoiKhoaTrue;
+        [ObservableProperty]
+        public bool checkBoxPTTTFalse;
+        [ObservableProperty]
+        public bool checkBoxPTTTTrue;
+
     }
 }

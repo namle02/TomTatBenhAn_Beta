@@ -14,6 +14,7 @@ namespace TomTatBenhAn_WPF.Repos.Model
 
         public string? BenhAnTongQuatId { get; set; }
 
+        public string? TiepNhanId {  get; set; }
        
 
     }

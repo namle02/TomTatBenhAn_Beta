@@ -184,7 +184,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 return resultTomTatKQXN;
             }
         }
-        public async Task<Dictionary<string, string>> HuongDieuTriAsync(string DienBien,string LoiDanThayThuoc)
+        public async Task<Dictionary<string, string>> HuongDieuTriAsync(string DienBien, string LoiDanThayThuoc)
         {
             var resultData = new Dictionary<string, string>();
 
@@ -194,8 +194,8 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 if (string.IsNullOrWhiteSpace(promptTemplate))
                     throw new Exception("Không tìm thấy PROMT_TTNB trong configDict");
 
-                string finalPrompt = promptTemplate.Replace("@DienBien", DienBien).Replace("@LoiDanThayThuoc",LoiDanThayThuoc);
-                
+                string finalPrompt = promptTemplate.Replace("@DienBien", DienBien)
+                                                   .Replace("@LoiDanThayThuoc", LoiDanThayThuoc);
 
                 var requestBody = new
                 {
@@ -203,7 +203,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                 new
                 {
-                    role = "user", 
+                    role = "user",
                     parts = new[]
                     {
                         new { text = finalPrompt }
@@ -232,9 +232,6 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 string responseJson = await response.Content.ReadAsStringAsync();
 
-                //Console.WriteLine("Final Prompt:\n" + finalPrompt);
-                //Console.WriteLine("Response:\n" + responseJson);
-
                 using var doc = JsonDocument.Parse(responseJson);
                 string aiText = doc.RootElement
                     .GetProperty("candidates")[0]
@@ -244,7 +241,26 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     .GetString()
                     ?? throw new Exception("Không tìm thấy nội dung phản hồi từ AI");
 
-                resultData["HuongDieuTri"] = aiText;
+                // --- TÁCH CHUỖI RA 2 PHẦN ---
+                string keySearch = "Hướng điều trị tiếp theo:";
+                int idx = aiText.IndexOf(keySearch, StringComparison.OrdinalIgnoreCase);
+
+                string tinhTrangRaVien = "";
+                string huongDieuTriTiepTheo = "";
+
+                if (idx >= 0)
+                {
+                    tinhTrangRaVien = aiText.Substring(0, idx).TrimEnd('.', ' ', '\n', '\r');
+                    huongDieuTriTiepTheo = aiText.Substring(idx + keySearch.Length).Trim();
+                }
+                else
+                {
+                    tinhTrangRaVien = aiText.Trim();
+                    huongDieuTriTiepTheo = "";
+                }
+
+                resultData["TinhTrangRaVien"] = tinhTrangRaVien;
+                resultData["HuongDieuTriTiepTheo"] = huongDieuTriTiepTheo;
             }
             catch (Exception ex)
             {
@@ -253,6 +269,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
             return resultData;
         }
+
 
 
     }

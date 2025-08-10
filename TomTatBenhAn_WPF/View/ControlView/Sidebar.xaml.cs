@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using TomTatBenhAn_WPF.Message;
@@ -33,7 +34,7 @@ namespace TomTatBenhAn_WPF.View.ControlView
             var mainVM = mainWindow?.DataContext as MainViewModel;
 
             // Lấy ContentViewModel
-            var contentVM = mainVM?.ContentVM; // vì ObservableProperty auto-gen property là ContentVM
+            var contentVM = mainVM?.ContentVM; 
 
             if (contentVM == null || contentVM.PatientInfo == null)
             {
@@ -43,6 +44,11 @@ namespace TomTatBenhAn_WPF.View.ControlView
 
             string aiTomTatQuaTrinhBenhLy = contentVM.Ai_TomTatQuaTrinhBenhLy;
             string aiDauHieuLamSang = contentVM.Ai_DauHieuLamSang;
+            string aiKQXN = contentVM.AiResultKQXN;
+            string aiDienBien=contentVM.AiResultDienBien;
+            string tinhTrangRaVien= contentVM.TinhTrangRaVien;
+            string huongDieuTriTiepTheo = contentVM.HuongDieuTriTiepTheo;
+
 
             // Truyền cả tất cả vào ReportPage
             var reportWindow = new ReportPage(contentVM.PatientInfo,
@@ -50,8 +56,12 @@ namespace TomTatBenhAn_WPF.View.ControlView
                  aiDauHieuLamSang,
                  contentVM.HanhChinhInfo,
                 contentVM.ChiTietBenhAnInfo,
-               
-                contentVM.ChuanDoanInfo);
+                aiKQXN,
+                aiDienBien,
+                contentVM.CheckBoxInfo,
+                contentVM.ChuanDoanInfo,
+                tinhTrangRaVien,
+                huongDieuTriTiepTheo);
             reportWindow.ShowDialog();
         }
 

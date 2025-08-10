@@ -18,6 +18,7 @@ namespace TomTatBenhAn_WPF.ViewModel
         [ObservableProperty]
         private ContentViewModel contentVM;
 
+
         public MainViewModel(SideBarViewModel _sideBarViewModel, ContentViewModel _contentVM)
         {
             sideBarVM = _sideBarViewModel;
