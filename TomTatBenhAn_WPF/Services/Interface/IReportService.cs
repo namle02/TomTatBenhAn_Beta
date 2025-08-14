@@ -9,8 +9,10 @@ namespace TomTatBenhAn_WPF.Services.Interface
         /// </summary>
         /// <param name="patientData">Dữ liệu bệnh nhân</param>
         /// <returns>HTML content đã được thay thế bookmark</returns>
-        Task<string> GenerateHtmlReportAsync(PatientAllData patientData);
         
+        Task<string> GenerateHtmlReportAsync(PatientAllData patientData);
+        Task<string> ExportDocxFromTemplateAsync(PatientAllData patient, string templatePath, string? outputPath = null);
+
         /// <summary>
         /// Lấy đường dẫn template HTML
         /// </summary>

@@ -110,43 +110,50 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
 
             string id = patient.LoaiBenhAn.LoaiBenhAn_Id;
 
-            // Map LoaiBenhAn_Id -> tên file .sql (đúng như folder BenhAnType trong ảnh)
-            // Chỉ liệt kê những ID có file tương ứng. Còn lại dùng fallback chung.
             var sqlByType = new Dictionary<string, string>
             {
-                ["1"]  = "BenhAnTruyenNhiem.sql",       // Bệnh án truyền nhiễm
-                ["2"]  = "BenhAnNoiKhoa.sql",           // Bệnh án nội khoa
-                ["3"]  = "BenhAnBong.sql",              // Bệnh án bỏng
-                ["11"] = "BenhAnMat.sql",               // Bệnh án mắt
-                ["15"] = "BenhAnNgoaiKhoa.sql",         // Bệnh án ngoại khoa
-                ["16"] = "BenhAnNhiKhoa.sql",           // Bệnh án nhi khoa
-                ["18"] = "BenhAnPhuKhoa.sql",           // Bệnh án phụ khoa
-                ["19"] = "BenhAnRangHamMat.sql",        // Bệnh án răng-hàm-mặt
-                ["20"] = "BenhAnSanKhoa.sql",           // Bệnh án sản khoa
-                ["21"] = "BenhAnSoSinh.sql",            // Bệnh án sơ sinh
-                ["22"] = "BenhAnTaiMuiHong.sql",        // Bệnh án tai-mũi-họng
-                ["23"] = "BenhAnTamBenh.sql",           // Bệnh án tâm thần  / tâm bệnh
-                ["25"] = "BenhAnUngBuou.sql",           // Bệnh án ung bướu
-                ["51"] = "BenhAnYHCT_NgoaiTruMoi.sql",  // Bệnh án YHCT ngoại trú mới
-                ["54"] = "BenhAnYHCT_NoiTruMoi.sql",    // Bệnh án YHCT nội trú mới
-                ["55"] = "BenhAnYHCT_NgoaiTruMoi.sql",  // Bệnh án YHCT ngoại trú mới
-                ["61"] = "BenhAnPHCN_NoiTru.sql",       // Bệnh án PHCN nội trú
+                ["1"] = "BenhAnTruyenNhiem.sql",
+                ["2"] = "BenhAnNoiKhoa.sql",
+                ["3"] = "BenhAnBong.sql",
+                ["11"] = "BenhAnMat.sql",
+                ["15"] = "BenhAnNgoaiKhoa.sql",
+                ["16"] = "BenhAnNhiKhoa.sql",
+                ["18"] = "BenhAnPhuKhoa.sql",
+                ["19"] = "BenhAnRangHamMat.sql",
+                ["20"] = "BenhAnSanKhoa.sql",
+                ["21"] = "BenhAnSoSinh.sql",
+                ["22"] = "BenhAnTaiMuiHong.sql",
+                ["23"] = "BenhAnTamBenh.sql",
+                ["25"] = "BenhAnUngBuou.sql",
+                ["51"] = "BenhAnYHCT_NgoaiTruMoi.sql",
+                ["54"] = "BenhAnYHCT_NoiTruMoi.sql",
+                ["55"] = "BenhAnYHCT_NgoaiTruMoi.sql",
+                ["61"] = "BenhAnPHCN_NoiTru.sql",
             };
 
-            // Nếu chưa có file riêng thì dùng truy vấn chung lúc vào viện
+            // Nếu chưa có file riêng thì dùng truy vấn chung
             string fileName = sqlByType.TryGetValue(id, out var f)
                 ? f
                 : "KhamBenhVaoVien.sql";
 
-            // Đọc query từ embedded file: "BenhAnType.<fileName>"
-            string rawQuery = _fileServices.GetQuery($"BenhAnType.{fileName}");
+            string rawQuery;
 
-            // Một số file cần  @ID, một số không – Replace vô hại nếu không có @ID
-            string query = rawQuery.Replace("@ID", patient.LoaiBenhAn.BenhAnTongQuat_Id);
+            if (!string.IsNullOrWhiteSpace(patient.LoaiBenhAn.BenhAnTongQuat_Id))
+            {
+                // Có BenhAnTongQuat_Id → xử lý như cũ
+                rawQuery = _fileServices.GetQuery($"BenhAnType.{fileName}");
+                rawQuery = rawQuery.Replace("@ID", patient.LoaiBenhAn.BenhAnTongQuat_Id);
+            }
+            else
+            {
+                // Không có BenhAnTongQuat_Id → fallback sang TiepNhan_Id
+                rawQuery = _fileServices.GetQuery("BenhAnType.KhamBenhVaoVien.sql");
+                rawQuery = rawQuery.Replace("@TiepNhan_Id", patient.LoaiBenhAn.TiepNhan_id);
+            }
 
-            // Execute
-            var data = await conn.QueryAsync<ThongTinKhamBenhModel>(query);
+            var data = await conn.QueryAsync<ThongTinKhamBenhModel>(rawQuery);
             patient.ThongTinKhamBenh = data.ToList();
         }
+
     }
 }

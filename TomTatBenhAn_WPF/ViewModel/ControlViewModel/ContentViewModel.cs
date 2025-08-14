@@ -7,19 +7,21 @@ using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
 using TomTatBenhAn_WPF.View.PageView;
 using TomTatBenhAn_WPF.ViewModel.PageViewModel;
+using System.IO;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
     public partial class ContentViewModel : ObservableRecipient, IRecipient<SendPatientDataMessage>, IRecipient<string>
     {
         private readonly IAiService _aiServices;
+        private readonly IReportService _reportService;
         private readonly IServiceProvider provider;
+
         [ObservableProperty] private PatientAllData patient = new PatientAllData();
         [ObservableProperty] private bool isLoading = false;
         [ObservableProperty] private string loadingText = "Đang tóm tắt bệnh án...";
         [ObservableProperty] private bool isHuongDieuTriContains;
         [ObservableProperty] private bool isReportReady = false;
-        
 
         // Computed properties để lấy kết quả điều trị từ Patient
         public string? KetQuaDieuTri
@@ -49,8 +51,6 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Lỗi khi set KetQuaDieuTri: {ex.Message}");
-                    // Có thể hiển thị thông báo cho user nếu cần
-                    // MessageBox.Show($"Không thể cập nhật kết quả điều trị: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -61,19 +61,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             {
                 if (message.CalledBy == "SideBarVM")
                 {
-                    // Validate input
                     if (message?.patient == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Nhận được message hoặc patient null");
                         return;
                     }
 
-                    // Hiển thị loading và thông báo cho SideBar
                     IsLoading = true;
                     LoadingText = "Đang tải dữ liệu bệnh nhân...";
                     WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
 
-                    // Cập nhật patient data trước
                     this.Patient = message.patient;
                     if (Patient.ThongTinKhamBenh![0].HuongDieuTri.Length != 0)
                     {
@@ -81,34 +78,24 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     }
                     OnPropertyChanged(nameof(KetQuaDieuTri));
 
-                    // Cập nhật loading text cho AI processing
                     LoadingText = "Đang tóm tắt bệnh án với AI...";
-
-                    // Gọi AI service để tóm tắt bệnh án
                     await _aiServices.TomTatBenhAn(message.patient);
 
                     System.Diagnostics.Debug.WriteLine("Đã load và xử lý dữ liệu bệnh nhân thành công");
 
-                    // Đánh dấu báo cáo đã sẵn sàng
                     IsReportReady = true;
-
-                    // Gửi message để mở báo cáo sau khi AI hoàn thành
                     WeakReferenceMessenger.Default.Send(new NavigationMessage("OpenReport", "ContentVM"));
                 }
-                
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi xử lý dữ liệu bệnh nhân: {ex.Message}");
-                
-                // Hiển thị thông báo lỗi cho user
                 MessageBox.Show(
-                    $"Có lỗi xảy ra khi xử lý dữ liệu bệnh nhân:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.", 
-                    "Lỗi xử lý dữ liệu", 
-                    MessageBoxButton.OK, 
+                    $"Có lỗi xảy ra khi xử lý dữ liệu bệnh nhân:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.",
+                    "Lỗi xử lý dữ liệu",
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                
-                // Vẫn cập nhật patient data nếu có (có thể AI service lỗi nhưng data gốc vẫn ok)
+
                 if (message?.patient != null)
                 {
                     this.Patient = message.patient;
@@ -121,56 +108,95 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
             finally
             {
-                // Ẩn loading trong mọi trường hợp và thông báo cho SideBar
                 IsLoading = false;
                 WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
             }
         }
 
-        public ContentViewModel(IAiService aiServices, IServiceProvider provider)
+        public ContentViewModel(IAiService aiServices, IReportService reportService, IServiceProvider provider)
         {
             try
             {
                 IsActive = true;
                 _aiServices = aiServices ?? throw new ArgumentNullException(nameof(aiServices));
-                this.provider=provider;
+                _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+                this.provider = provider;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi khởi tạo ContentViewModel: {ex.Message}");
-                throw; // Re-throw để DI container biết có lỗi
+                throw;
             }
-
-            this.provider=provider;
         }
 
-        // Override OnPropertyChanged để đảm bảo KetQuaDieuTri được cập nhật khi Patient thay đổi
         partial void OnPatientChanged(PatientAllData? oldValue, PatientAllData newValue)
         {
             try
             {
                 OnPropertyChanged(nameof(KetQuaDieuTri));
-               
                 System.Diagnostics.Debug.WriteLine("Đã cập nhật KetQuaDieuTri sau khi Patient thay đổi");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi cập nhật KetQuaDieuTri: {ex.Message}");
-                // Không throw exception ở đây để tránh crash UI
             }
         }
 
         public async void Receive(string message)
         {
-            if(message == "PrintReport")
+            if (message == "PrintReport")
             {
-                var reportPage = provider.GetRequiredService<ReportPage>();
-                if(reportPage.DataContext is ReportPageViewModel vm)
+                try
                 {
-                    await vm.LoadDataAsync(Patient);
+                    // Đường dẫn tới file template Word (khớp tên thật)
+                    string templatePath = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        "Templates",
+                        "TemplateTomTat.docx"
+                    );
+
+                    if (!File.Exists(templatePath))
+                    {
+                        MessageBox.Show(
+                            $"Không tìm thấy file template:\n{templatePath}",
+                            "Lỗi",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return;
+                    }
+
+                    // Gọi hàm xuất file Word
+                    string filePath = await _reportService.ExportDocxFromTemplateAsync(Patient, templatePath);
+
+                    MessageBox.Show(
+                        $"Xuất file Word thành công:\n{filePath}",
+                        "Thành công",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+
+                    // Mở file sau khi tạo
+                    if (File.Exists(filePath))
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = filePath,
+                            UseShellExecute = true
+                        });
+                    }
                 }
-                reportPage.Show();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Lỗi khi xuất Word:\n{ex.Message}",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                }
             }
         }
+
     }
 }

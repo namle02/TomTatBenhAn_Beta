@@ -159,14 +159,15 @@
                 HorizontalAlignment="Stretch"
                 Orientation="Vertical">
                 <Button
-                    Height="45"
-                    Margin="0,0,0,10"
-                    Background="#2f84d0"
-                    BorderThickness="0"
-                    Command="{Binding FetchDataCommand}"
-                    FontSize="18"
-                    FontWeight="Bold"
-                    Foreground="White">
+                Height="45"
+                Margin="0,0,0,10"
+                Background="#2f84d0"
+                BorderThickness="0"
+                Command="{Binding FetchDataCommand}"
+                FontSize="18"
+                FontWeight="Bold"
+                Foreground="White"
+                IsDefault="True">               
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                             <Style.Triggers>
