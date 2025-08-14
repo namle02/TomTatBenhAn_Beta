@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using TomTatBenhAn_WPF.Services.Interface;
@@ -41,6 +42,27 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 throw;
             }
 
+        }
+
+        public string GetPromt(string FileName)
+        {
+            try
+            {
+                using (Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"TomTatBenhAn_WPF.Promt.{FileName}")) 
+                {
+                    if(stream == null)
+                    {
+                        throw new FileNotFoundException($"Không tìm thấy file promt: {FileName}");
+                    }
+                    using StreamReader strReader = new StreamReader(stream);
+                    string promt = strReader.ReadToEnd();
+                    return promt;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

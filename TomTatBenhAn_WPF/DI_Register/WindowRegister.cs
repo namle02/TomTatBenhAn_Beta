@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using TomTatBenhAn_WPF.View.ControlView;
+using TomTatBenhAn_WPF.View.PageView;
 
 
 namespace TomTatBenhAn_WPF.DI_Register
@@ -10,8 +11,10 @@ namespace TomTatBenhAn_WPF.DI_Register
         {
             services.AddSingleton<MainWindow>();
 
-            services.AddSingleton<Sidebar>();
-            services.AddSingleton<content>();
+            services.AddSingleton<TomTatBenhAnPage>();
+            services.AddSingleton<PhacDoPage>();
+
+            services.AddTransient<ReportPage>();
         }
     }
 }

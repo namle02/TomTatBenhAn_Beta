@@ -10,5 +10,7 @@ namespace TomTatBenhAn_WPF.Services.Interface
     {
         string GetQuery(string FileName);
         string Decrypt(string Base64Input, string key);
+
+        string GetPromt(string FileName);
     }
 }

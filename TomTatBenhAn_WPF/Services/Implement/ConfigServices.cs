@@ -52,7 +52,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
             catch (Exception ex)
             {
-                // Có thể log ra file nếu cần:
+                // Có thể log ra file nếu cần :
                 MessageBox.Show("🛑 Lỗi khi lấy config từ Google Sheet: " + ex.Message);
                 throw; // hoặc return null / default fallback
             }
@@ -62,6 +62,26 @@ namespace TomTatBenhAn_WPF.Services.Implement
         {
             configDict.TryGetValue(key, out var value);
             return value;
+        }
+
+        public string GetApiBaseUrl()
+        {
+            // Trước tiên thử lấy từ config dictionary
+            var baseUrl = Get("API_BASE_URL");
+            
+            // Nếu không có trong config, sử dụng default từ App.config
+            if (string.IsNullOrEmpty(baseUrl))
+            {
+                baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
+            }
+            
+            // Nếu vẫn không có, sử dụng default localhost
+            if (string.IsNullOrEmpty(baseUrl))
+            {
+                baseUrl = "http://localhost:3000";
+            }
+            
+            return baseUrl.TrimEnd('/');
         }
     }
 }

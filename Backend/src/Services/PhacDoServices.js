@@ -39,14 +39,14 @@ class PhacDoServices {
         const result = data.candidates[0].content.parts[0].text;
         const jsonResult = result.replace(/```json/g, '').replace(/```/g, '');
         const parsedResult = JSON.parse(jsonResult);
-        
+
         // Kiểm tra phác đồ đã tồn tại chưa
         try {
             const existingProtocol = await this.checkProtocolExists(
-                parsedResult.protocol.name, 
+                parsedResult.protocol.name,
                 parsedResult.protocol.code
             );
-            
+
             if (existingProtocol) {
                 return {
                     success: false,
@@ -86,7 +86,7 @@ class PhacDoServices {
         }
 
         const prompt = `Bạn là AI NLP y khoa kiêm backend. Hãy phân tích văn bản phác đồ điều trị (tiếng Việt) và CHỈ TRẢ VỀ MỘT JSON HỢP LỆ, KHÔNG THÊM BẤT KỲ VĂN BẢN NÀO KHÁC (không markdown, không code fence, không giải thích).\n\nYÊU CẦU:\n1) Cấu trúc đầu ra:\n{\n  \"protocol\": {\n    \"name\": string,\n    \"code\": string|null,\n    \"source\": string|null,\n    \"sections\": Section[]\n  }\n}\nSection = {\n  \"id\": string,\n  \"title\": string,\n  \"content\": string[],\n  \"children\": Section[]\n}\n\n2) Quy tắc bóc tách:\n- Giữ nguyên phân cấp và thứ tự mục như bản gốc; không được bỏ sót nội dung.\n- Không trộn khóa: chỉ dùng \"children\" (không dùng \"subItems\"/\"nodes\"/\"items\").\n- Chuẩn hóa khoảng trắng; giữ nguyên dấu tiếng Việt; KHÔNG tự ý sửa nội dung y khoa.\n- Nếu một mục chỉ có các mục con, đặt \"content\": [].\n- Nếu có phần \"Tài liệu tham khảo\", bỏ khỏi sections và đưa vào \"protocol.source\" (gộp thành một chuỗi, phân tách bằng \" | \").\n\n3) Đầu ra phải là JSON hợp lệ duy nhất (parse được ngay bằng JSON.parse).\n\nDỮ LIỆU VÀO:\n${phacdo}`;
-
+    
         const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
         const res = await fetch(url, {
@@ -115,14 +115,14 @@ class PhacDoServices {
         const result = data.candidates[0].content.parts[0].text;
         const jsonResult = result.replace(/```json/g, '').replace(/```/g, '');
         const parsedResult = JSON.parse(jsonResult);
-        
+
         // Kiểm tra phác đồ đã tồn tại chưa
         try {
             const existingProtocol = await this.checkProtocolExists(
-                parsedResult.protocol.name, 
+                parsedResult.protocol.name,
                 parsedResult.protocol.code
             );
-            
+
             if (existingProtocol && !forceOverwrite) {
                 return {
                     success: false,
@@ -169,12 +169,12 @@ class PhacDoServices {
         try {
             // Tìm kiếm chính xác theo tên (không phân biệt hoa thường)
             const query = { "protocol.name": { $regex: `^${name.trim()}$`, $options: "i" } };
-            
+
             // Nếu có mã code, thêm điều kiện tìm kiếm theo code
             if (code && code.trim()) {
                 query["protocol.code"] = { $regex: `^${code.trim()}$`, $options: "i" };
             }
-            
+
             const existingProtocol = await PhacDoModel.findOne(query);
             return existingProtocol;
         } catch (error) {
@@ -206,8 +206,8 @@ class PhacDoServices {
     async updateExistingProtocol(id, newData) {
         try {
             const updatedProtocol = await PhacDoModel.findByIdAndUpdate(
-                id, 
-                newData, 
+                id,
+                newData,
                 { new: true, runValidators: true }
             );
             if (!updatedProtocol) {

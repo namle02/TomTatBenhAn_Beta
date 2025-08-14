@@ -1,5 +1,6 @@
 SELECT TOP 1
-    LOWER(lba.TenLoaiBenhAn) AS LoaiBenhAn,
+	lba.LoaiBenhAn_Id LoaiBenhAn_Id,
+    lba.TenLoaiBenhAn AS LoaiBenhAn,
     batq.BenhAnTongQuat_Id,
     ba.TiepNhan_Id
 FROM dbo.BenhAn ba

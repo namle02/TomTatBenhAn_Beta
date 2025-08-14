@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 using TomTatBenhAn_WPF.Repos.Mappers.Implement;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
 using TomTatBenhAn_WPF.Services.Implement;
@@ -15,8 +16,15 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddSingleton<IConfigServices, ConfigServices>();
             services.AddSingleton<IDataMapper, DataMapper>();
             services.AddSingleton<IAiService,AiService>();
-            services.AddSingleton<ILoadingService, LoadingService>();
+            services.AddSingleton<IPhacDoServices, PhacDoServices>();
+            services.AddSingleton<IReportService, ReportService>();
 
+            services.AddSingleton(new HttpClient()
+            {
+                BaseAddress = new Uri("http://localhost:3000/"),
+                Timeout = TimeSpan.FromSeconds(100)
+            });
+       
 
         }
     }

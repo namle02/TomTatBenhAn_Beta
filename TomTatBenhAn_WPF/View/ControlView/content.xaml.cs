@@ -6,9 +6,9 @@ namespace TomTatBenhAn_WPF.View.ControlView
     /// <summary>
     /// Interaction logic for content.xaml
     /// </summary>
-    public partial class content : UserControl
+    public partial class Content : UserControl
     {
-        public content()
+        public Content()
         {
             InitializeComponent();
         }

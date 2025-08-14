@@ -1,4 +1,4 @@
-    <Application
+<Application
     x:Class="TomTatBenhAn_WPF.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,7 +16,15 @@
                     SecondaryColor="LightGreen" />
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                <ResourceDictionary Source="/DataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!--  Converters  -->
+            <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            <converters:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
+            <converters:StringStartsWithConverter x:Key="StringStartsWithConverter" />
+            <converters:StringNotEmptyToBooleanConverter x:Key="StringNotEmptyToBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

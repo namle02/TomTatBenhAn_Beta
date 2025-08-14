@@ -1,0 +1,31 @@
+﻿Viết tóm tắt tình trạng người bệnh ra viện và hướng điều trị tiếp theo từ thông tin dưới đây. Câu văn ngắn gọn, súc tích, tập trung vào tình trạng bệnh hiện tại và kế hoạch điều trị:
+Đầu vào:
+[Diễn biến quá trình điều trị của bệnh nhân trước khi xuất viện được thế hiện dưới dạng chuỗi json, gồm hai trường là diễn biễn bệnh lý (DienBien) và lời dặn thầy thuốc (LoiDanThayThuoc)]
+@DienBien
+Đầu ra mong muốn:
+[Đánh giá tình trạng người bệnh ra viện dựa trên đầu vào là diễn biến quá trình điều trị của người bệnh]
+Lưu ý:
+- Trả về kết quả là chuỗi văn bản thuần  túy, không sử dụng kí tự đặc biệt, không bôi đen hoặc in nghiêng chữ.
+- Không cần  cách dòng, chi cần  xuống dòng
+- Tuyệt đối không thêm những trường thông tin khác ngoài thông tin được yêu cầu.
+- Giữ lại những thông tin về bệnh lý, dấu hiệu lâm sàn nếu có.
+- Hướng điều trị và chế độ tiếp theo sẽ đánh giá từ lời dặn thầy thuốc (trường LoiDanThayThuoc) nếu có, nếu không có thì để mặc định là (Uống thuốc theo đơn, khám lại theo hẹn hoặc nếu có bất thường.)
+[Mô tả tình trạng người bệnh khi ra viện]
+Hướng điều trị tiếp theo: [Mô tả ngắn gọn hướng điều trị tiếp theo của người bệnh nếu có thông tin]
+Ví dụ đầu vào:
+Bệnh nhân tỉnh, tiếp xúc tốt
+Không sốt
+Đỡ đau khớp háng trái, khớp cổ tay, khớp vai trái tăng khi vận động
+Hạn chế vận động khớp vai trái, khớp cổ tay trái, khớp háng trái
+Tim nhịp đều
+Hai phổi không có ran
+Bụng mềm, không sờ thấy u cục
+Gan, lách không sờ thấy
+Tình trạng lâm sàng người bệnh ổn định
+Cho ra viện
+Uống thuốc theo đơn
+Hẹn khám lại tại phòng khám bệnh nhiệt đới vào ngày 3/6/2024 để lĩnh thuốc điều trị viêm gan C
+Ví dụ đầu ra mong muốn:
+Người bệnh tỉnh, đỡ đau khớp háng trái, khớp cổ tay, khớp vai trái, vận động đau tăng. Hạn chế vận động khớp vai trái, khớp cổ tay trái, khớp háng trái. Tình trạng lâm sàng người bệnh ổn định.
+Hướng điều trị và các chế độ tiếp theo:
+Uống thuốc theo đơn. Hẹn khám lại vào ngày 3/6/2024 để lĩnh thuốc điều trị viêm gan C. Nếu có bất thường, cần  khám lại ngay.

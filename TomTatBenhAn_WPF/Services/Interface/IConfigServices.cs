@@ -10,5 +10,6 @@ namespace TomTatBenhAn_WPF.Services.Interface
     {
         Task GetConfigFromSheet();
         string? Get(string key);
+        string GetApiBaseUrl();
     }
 }

@@ -1,24 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TomTatBenhAn_WPF.Message;
-using TomTatBenhAn_WPF.Repos.Model;
+﻿using TomTatBenhAn_WPF.Repos._Model;
+using TomTatBenhAn_WPF.Repos._Model.PatientData;
 
 namespace TomTatBenhAn_WPF.Repos.Mappers.Interface
 {
+
+    public enum DataPatientType
+    {
+        ChanDoanICD, DienBien, KetQuaXetNghiem, ThongTinHanhChinh, LoaiBenhAn, DanhSachBenhAn, ThongTinKhamBenh
+
+    }
+
+    //public enum BenhAnType
+    //{
+    //    BenhAnBong, BenhAnMat, BenhAnNgoaiKhoa, BenhAnNhiKhoa, BenhAnNoiKhoa, 
+    //    BenhAnPHCN_NoiTru, BenhAnPhuKhoa, BenhAnRangHamMat, BenhAnSanKhoa, 
+    //    BenhAnSoSinh, BenhAnTaiMuiHong, BenhAnTamBenh, BenhAnTruyenNhiem, 
+    //    BenhAnUngBuou, BenhAnYHCT_NgoaiTruMoi, BenhAnYHCT_NoiTruMoi, 
+    //    KhamBenhVaoVien
+    //}
     public interface IDataMapper
     {
-        Task<List<LoadData>> GetSoBenhAnData(string maYTe);
-        Task<ThongTinBenhNhan> GetThongTinBenhNhanData(string SoBenhAn);
-        Task<ChuanDoanModel> GetChuanDoanData(string SoBenhAn);
-        Task<BenhAnTypeModel> GetBenhAnTypeData(string SoBenhAn);
-        Task<BenhAnChiTietModel> GetBenhAnChiTietAsync(string loaiBenhAn, string benhAnTongQuatId,string TiepNhanId);
-        Task<List<KetQuaXetNghiemCLSModel>> GetKetQuaXetNghiemModelData(string SoBenhAn);
-        Task<HanhChinhModel> GetHanhChinhData(string SoBenhAn);
-        Task<CheckBoxModel> UpdateCheckBoxesFromKetQuaDieuTri(string ketQuaDieuTri);
-        Task<List<DienBienModel>> GetDienBienData(string SoBenhAn);
+        /// <summary>
+        /// Lấy toàn bộ thông tin bệnh nhân theo số bệnh án
+        /// </summary>
+        /// <param name="SoBenhAn"></param>
+        /// <returns></returns>
+        Task<PatientAllData> GetAllPatientData(string SoBenhAn);
+
+        /// <summary>
+        /// Lấy danh sách số bệnh án theo mã y tế
+        /// </summary>
+        /// <param name="MaYTe"></param>
+        /// <returns></returns>
+        Task<List<BenhAnIdModel>> GetBenhAnList(string MaYTe);
     }
 }
 

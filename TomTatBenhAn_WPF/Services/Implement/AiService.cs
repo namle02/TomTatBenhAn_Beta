@@ -1,276 +1,172 @@
 ﻿using System.Configuration;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
-using TomTatBenhAn_WPF.Repos.Model;
+using System.Linq;
+using TomTatBenhAn_WPF.Repos._Model;
+using TomTatBenhAn_WPF.Repos._Model.PatientData;
 using TomTatBenhAn_WPF.Services.Interface;
+using Newtonsoft.Json;
+using ControlzEx.Standard;
 
 namespace TomTatBenhAn_WPF.Services.Implement
 {
     public class AiService : IAiService
-
     {
-        private readonly HttpClient _httpClient;
-        private readonly IConfigServices _configServices;
+        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly IFileServices _fileServices;
 
-        public AiService(IConfigServices configServices)
+        public AiService(IFileServices fileServices, IConfigServices configServices)
         {
-            _httpClient = new HttpClient();
-            _configServices = configServices;
+            _fileServices = fileServices;
         }
 
-        public async Task<Dictionary<string, string>> TomTatBenhLyAsync(string quaTrinhBenhLy)
+        public async Task TomTatBenhAn(PatientAllData patient)
         {
-            var resultData = new Dictionary<string, string>();
-
-            try
+            // Khởi tạo đối tượng tóm tắt nếu chưa có
+            if (patient.ThongTinTomTat == null || !patient.ThongTinTomTat.Any())
             {
-                // 🔹 Get prompt from configDict
-                string? promptTemplate = _configServices.Get("PROMT_BENHAN");
-                if (string.IsNullOrWhiteSpace(promptTemplate))
-                    throw new Exception("Không tìm thấy PROMT_BENHAN trong configDict");
-
-                // 🔹 Replace variable in the prompt
-                string finalPrompt = promptTemplate.Replace("@QuaTrinhBenhLy", quaTrinhBenhLy);
-
-                // 🔹 Build the request body
-                var requestBody = new
-                {
-                    contents = new[] {
-                new {
-                    parts = new[] {
-                        new {
-                            text = finalPrompt
-                        }
-                    }
-                }
+                patient.ThongTinTomTat = new List<DataTomTat> { new DataTomTat() };
             }
-                };
 
-                string jsonContent = JsonSerializer.Serialize(requestBody);
+            var tomTat = patient.ThongTinTomTat[0];
 
-                // 🔹 Get URL and API key from config
-                string urlBase = ConfigurationManager.AppSettings["URL_gemini"]!;
-                string apiKey = ConfigurationManager.AppSettings["API_gemini_1"]!;
+            // Cấu hình URL và API Key
+            string baseUri = ConfigurationManager.AppSettings["URL_gemini"] ??
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+            string apiKey1 = ConfigurationManager.AppSettings["API_gemini_1"] ?? "";
+            string apiKey2 = ConfigurationManager.AppSettings["API_gemini_2"] ?? "";
+            string apiKey3 = ConfigurationManager.AppSettings["API_gemini_3"] ?? "";
 
-                if (string.IsNullOrWhiteSpace(urlBase) || string.IsNullOrWhiteSpace(apiKey))
-                    throw new Exception("URL_gemini hoặc API_gemini_1 bị thiếu trong cấu hình");
+            // Tóm tắt quá trình bệnh lý
+            await TomTatQuaTrinhBenhLy(patient, tomTat, baseUri, apiKey1);
 
-                string fullUrl = urlBase + apiKey;
+            // Tóm tắt tình trạng người bệnh ra viện
+            await TomTatTinhTrangRaVien(patient, tomTat, baseUri, apiKey2);
 
-                // 🔹 Prepare the request
-                using var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
-                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                // 🔹 Send request
-                using var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-                // 🔹 Parse response
-                string responseJson = await response.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(responseJson);
-                string aiText = doc.RootElement
-                    .GetProperty("candidates")[0]
-                    .GetProperty("content")
-                    .GetProperty("parts")[0]
-                    .GetProperty("text")
-                    .GetString()
-                    ?? throw new Exception("Không tìm thấy nội dung trả về từ AI");
-
-                // 🔹 Now split the result into two parts
-                string start = "Quá trình bệnh lý và diễn biến lâm sàng:";
-                string end = "Những dấu hiệu lâm sàng chính:";
-
-                int startIndex = aiText.IndexOf(start) + start.Length;
-                int endIndex = aiText.IndexOf(end);
-
-                if (startIndex >= start.Length && endIndex > startIndex)
-                {
-                    string qtbl = aiText.Substring(startIndex, endIndex - startIndex).Trim();
-                    resultData["BN_TomTatQuaTrinhBenhLy"] = qtbl;
-                }
-
-                if (endIndex >= 0)
-                {
-                    int contentStartIndex = endIndex + end.Length;
-                    if (contentStartIndex < aiText.Length)
-                    {
-                        string dhls = aiText.Substring(contentStartIndex).Trim();
-                        resultData["BN_DauHieuLamSang"] = dhls;
-                    }
-                }
-
-                return resultData;
-            }
-            catch (Exception ex)
-            {
-                resultData["error"] = $"🛑 Lỗi khi tóm tắt bệnh lý: {ex.Message}";
-                return resultData;
-            }
+            // Tóm tắt kết quả xét nghiệm
+            await TomTatKetQuaXetNghiem(patient, tomTat, baseUri, apiKey3);
         }
 
-        public string resultTomTatKQXN { get; private set; } = string.Empty;
-        public async Task<string> TomTatKetQuaXetNghiemCSLAsync(string chuanDoanChinh, List<KetQuaXetNghiemCLSModel> danhSachKQXN)
+        private async Task TomTatQuaTrinhBenhLy(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        {
+            if (patient.ThongTinKhamBenh == null || !patient.ThongTinKhamBenh.Any())
+                return;
+
+            string rawPrompt = _fileServices.GetPromt("QuaTrinhBenhLyPromt.txt");
+            string prompt = rawPrompt.Replace("@QuaTrinhBenhLy", patient.ThongTinKhamBenh[0].QuaTrinhBenhLy);
+
+            string tinhTrangRaVien = patient.TinhTrangNguoiBenhRaVien?.FirstOrDefault()?.DienBien ?? "";
+            prompt = prompt.Replace("@TinhTrangNguoiBenhRaVien", tinhTrangRaVien);
+
+            string ketQuaDieuTri = patient.ThongTinHanhChinh?.FirstOrDefault()?.KetQuaDieuTri ?? "Không có thông tin";
+            prompt = prompt.Replace("@KetQuaDieuTri", ketQuaDieuTri);
+
+            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+
+            string marker = "Những dấu hiệu lâm sàng chính:";
+
+            // Tìm vị trí bắt đầu của phần dấu hiệu lâm sàng
+            int index = result.IndexOf(marker);
+
+            string QuaTrinhBenhLy = result.Substring(
+                "Quá trình bệnh lý và diễn biến lâm sàng:".Length,
+                index - "Quá trình bệnh lý và diễn biến lâm sàng:".Length
+            ).Trim();
+
+            string DauHieuLamSang = result.Substring(index + marker.Length).Trim();
+            tomTat.TomTatQuaTrinhBenhLy = QuaTrinhBenhLy;
+            tomTat.TomTatDauHieuLamSang = DauHieuLamSang;
+        }
+
+        private async Task TomTatTinhTrangRaVien(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        {
+            if (patient.TinhTrangNguoiBenhRaVien == null || !patient.TinhTrangNguoiBenhRaVien.Any())
+                return;
+
+            string rawPrompt = _fileServices.GetPromt("TinhTrangNguoiBenhRaVienPromt.txt");
+            string dienBien = patient.TinhTrangNguoiBenhRaVien[0].DienBien ?? "";
+            string prompt = rawPrompt.Replace("@DienBien", dienBien);
+
+            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+            string marker = "Hướng điều trị tiếp theo:";
+            int index = result.IndexOf(marker);
+
+            string TinhTrangNguoiBenhRaVien = result.Substring(0, index).Trim();
+
+            string HuongDieuTri = result.Substring(index + marker.Length).Trim();
+            tomTat.TomTatTinhTrangNguoiBenhRaVien = TinhTrangNguoiBenhRaVien;
+            tomTat.TomTatHuongDieuTriTiepTheo = HuongDieuTri;
+        }
+
+        private async Task TomTatKetQuaXetNghiem(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        {
+            if (patient.KetQuaXetNghien == null || !patient.KetQuaXetNghien.Any())
+                return;
+
+            string rawPrompt = _fileServices.GetPromt("KetQuaXNPromt.txt");
+
+            // Lấy chẩn đoán chính từ danh sách chẩn đoán ICD
+            string chanDoanChinh = patient.ChanDoanIcd?.FirstOrDefault()?.BenhChinhRaVien ??
+                                   patient.ChanDoanIcd?.FirstOrDefault()?.BenhChinhVaoVien ?? "";
+
+            string chanDoanKemTheo = patient.ChanDoanIcd?.FirstOrDefault()?.BenhKemTheoRaVien ?? "";
+
+            // Chuyển đổi danh sách kết quả xét nghiệm thành JSON
+            string danhSachKQXN = JsonConvert.SerializeObject(patient.KetQuaXetNghien);
+
+            string prompt = rawPrompt.Replace("@ChanDoanVaoVien", chanDoanChinh);
+            prompt = prompt.Replace("@ChanDoanRaVien", chanDoanKemTheo);
+            prompt = prompt.Replace("@DanhSachKQXN", danhSachKQXN);
+
+            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+            tomTat.TomTatKetQuaXN = result;
+        }
+
+        private async Task<string> CallGeminiApi(string baseUri, string apiKey, string prompt)
         {
             try
             {
-                // 🔹 Lấy prompt từ config
-                string? promptTemplate = _configServices.Get("PROMT_KQXN");
-                if (string.IsNullOrWhiteSpace(promptTemplate))
-                    throw new Exception("Không tìm thấy PROMT_KQXN trong configDict");
-                string ketQuaText = string.Join("\n", danhSachKQXN.Select(x =>
-                        $"- Tên nhóm DV   : {x.TenNhomDichVu}\n" +
-                        $"- Phòng ban     : {x.TenPhongBan}\n" +
-                        $"- Tên dịch vụ   : {x.TenDichvu}\n" +
-                        $"- Nội dung chi tiết: {x.NoiDungChiTiet}\n" +
-                        $"- Kết quả       : {x.KetQua}\n" +
-                        $"- Bình thường   : {x.MucBinhThuong}\n" +
-                        $"- BT Min        : {x.MucBinhThuongMin}\n" +
-                        $"- BT Max        : {x.MucBinhThuongMax}\n" +
-                        $"- Bất thường    : {x.BatThuong}\n" +
-                        $"- Thời gian thực hiện: {x.ThoiGianThucHIen}\n" +
-                        $"- Mô tả         : {x.MoTa}\n" +
-                        $"- Kết luận      : {x.KetLuan}\n" +
-                        $"--------------------------------------------------"
-                    ));
-
-                // 🔹 Thay thế vào prompt
-                string finalPrompt = promptTemplate
-                    .Replace("@ChanDoanChinh", chuanDoanChinh)
-                    .Replace("@DanhSachKQXN", ketQuaText);
-
-                var requestBody = new
+                var requestData = new
                 {
                     contents = new[] {
                         new {
                             parts = new[] {
-                                new { text = finalPrompt }
+                                new {
+                                    text = prompt
+                                }
                             }
                         }
                     }
                 };
 
-                string jsonContent = JsonSerializer.Serialize(requestBody);
-                string urlBase = ConfigurationManager.AppSettings["URL_gemini"]!;
-                string apiKey = ConfigurationManager.AppSettings["API_gemini_1"]!;
-                string fullUrl = urlBase + apiKey;
+                string jsonContent = JsonConvert.SerializeObject(requestData);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                using var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
-                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                // Thiết lập headers theo yêu cầu của Gemini API
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Add("X-goog-api-key", apiKey);
 
-                using var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
+                var response = await _httpClient.PostAsync($"{baseUri}", content);
 
-                string responseJson = await response.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(responseJson);
-
-                // 🔸 Gán kết quả vào biến resultTomTatKQXN
-                resultTomTatKQXN = doc.RootElement
-                    .GetProperty("candidates")[0]
-                    .GetProperty("content")
-                    .GetProperty("parts")[0]
-                    .GetProperty("text")
-                    .GetString()
-                    ?? throw new Exception("Không tìm thấy nội dung trả về từ AI");
-
-                return resultTomTatKQXN;
-            }
-            catch (Exception ex)
-            {
-                resultTomTatKQXN = $"🛑 Lỗi khi tóm tắt KQXN: {ex.Message}";
-                return resultTomTatKQXN;
-            }
-        }
-        public async Task<Dictionary<string, string>> HuongDieuTriAsync(string DienBien, string LoiDanThayThuoc)
-        {
-            var resultData = new Dictionary<string, string>();
-
-            try
-            {
-                string? promptTemplate = _configServices.Get("PROMT_TTNB");
-                if (string.IsNullOrWhiteSpace(promptTemplate))
-                    throw new Exception("Không tìm thấy PROMT_TTNB trong configDict");
-
-                string finalPrompt = promptTemplate.Replace("@DienBien", DienBien)
-                                                   .Replace("@LoiDanThayThuoc", LoiDanThayThuoc);
-
-                var requestBody = new
+                if (response.IsSuccessStatusCode)
                 {
-                    contents = new[]
-                    {
-                new
-                {
-                    role = "user",
-                    parts = new[]
-                    {
-                        new { text = finalPrompt }
-                    }
-                }
-            }
-                };
+                    string responseContent = await response.Content.ReadAsStringAsync();
 
-                string jsonContent = JsonSerializer.Serialize(requestBody);
+                    // Parse response để lấy text từ Gemini API
+                    var responseObj = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                    string result = responseObj?.candidates?[0]?.content?.parts?[0]?.text ?? "";
 
-                string urlBase = ConfigurationManager.AppSettings["URL_gemini"]!;
-                string apiKey = ConfigurationManager.AppSettings["API_gemini_1"]!;
-                if (string.IsNullOrWhiteSpace(urlBase) || string.IsNullOrWhiteSpace(apiKey))
-                    throw new Exception("Thiếu URL_gemini hoặc API_gemini_1 trong cấu hình");
-
-                string fullUrl = urlBase.Contains("?key=")
-                    ? urlBase + apiKey
-                    : $"{urlBase}?key={apiKey}";
-
-                using var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
-                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                using var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-                string responseJson = await response.Content.ReadAsStringAsync();
-
-                using var doc = JsonDocument.Parse(responseJson);
-                string aiText = doc.RootElement
-                    .GetProperty("candidates")[0]
-                    .GetProperty("content")
-                    .GetProperty("parts")[0]
-                    .GetProperty("text")
-                    .GetString()
-                    ?? throw new Exception("Không tìm thấy nội dung phản hồi từ AI");
-
-                // --- TÁCH CHUỖI RA 2 PHẦN ---
-                string keySearch = "Hướng điều trị tiếp theo:";
-                int idx = aiText.IndexOf(keySearch, StringComparison.OrdinalIgnoreCase);
-
-                string tinhTrangRaVien = "";
-                string huongDieuTriTiepTheo = "";
-
-                if (idx >= 0)
-                {
-                    tinhTrangRaVien = aiText.Substring(0, idx).TrimEnd('.', ' ', '\n', '\r');
-                    huongDieuTriTiepTheo = aiText.Substring(idx + keySearch.Length).Trim();
+                    return result;
                 }
                 else
                 {
-                    tinhTrangRaVien = aiText.Trim();
-                    huongDieuTriTiepTheo = "";
+                    throw new HttpRequestException($"API call failed with status: {response.StatusCode}");
                 }
-
-                resultData["TinhTrangRaVien"] = tinhTrangRaVien;
-                resultData["HuongDieuTriTiepTheo"] = huongDieuTriTiepTheo;
             }
             catch (Exception ex)
             {
-                resultData["Error"] = $"Lỗi: {ex.Message}";
+                throw new Exception($"Lỗi khi gọi Gemini API: {ex.Message}", ex);
             }
-
-            return resultData;
         }
-
-
-
     }
 }

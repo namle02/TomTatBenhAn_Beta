@@ -20,26 +20,11 @@
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="7*" />
-        </Grid.ColumnDefinitions>
 
         <!--  HEADER  -->
         <control:Header Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <!--  SIDEBAR  -->
-        <control:Sidebar
-            Grid.Row="1"
-            Grid.Column="0"
-            DataContext="{Binding SideBarVM}"
-            Loaded="Sidebar_Loaded" />
-
-        <!--  CONTENT  -->
-        <control:content
-            Grid.Row="1"
-            Grid.Column="1"
-            DataContext="{Binding ContentVM}" />
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
 
         <!--  FOOTER  -->
         <control:Footer

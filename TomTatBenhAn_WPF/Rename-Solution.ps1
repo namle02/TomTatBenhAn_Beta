@@ -25,7 +25,7 @@ foreach ($ext in $exts) {
     }
 }
 
-# 3. Đổi tên solution (.sln) nếu cần
+# 3. Đổi tên solution (.sln) nếu cần 
 Get-ChildItem -Recurse -File -Filter "*$OldName*.sln" | ForEach-Object {
     $newFileName = $_.Name -replace [regex]::Escape($OldName), $NewName
     Rename-Item $_.FullName -NewName $newFileName

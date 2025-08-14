@@ -1,6 +1,7 @@
   SELECT 
-  TOP 2 ntkb.DienBien, 
-  bact.LoiDanThayThuoc 
+  TOP 1 ntkb.DienBien, 
+  bact.LoiDanThayThuoc,
+  bact.PPDT 
 FROM 
   dbo.NoiTru_KhamBenh ntkb 
   LEFT JOIN dbo.BenhAnChiTiet bact ON ntkb.BenhAn_Id = bact.BenhAn_Id 
