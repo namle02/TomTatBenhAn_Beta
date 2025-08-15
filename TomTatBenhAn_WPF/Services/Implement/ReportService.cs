@@ -23,7 +23,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 string currentMonth = DateTime.Now.Month.ToString();
                 string baseDirectory = Path.Combine(desktopPath, "HoSoTomTat", $"Thang{currentMonth}");
-                
+
                 // Tạo thư mục nếu chưa tồn tại
                 Directory.CreateDirectory(baseDirectory);
 
@@ -31,7 +31,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 string reportNumber = patient.ReportNumber ?? "RPT";
                 string soBenhAn = patient.ThongTinHanhChinh?[0]?.SoBenhAn ?? "Unknown";
                 string fileName = $"{reportNumber}_{soBenhAn}.docx";
-                
+
                 outputFilePath = Path.Combine(baseDirectory, fileName);
 
                 // Sao chép file template thành file mới
@@ -46,10 +46,17 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Thay thế dữ liệu vào các bookmarks với bảo toàn format
                 foreach (var kvp in data)
                 {
-                    // Xử lý checkbox trước
+                    // 1) Hai khóa cần thụt toàn bộ block vào "1-2 ô"
+                    if (kvp.Key == "TT_TomTatDauHieuLamSang" || kvp.Key == "TT_TomTatKetQuaXN")
+                    {
+                        SetBookmarkTextWithIndentChars(doc, kvp.Key, kvp.Value ?? "", charIndent: 2);
+                        continue; // đã xử lý xong → bỏ qua luồng mặc định
+                    }
+
+                    // 2) Xử lý checkbox trước (nếu có logic checkbox trùng key)
                     ReplaceBookmarkText(doc, kvp.Key, kvp.Value ?? "");
 
-                    // Sau đó xử lý bookmark text thông thường
+                    // 3) Sau đó xử lý bookmark text thông thường (giữ nguyên format)
                     if (doc.Bookmarks.Exists(kvp.Key))
                     {
                         Word.Bookmark bookmark = doc.Bookmarks[kvp.Key];
@@ -64,7 +71,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                         object color = range.Font.Color;
                         object alignment = range.ParagraphFormat.Alignment;
 
-                        // Thay thế text
+                        // Thay thế text (nếu text có xuống dòng, bạn có thể dùng ReplaceBookmarkWithFormattedText thay thế)
                         range.Text = kvp.Value ?? "";
 
                         // Khôi phục format cho toàn bộ text mới
@@ -243,8 +250,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 return;
             }
 
-            // Thêm xử lý cho các trường checkbox khác nếu cần
-            // Ví dụ: Giới tính
+            // Ví dụ: xử lý huớng điều trị -> tick/no-tick theo dữ liệu
             if (bookmarkName == "KB_HuongDieuTri")
             {
                 foreach (Word.ContentControl control in document.ContentControls)
@@ -258,7 +264,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     }
                     else
                     {
-                        if(control.Tag == "NoPPDT_NoiKhoa")
+                        if (control.Tag == "NoPPDT_NoiKhoa")
                         {
                             control.Checked = true;
                         }
@@ -268,8 +274,6 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 return;
 
             }
-
-
         }
 
         /// <summary>
@@ -317,6 +321,52 @@ namespace TomTatBenhAn_WPF.Services.Implement
             range.ParagraphFormat.RightIndent = formatting.RightIndent;
 
             // Tạo lại bookmark
+            doc.Bookmarks.Add(bookmarkName, range);
+        }
+
+        // ***** Helper mới: set text + giữ format + thụt cả block theo "số ô" (ký tự) *****
+        private void SetBookmarkTextWithIndentChars(Word.Document doc, string bookmarkName, string text, int charIndent = 2)
+        {
+            if (!doc.Bookmarks.Exists(bookmarkName)) return;
+
+            Word.Bookmark bookmark = doc.Bookmarks[bookmarkName];
+            Word.Range range = bookmark.Range;
+
+            // Lưu format hiện tại
+            var keep = new
+            {
+                Name = range.Font.Name,
+                Size = range.Font.Size,
+                Bold = range.Font.Bold,
+                Italic = range.Font.Italic,
+                Underline = range.Font.Underline,
+                Color = range.Font.Color,
+                Align = range.ParagraphFormat.Alignment,
+                LineSpacing = range.ParagraphFormat.LineSpacing,
+                SpaceBefore = range.ParagraphFormat.SpaceBefore,
+                SpaceAfter = range.ParagraphFormat.SpaceAfter
+            };
+
+            // Gán text (chuyển \n -> \r để Word xuống dòng đúng)
+            range.Text = (text ?? string.Empty).Replace("\n", "\r");
+
+            // Thụt toàn bộ block vào N "ô"
+            range.ParagraphFormat.CharacterUnitLeftIndent = charIndent;
+            range.ParagraphFormat.CharacterUnitFirstLineIndent = 0;
+
+            // Khôi phục các thuộc tính định dạng khác (giữ indent mới)
+            range.Font.Name = keep.Name;
+            range.Font.Size = keep.Size;
+            range.Font.Bold = keep.Bold;
+            range.Font.Italic = keep.Italic;
+            range.Font.Underline = keep.Underline;
+            range.Font.Color = keep.Color;
+            range.ParagraphFormat.Alignment = keep.Align;
+            range.ParagraphFormat.LineSpacing = keep.LineSpacing;
+            range.ParagraphFormat.SpaceBefore = keep.SpaceBefore;
+            range.ParagraphFormat.SpaceAfter = keep.SpaceAfter;
+
+            // Re-add bookmark
             doc.Bookmarks.Add(bookmarkName, range);
         }
     }
