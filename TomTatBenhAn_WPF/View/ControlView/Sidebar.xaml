@@ -20,137 +20,141 @@
             </Grid.RowDefinitions>
 
             <!--  PHần  FORM  -->
-            <StackPanel Grid.Row="0">
-                <!--  Các TextBox, ComboBox như cũ  -->
-                <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Người sử dụng"
-                    materialDesign:HintAssist.IsFloating="True"
-                    FontSize="18"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Phòng ban"
-                    materialDesign:HintAssist.IsFloating="True"
-                    FontSize="18"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding UserDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ScrollViewer>
+                <StackPanel Grid.Row="0" Margin="0,10">
 
-                <TextBox
-                    Margin="0,0,0,10"
-                    materialDesign:HintAssist.Hint="Số lượt sử dụng"
-                    materialDesign:HintAssist.IsFloating="True"
-                    FontSize="18"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding UserUsageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                <Grid Height="56" Margin="0,0,0,10">
-
-                    <!--  TextBox  -->
+                    <!--  Các TextBox, ComboBox như cũ  -->
                     <TextBox
-                        x:Name="BenhAnTextBox"
-                        Padding="36,0,10,0"
-                        materialDesign:HintAssist.Hint="Số bệnh án"
+                        Margin="0,0,0,10"
+                        materialDesign:HintAssist.Hint="Người sử dụng"
                         materialDesign:HintAssist.IsFloating="True"
                         FontSize="18"
-                        IsEnabled="{Binding IsSoBenhAnChecked}"
-                        Text="{Binding SoBenhAn, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Style>
-                            <Style BasedOn="{StaticResource MaterialDesignOutlinedTextBox}" TargetType="TextBox">
-                                <Style.Triggers>
-
-                                    <DataTrigger Binding="{Binding IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox1}" Value="False">
-                                        <Setter Property="Text" Value="" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <!--  CheckBox  -->
-                    <CheckBox
-                        x:Name="MaterialDesignFilledTextBoxEnabledComboBox1"
-                        Width="24"
-                        Height="24"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Panel.ZIndex="1"
-                        materialDesign:CheckBoxAssist.CheckBoxSize="25"
-                        Background="Green"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        Content="✔"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        IsChecked="{Binding IsSoBenhAnChecked, Mode=TwoWay}"
-                        IsThreeState="False" />
-                </Grid>
-
-
-                <Grid Height="56" Margin="0,0,0,10">
-                    <TextBox
-                        Padding="36,0,10,0"
-                        materialDesign:HintAssist.Hint="Mã y tế"
-                        materialDesign:HintAssist.IsFloating="True"
-                        FontSize="18"
-                        IsEnabled="{Binding IsMaYTeChecked}"
+                        IsReadOnly="True"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding MaYTe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        Margin="0,0,0,10"
+                        materialDesign:HintAssist.Hint="Phòng ban"
+                        materialDesign:HintAssist.IsFloating="True"
+                        FontSize="18"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding UserDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <!--  CheckBox đè lên  -->
-                    <CheckBox
-                        x:Name="MaterialDesignFilledTextBoxEnabledComboBox2"
-                        Width="22"
-                        Height="22"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Panel.ZIndex="1"
-                        materialDesign:CheckBoxAssist.CheckBoxSize="25"
-                        Background="Green"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        FontSize="16"
-                        Foreground="green"
-                        IsChecked="{Binding IsMaYTeChecked, Mode=TwoWay}"
-                        IsThreeState="False" />
-                </Grid>
+                    <TextBox
+                        Margin="0,0,0,10"
+                        materialDesign:HintAssist.Hint="Số lượt sử dụng"
+                        materialDesign:HintAssist.IsFloating="True"
+                        FontSize="18"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding UserUsageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBox
-                    Margin="0,10,0,0"
-                    materialDesign:HintAssist.Hint="Bác sĩ tóm tắt bệnh án"
-                    materialDesign:HintAssist.IsFloating="True"
-                    FontSize="18"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid Height="56" Margin="0,0,0,10">
 
-                <TextBox
-                    Margin="0,10,0,0"
-                    materialDesign:HintAssist.Hint="Nhập số báo cáo"
-                    materialDesign:HintAssist.IsFloating="True"
-                    FontSize="18"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding ReportNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <ComboBox
-                    Margin="0,10,0,0"
-                    materialDesign:HintAssist.Hint="Chọn số bệnh án cần  xem"
-                    FontSize="18"
-                    Foreground="Black"
-                    IsEnabled="{Binding IsSelectedEnable}"
-                    IsReadOnly="True"
-                    IsTextSearchEnabled="False"
-                    ItemsSource="{Binding SoBenhAnList}"
-                    SelectedItem="{Binding SelectedBenhAn}"
-                    Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                        <!--  TextBox  -->
+                        <TextBox
+                            x:Name="BenhAnTextBox"
+                            Padding="36,0,10,0"
+                            materialDesign:HintAssist.Hint="Số bệnh án"
+                            materialDesign:HintAssist.IsFloating="True"
+                            FontSize="18"
+                            IsEnabled="{Binding IsSoBenhAnChecked}"
+                            Text="{Binding SoBenhAn, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.Style>
+                                <Style BasedOn="{StaticResource MaterialDesignOutlinedTextBox}" TargetType="TextBox">
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox1}" Value="False">
+                                            <Setter Property="Text" Value="" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                        <!--  CheckBox  -->
+                        <CheckBox
+                            x:Name="MaterialDesignFilledTextBoxEnabledComboBox1"
+                            Width="24"
+                            Height="24"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="1"
+                            materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                            Background="Green"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            Content="✔"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            IsChecked="{Binding IsSoBenhAnChecked, Mode=TwoWay}"
+                            IsThreeState="False" />
+                    </Grid>
 
 
-            </StackPanel>
+                    <Grid Height="56" Margin="0,0,0,10">
+                        <TextBox
+                            Padding="36,0,10,0"
+                            materialDesign:HintAssist.Hint="Mã y tế"
+                            materialDesign:HintAssist.IsFloating="True"
+                            FontSize="18"
+                            IsEnabled="{Binding IsMaYTeChecked}"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding MaYTe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <!--  CheckBox đè lên  -->
+                        <CheckBox
+                            x:Name="MaterialDesignFilledTextBoxEnabledComboBox2"
+                            Width="22"
+                            Height="22"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="1"
+                            materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                            Background="Green"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            FontSize="16"
+                            Foreground="green"
+                            IsChecked="{Binding IsMaYTeChecked, Mode=TwoWay}"
+                            IsThreeState="False" />
+                    </Grid>
+
+                    <TextBox
+                        Margin="0,10,0,0"
+                        materialDesign:HintAssist.Hint="Bác sĩ tóm tắt bệnh án"
+                        materialDesign:HintAssist.IsFloating="True"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBox
+                        Margin="0,10,0,0"
+                        materialDesign:HintAssist.Hint="Nhập số báo cáo"
+                        materialDesign:HintAssist.IsFloating="True"
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding ReportNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox
+                        Margin="0,10,0,0"
+                        materialDesign:HintAssist.Hint="Chọn số bệnh án cần  xem"
+                        FontSize="18"
+                        Foreground="Black"
+                        IsEnabled="{Binding IsSelectedEnable}"
+                        IsReadOnly="True"
+                        IsTextSearchEnabled="False"
+                        ItemsSource="{Binding SoBenhAnList}"
+                        SelectedItem="{Binding SelectedBenhAn}"
+                        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+
+                </StackPanel>
+            </ScrollViewer>
+
 
             <!--  PHần  BUTTON DÍNH DƯỚI  -->
             <StackPanel
@@ -159,15 +163,15 @@
                 HorizontalAlignment="Stretch"
                 Orientation="Vertical">
                 <Button
-                Height="45"
-                Margin="0,0,0,10"
-                Background="#2f84d0"
-                BorderThickness="0"
-                Command="{Binding FetchDataCommand}"
-                FontSize="18"
-                FontWeight="Bold"
-                Foreground="White"
-                IsDefault="True">               
+                    Height="45"
+                    Margin="0,0,0,10"
+                    Background="#2f84d0"
+                    BorderThickness="0"
+                    Command="{Binding FetchDataCommand}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    IsDefault="True">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                             <Style.Triggers>

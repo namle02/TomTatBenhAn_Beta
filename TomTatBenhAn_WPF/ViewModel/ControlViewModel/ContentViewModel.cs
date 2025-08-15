@@ -8,6 +8,7 @@ using TomTatBenhAn_WPF.Services.Interface;
 using TomTatBenhAn_WPF.View.PageView;
 using TomTatBenhAn_WPF.ViewModel.PageViewModel;
 using System.IO;
+using System.Linq;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
@@ -15,7 +16,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
     {
         private readonly IAiService _aiServices;
         private readonly IReportService _reportService;
-        private readonly IServiceProvider provider;
+
 
         [ObservableProperty] private PatientAllData patient = new PatientAllData();
         [ObservableProperty] private bool isLoading = false;
@@ -113,14 +114,13 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
         }
 
-        public ContentViewModel(IAiService aiServices, IReportService reportService, IServiceProvider provider)
+        public ContentViewModel(IAiService aiServices, IReportService reportService)
         {
             try
             {
                 IsActive = true;
                 _aiServices = aiServices ?? throw new ArgumentNullException(nameof(aiServices));
                 _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
-                this.provider = provider;
             }
             catch (Exception ex)
             {
@@ -142,23 +142,45 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
         }
 
-        public async void Receive(string message)
+
+        //Hàm in báo cáo
+        public void Receive(string message)
         {
             if (message == "PrintReport")
             {
                 try
                 {
-                    // Đường dẫn tới file template Word (khớp tên thật)
-                    string templatePath = Path.Combine(
-                        AppDomain.CurrentDomain.BaseDirectory,
-                        "Templates",
-                        "TemplateTomTat.docx"
-                    );
+                    // Kiểm tra dữ liệu trước khi xuất
+                    if (Patient == null)
+                    {
+                        MessageBox.Show(
+                            "Không có dữ liệu bệnh nhân để xuất báo cáo.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
 
+                    if (Patient.ThongTinHanhChinh == null || !Patient.ThongTinHanhChinh.Any())
+                    {
+                        MessageBox.Show(
+                            "Thiếu thông tin hành chính của bệnh nhân.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
+
+                    // Đường dẫn file template (cần điều chỉnh theo đường dẫn thực tế)
+                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "TemplateTomTat.docx");
+                    
+                    // Kiểm tra file template có tồn tại không
                     if (!File.Exists(templatePath))
                     {
                         MessageBox.Show(
-                            $"Không tìm thấy file template:\n{templatePath}",
+                            $"Không tìm thấy file mẫu tại:\n{templatePath}\n\nVui lòng kiểm tra lại đường dẫn file template.",
                             "Lỗi",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error
@@ -166,34 +188,45 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                         return;
                     }
 
-                    // Gọi hàm xuất file Word
-                    string filePath = await _reportService.ExportDocxFromTemplateAsync(Patient, templatePath);
+                    // Hiển thị loading
+                    IsLoading = true;
+                    LoadingText = "Đang xuất báo cáo Word...";
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
+
+                    // Gọi service để in báo cáo
+                    _reportService.PrintFileWord(templatePath, Patient);
+
+                    // Thông báo thành công
+                    string month = DateTime.Now.Month.ToString();
+                    string reportNumber = Patient.ReportNumber ?? "RPT";
+                    string soBenhAn = Patient.ThongTinHanhChinh[0]?.SoBenhAn ?? "Unknown";
+                    string fileName = $"{reportNumber}_{soBenhAn}.docx";
+                    string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                                                  "HoSoTomTat", $"Thang{month}", fileName);
 
                     MessageBox.Show(
-                        $"Xuất file Word thành công:\n{filePath}",
+                        $"Xuất báo cáo thành công!\n\nFile đã được lưu tại:\n{savePath}\n\nFile Word sẽ được mở để bạn có thể xem và in.",
                         "Thành công",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information
                     );
-
-                    // Mở file sau khi tạo
-                    if (File.Exists(filePath))
-                    {
-                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            UseShellExecute = true
-                        });
-                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        $"Lỗi khi xuất Word:\n{ex.Message}",
+                        $"Lỗi khi xuất Word:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.",
                         "Lỗi",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
                     );
+                    
+                    // Log chi tiết lỗi để debug
+                    System.Diagnostics.Debug.WriteLine($"Chi tiết lỗi xuất báo cáo: {ex}");
+                }
+                finally
+                {
+                    IsLoading = false;
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
                 }
             }
         }
