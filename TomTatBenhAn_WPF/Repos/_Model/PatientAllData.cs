@@ -5,7 +5,8 @@ namespace TomTatBenhAn_WPF.Repos._Model
 {
     public partial class PatientAllData : ObservableObject
     {
-
+        [ObservableProperty] private string? reportNumber;
+        [ObservableProperty] private string? doctorName;
         [ObservableProperty] private LoaiBenhAnModel? loaiBenhAn;
         [ObservableProperty] private List<ThongTinKhamBenhModel>? thongTinKhamBenh;
         [ObservableProperty] private List<BenhAnIdModel>? danhSachBenhAn;

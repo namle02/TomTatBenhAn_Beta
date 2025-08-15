@@ -16,6 +16,7 @@ Lưu Ý:
 - Mỗi đánh giá chia thành từng gạch đầu dòng, không cần  viết hoa toàn bộ tên dịch vụ xét nghiệm, 
 - Không cần  cách dòng với từng xét nghiệm, chỉ cần  xuống dòng
 - Chỉ trả về định dạng văn bản thuần  túy, không bôi đen hay in nghiêng kết quả trả về.
+- YÊU CẦU BẮT BUỘC PHẢI CÓ GẠCH ĐẦU DÒNG ( - ) TRƯỚC MỖI XÉT NGHIỆM
 Ví dụ đầu ra:
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái

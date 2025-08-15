@@ -101,6 +101,8 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 if (IsSoBenhAnChecked)
                 {
                     Patient = await _dataMapper.GetAllPatientData(SoBenhAn);
+                    Patient.ReportNumber = this.ReportNumber;
+                    Patient.DoctorName = this.DoctorName;
                     WeakReferenceMessenger.Default.Send(new SendPatientDataMessage(Patient, "SideBarVM"));
                     SoBenhAnList.Clear();
                     IsSelectedEnable = false;

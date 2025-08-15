@@ -7,19 +7,22 @@ using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
 using TomTatBenhAn_WPF.View.PageView;
 using TomTatBenhAn_WPF.ViewModel.PageViewModel;
+using System.IO;
+using System.Linq;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
     public partial class ContentViewModel : ObservableRecipient, IRecipient<SendPatientDataMessage>, IRecipient<string>
     {
         private readonly IAiService _aiServices;
-        private readonly IServiceProvider provider;
+        private readonly IReportService _reportService;
+
+
         [ObservableProperty] private PatientAllData patient = new PatientAllData();
         [ObservableProperty] private bool isLoading = false;
         [ObservableProperty] private string loadingText = "Đang tóm tắt bệnh án...";
         [ObservableProperty] private bool isHuongDieuTriContains;
         [ObservableProperty] private bool isReportReady = false;
-        
 
         // Computed properties để lấy kết quả điều trị từ Patient
         public string? KetQuaDieuTri
@@ -49,8 +52,6 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Lỗi khi set KetQuaDieuTri: {ex.Message}");
-                    // Có thể hiển thị thông báo cho user nếu cần
-                    // MessageBox.Show($"Không thể cập nhật kết quả điều trị: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -61,19 +62,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             {
                 if (message.CalledBy == "SideBarVM")
                 {
-                    // Validate input
                     if (message?.patient == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Nhận được message hoặc patient null");
                         return;
                     }
 
-                    // Hiển thị loading và thông báo cho SideBar
                     IsLoading = true;
                     LoadingText = "Đang tải dữ liệu bệnh nhân...";
                     WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
 
-                    // Cập nhật patient data trước
                     this.Patient = message.patient;
                     if (Patient.ThongTinKhamBenh![0].HuongDieuTri.Length != 0)
                     {
@@ -81,34 +79,24 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     }
                     OnPropertyChanged(nameof(KetQuaDieuTri));
 
-                    // Cập nhật loading text cho AI processing
                     LoadingText = "Đang tóm tắt bệnh án với AI...";
-
-                    // Gọi AI service để tóm tắt bệnh án
                     await _aiServices.TomTatBenhAn(message.patient);
 
                     System.Diagnostics.Debug.WriteLine("Đã load và xử lý dữ liệu bệnh nhân thành công");
 
-                    // Đánh dấu báo cáo đã sẵn sàng
                     IsReportReady = true;
-
-                    // Gửi message để mở báo cáo sau khi AI hoàn thành
                     WeakReferenceMessenger.Default.Send(new NavigationMessage("OpenReport", "ContentVM"));
                 }
-                
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi xử lý dữ liệu bệnh nhân: {ex.Message}");
-                
-                // Hiển thị thông báo lỗi cho user
                 MessageBox.Show(
-                    $"Có lỗi xảy ra khi xử lý dữ liệu bệnh nhân:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.", 
-                    "Lỗi xử lý dữ liệu", 
-                    MessageBoxButton.OK, 
+                    $"Có lỗi xảy ra khi xử lý dữ liệu bệnh nhân:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.",
+                    "Lỗi xử lý dữ liệu",
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                
-                // Vẫn cập nhật patient data nếu có (có thể AI service lỗi nhưng data gốc vẫn ok)
+
                 if (message?.patient != null)
                 {
                     this.Patient = message.patient;
@@ -121,56 +109,127 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
             finally
             {
-                // Ẩn loading trong mọi trường hợp và thông báo cho SideBar
                 IsLoading = false;
                 WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
             }
         }
 
-        public ContentViewModel(IAiService aiServices, IServiceProvider provider)
+        public ContentViewModel(IAiService aiServices, IReportService reportService)
         {
             try
             {
                 IsActive = true;
                 _aiServices = aiServices ?? throw new ArgumentNullException(nameof(aiServices));
-                this.provider=provider;
+                _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi khởi tạo ContentViewModel: {ex.Message}");
-                throw; // Re-throw để DI container biết có lỗi
+                throw;
             }
-
-            this.provider=provider;
         }
 
-        // Override OnPropertyChanged để đảm bảo KetQuaDieuTri được cập nhật khi Patient thay đổi
         partial void OnPatientChanged(PatientAllData? oldValue, PatientAllData newValue)
         {
             try
             {
                 OnPropertyChanged(nameof(KetQuaDieuTri));
-               
                 System.Diagnostics.Debug.WriteLine("Đã cập nhật KetQuaDieuTri sau khi Patient thay đổi");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Lỗi khi cập nhật KetQuaDieuTri: {ex.Message}");
-                // Không throw exception ở đây để tránh crash UI
             }
         }
 
-        public async void Receive(string message)
+
+        //Hàm in báo cáo
+        public void Receive(string message)
         {
-            if(message == "PrintReport")
+            if (message == "PrintReport")
             {
-                var reportPage = provider.GetRequiredService<ReportPage>();
-                if(reportPage.DataContext is ReportPageViewModel vm)
+                try
                 {
-                    await vm.LoadDataAsync(Patient);
+                    // Kiểm tra dữ liệu trước khi xuất
+                    if (Patient == null)
+                    {
+                        MessageBox.Show(
+                            "Không có dữ liệu bệnh nhân để xuất báo cáo.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
+
+                    if (Patient.ThongTinHanhChinh == null || !Patient.ThongTinHanhChinh.Any())
+                    {
+                        MessageBox.Show(
+                            "Thiếu thông tin hành chính của bệnh nhân.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
+
+                    // Đường dẫn file template (cần điều chỉnh theo đường dẫn thực tế)
+                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "TemplateTomTat.docx");
+                    
+                    // Kiểm tra file template có tồn tại không
+                    if (!File.Exists(templatePath))
+                    {
+                        MessageBox.Show(
+                            $"Không tìm thấy file mẫu tại:\n{templatePath}\n\nVui lòng kiểm tra lại đường dẫn file template.",
+                            "Lỗi",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return;
+                    }
+
+                    // Hiển thị loading
+                    IsLoading = true;
+                    LoadingText = "Đang xuất báo cáo Word...";
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
+
+                    // Gọi service để in báo cáo
+                    _reportService.PrintFileWord(templatePath, Patient);
+
+                    // Thông báo thành công
+                    string month = DateTime.Now.Month.ToString();
+                    string reportNumber = Patient.ReportNumber ?? "RPT";
+                    string soBenhAn = Patient.ThongTinHanhChinh[0]?.SoBenhAn ?? "Unknown";
+                    string fileName = $"{reportNumber}_{soBenhAn}.docx";
+                    string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                                                  "HoSoTomTat", $"Thang{month}", fileName);
+
+                    MessageBox.Show(
+                        $"Xuất báo cáo thành công!\n\nFile đã được lưu tại:\n{savePath}\n\nFile Word sẽ được mở để bạn có thể xem và in.",
+                        "Thành công",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
                 }
-                reportPage.Show();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Lỗi khi xuất Word:\n{ex.Message}\n\nVui lòng thử lại hoặc liên hệ hỗ trợ kỹ thuật.",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    
+                    // Log chi tiết lỗi để debug
+                    System.Diagnostics.Debug.WriteLine($"Chi tiết lỗi xuất báo cáo: {ex}");
+                }
+                finally
+                {
+                    IsLoading = false;
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
+                }
             }
         }
+
     }
 }
