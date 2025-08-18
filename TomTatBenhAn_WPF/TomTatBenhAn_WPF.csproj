@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Logo_benh_vien-removebg-preview.png" />
     <None Remove="Promt\KetQuaXNPromt.txt" />
     <None Remove="Promt\QuaTrinhBenhLyPromt.txt" />
     <None Remove="Promt\TinhTrangNguoiBenhRaVienPromt.txt" />
@@ -84,6 +85,9 @@
 
   <ItemGroup>
     <Content Include="Assets\iconApp.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Logo_benh_vien-removebg-preview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\ReportTemplate.html">

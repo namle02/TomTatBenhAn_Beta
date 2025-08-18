@@ -18,6 +18,7 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddSingleton<IAiService,AiService>();
             services.AddSingleton<IPhacDoServices, PhacDoServices>();
             services.AddSingleton<IReportService, ReportService>();
+            services.AddSingleton<IBenhNhanService, BenhNhanService>();
 
             services.AddSingleton(new HttpClient()
             {

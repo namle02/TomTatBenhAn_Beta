@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Controls;
+using TomTatBenhAn_WPF.ViewModel.ControlViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TomTatBenhAn_WPF.View.ControlView
 {
@@ -23,6 +13,10 @@ namespace TomTatBenhAn_WPF.View.ControlView
         public Header()
         {
             InitializeComponent();
+            
+            // Thiết lập DataContext từ DI container
+            var app = (App)Application.Current;
+            DataContext = app.ServiceProvider.GetRequiredService<HeaderViewModel>();
         }
     }
 }

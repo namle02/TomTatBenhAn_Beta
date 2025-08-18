@@ -3,6 +3,7 @@ const app = express();
 const userRoutes = require('./src/Routes/UserRoutes');
 const phacDoRoutes = require('./src/Routes/PhacDoRoutes');
 const bangDanhGiaRoutes = require('./src/Routes/BangDanhGiaRoutes');
+const benhNhanRoutes = require('./src/Routes/BenhNhanRoutes');
 const dbConnect = require('./src/Repos/Database');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -26,6 +27,7 @@ app.use(bodyParser.text({ limit: '50mb' }));
 app.use('/user', userRoutes);
 app.use('/phacdo', phacDoRoutes);
 app.use('/bangdanhgia', bangDanhGiaRoutes);
+app.use('/benhnhan', benhNhanRoutes);
 
 
 

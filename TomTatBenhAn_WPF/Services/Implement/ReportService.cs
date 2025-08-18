@@ -3,12 +3,21 @@ using TomTatBenhAn_WPF.Services.Interface;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using Microsoft.IdentityModel.Tokens;
+using System.Windows;
 
 namespace TomTatBenhAn_WPF.Services.Implement
 {
     public class ReportService : IReportService
     {
-        public void PrintFileWord(string templateFilePath, PatientAllData patient)
+        private readonly IBenhNhanService _benhNhanService;
+
+        public ReportService(IBenhNhanService benhNhanService)
+        {
+            _benhNhanService = benhNhanService;
+        }
+
+        #region In bản tóm tắt ra file word
+        public async void PrintFileWord(string templateFilePath, PatientAllData patient)
         {
             Word.Application app = null;
             Word.Document doc = null;
@@ -22,7 +31,8 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Tạo đường dẫn thư mục lưu file theo tháng
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 string currentMonth = DateTime.Now.Month.ToString();
-                string baseDirectory = Path.Combine(desktopPath, "HoSoTomTat", $"Thang{currentMonth}");
+                string currentYear = DateTime.Now.Year.ToString();
+                string baseDirectory = Path.Combine(desktopPath, "HoSoTomTat",$"Nam_{currentYear}", $"Thang_{currentMonth}");
 
                 // Tạo thư mục nếu chưa tồn tại
                 Directory.CreateDirectory(baseDirectory);
@@ -93,6 +103,9 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 // Hiển thị Word để người dùng có thể xem và in
                 app.Visible = true;
+
+                // Lưu thông tin bệnh nhân vào database sau khi xuất file thành công
+                await SavePatientToDatabase(patient);
             }
             catch (Exception ex)
             {
@@ -369,5 +382,39 @@ namespace TomTatBenhAn_WPF.Services.Implement
             // Re-add bookmark
             doc.Bookmarks.Add(bookmarkName, range);
         }
+
+        #endregion
+
+        #region Lưu bản tóm tắt vào cơ sở dữ liệu
+        
+        /// <summary>
+        /// Lưu thông tin bệnh nhân vào database MongoDB
+        /// </summary>
+        /// <param name="patient">Thông tin bệnh nhân</param>
+        private async Task SavePatientToDatabase(PatientAllData patient)
+        {
+            try
+            {
+                var result = await _benhNhanService.SaveBenhNhanAsync(patient);
+                
+                if (result.Success)
+                {
+                    MessageBox.Show("✅ Lưu thông tin bệnh nhân thành công!", "Thông báo", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"⚠️ Không thể lưu thông tin bệnh nhân: {result.Message}", "Cảnh báo", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"🛑 Lỗi khi lưu thông tin bệnh nhân: {ex.Message}", "Lỗi", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
+        #endregion
     }
 }

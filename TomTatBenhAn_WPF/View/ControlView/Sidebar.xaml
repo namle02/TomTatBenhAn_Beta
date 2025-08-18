@@ -21,7 +21,7 @@
 
             <!--  PHần  FORM  -->
             <ScrollViewer>
-                <StackPanel Grid.Row="0" Margin="0,10">
+                <StackPanel Grid.Row="0" Margin="10">
 
                     <!--  Các TextBox, ComboBox như cũ  -->
                     <TextBox

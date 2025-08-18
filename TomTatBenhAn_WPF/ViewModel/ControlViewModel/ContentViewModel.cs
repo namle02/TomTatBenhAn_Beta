@@ -1,14 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using TomTatBenhAn_WPF.Message;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
-using TomTatBenhAn_WPF.View.PageView;
-using TomTatBenhAn_WPF.ViewModel.PageViewModel;
 using System.IO;
-using System.Linq;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
@@ -60,33 +56,44 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         {
             try
             {
+                if (message?.patient == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Nhận được message hoặc patient null");
+                    return;
+                }
+
+                IsLoading = true;
+                LoadingText = "Đang tải dữ liệu bệnh nhân...";
+                WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
+
+                this.Patient = message.patient;
+                
+                // Kiểm tra an toàn trước khi truy cập ThongTinKhamBenh
+                if (Patient.ThongTinKhamBenh != null && 
+                    Patient.ThongTinKhamBenh.Count > 0 && 
+                    !string.IsNullOrEmpty(Patient.ThongTinKhamBenh[0].HuongDieuTri))
+                {
+                    IsHuongDieuTriContains = true;
+                }
+                OnPropertyChanged(nameof(KetQuaDieuTri));
+
+                // Chỉ chạy AI nếu được gọi từ SideBarVM (dữ liệu mới từ database)
+                // Nếu từ search thì dữ liệu đã được xử lý AI rồi
                 if (message.CalledBy == "SideBarVM")
                 {
-                    if (message?.patient == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Nhận được message hoặc patient null");
-                        return;
-                    }
-
-                    IsLoading = true;
-                    LoadingText = "Đang tải dữ liệu bệnh nhân...";
-                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
-
-                    this.Patient = message.patient;
-                    if (Patient.ThongTinKhamBenh![0].HuongDieuTri.Length != 0)
-                    {
-                        IsHuongDieuTriContains = true;
-                    }
-                    OnPropertyChanged(nameof(KetQuaDieuTri));
-
                     LoadingText = "Đang tóm tắt bệnh án với AI...";
                     await _aiServices.TomTatBenhAn(message.patient);
-
-                    System.Diagnostics.Debug.WriteLine("Đã load và xử lý dữ liệu bệnh nhân thành công");
-
-                    IsReportReady = true;
-                    WeakReferenceMessenger.Default.Send(new NavigationMessage("OpenReport", "ContentVM"));
                 }
+                else
+                {
+                    // Dữ liệu từ search đã có tóm tắt AI rồi
+                    LoadingText = "Đã tải dữ liệu bệnh nhân...";
+                }
+
+                System.Diagnostics.Debug.WriteLine("Đã load và xử lý dữ liệu bệnh nhân thành công");
+
+                IsReportReady = true;
+                WeakReferenceMessenger.Default.Send(new NavigationMessage("OpenReport", "ContentVM"));
             }
             catch (Exception ex)
             {
@@ -194,15 +201,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
 
                     // Gọi service để in báo cáo
-                    _reportService.PrintFileWord(templatePath, Patient);
+                    _ = Task.Run(() => _reportService.PrintFileWord(templatePath, Patient));
 
                     // Thông báo thành công
                     string month = DateTime.Now.Month.ToString();
+                    string year = DateTime.Now.Year.ToString();
                     string reportNumber = Patient.ReportNumber ?? "RPT";
                     string soBenhAn = Patient.ThongTinHanhChinh[0]?.SoBenhAn ?? "Unknown";
                     string fileName = $"{reportNumber}_{soBenhAn}.docx";
-                    string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-                                                  "HoSoTomTat", $"Thang{month}", fileName);
+                    string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                                                  "HoSoTomTat",$"Nam_{year}", $"Thang_{month}", fileName);
 
                     MessageBox.Show(
                         $"Xuất báo cáo thành công!\n\nFile đã được lưu tại:\n{savePath}\n\nFile Word sẽ được mở để bạn có thể xem và in.",
