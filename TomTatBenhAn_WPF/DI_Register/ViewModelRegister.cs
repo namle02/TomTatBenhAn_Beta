@@ -13,6 +13,7 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<SideBarViewModel>();
             services.AddSingleton<ContentViewModel>();
+            services.AddSingleton<HeaderViewModel>();
             services.AddSingleton<TomTatBenhAnVM>();
             services.AddSingleton<PhacDoVM>();
             services.AddSingleton<ReportPageViewModel>();

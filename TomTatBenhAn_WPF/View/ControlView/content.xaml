@@ -353,13 +353,13 @@
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
                             Content="Không"
                             FontSize="18"
-                            IsChecked="{Binding CheckBoxInfo.CheckBoxNoiKhoaFalse, Mode=TwoWay}"
+                            IsChecked="{Binding Patient.ThongTinKhamBenh[0].NotPPDT_NoiKhoa, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}" />
                         <CheckBox
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                            IsChecked="{Binding IsHuongDieuTriContains, Mode=TwoWay}"
+                            IsChecked="{Binding Patient.ThongTinKhamBenh[0].PPDT_NoiKhoa, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}">
 
                             <TextBox
@@ -386,14 +386,14 @@
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
                             Content="Không"
                             FontSize="18"
-                            IsChecked="{Binding CheckBoxInfo.CheckBoxPTTTFalse, Mode=TwoWay}"
+                            IsChecked="{Binding Patient.ThongTinKhamBenh[0].NotPPDT_PTTT, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}" />
                         <CheckBox
                             Grid.Row="1"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
                             materialDesign:CheckBoxAssist.CheckBoxSize="30"
-                            IsChecked="{Binding CheckBoxInfo.CheckBoxPTTTTrue, Mode=TwoWay}"
+                            IsChecked="{Binding Patient.ThongTinKhamBenh[0].PPDT_PTTT, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignCheckBox}">
                             <TextBox
                                 Margin="10"
@@ -402,7 +402,7 @@
                                 AcceptsReturn="True"
                                 FontSize="18"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                Text="{Binding Patient.ChiTietBenhAnInfo.LydoPTTTTrue, Mode=TwoWay}"
+                                Text="{Binding Patient.ThongTinKhamBenh[0].HuongDieuTri_PTTT, Mode=TwoWay}"
                                 TextWrapping="Wrap" />
                         </CheckBox>
 

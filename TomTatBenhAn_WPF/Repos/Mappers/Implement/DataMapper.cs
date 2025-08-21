@@ -31,8 +31,8 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                 foreach (DataPatientType type in Enum.GetValues(typeof(DataPatientType)))
                 {
                     await GetQueriesByType(type, patient, SoBenhAn, connection);
-                    await GetThongTinKhamBenh(patient, connection);
                 }
+                await GetThongTinKhamBenh(patient, connection);
 
             }
             return patient;
@@ -84,7 +84,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                     patient.ChanDoanIcd = (await conn.QueryAsync<ChanDoanICDModel>(query)).ToList();
                     foreach (var item in patient.ChanDoanIcd)
                     {
-                        item.MaICDKemTheoRaVien = item.MaICDKemTheoRaVien?.Replace(";", " / ");
+                        item.MaICDKemTheoRaVien = item.MaICDKemTheoRaVien?.Replace(";", "/");
                     }
                     break;
                 case DataPatientType.DienBien:
@@ -124,7 +124,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                 ["21"] = "BenhAnSoSinh.sql",
                 ["22"] = "BenhAnTaiMuiHong.sql",
                 ["23"] = "BenhAnTamBenh.sql",
-                ["25"] = "BenhAnUngBuou.sql",
+                ["50"] = "BenhAnUngBuou.sql",
                 ["51"] = "BenhAnYHCT_NgoaiTruMoi.sql",
                 ["54"] = "BenhAnYHCT_NoiTruMoi.sql",
                 ["55"] = "BenhAnYHCT_NgoaiTruMoi.sql",

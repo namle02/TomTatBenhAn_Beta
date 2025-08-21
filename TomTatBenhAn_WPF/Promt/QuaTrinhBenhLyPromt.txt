@@ -3,11 +3,16 @@ Quá trình bệnh lý và diễn biến lâm sàng:
 Mô tả các đặc điểm khởi phát, triệu chứng lâm sàng, diễn biến của bệnh, bao gồm tình trạng bệnh nhân từ khi xuất hiện triệu chứng đến khi nhập viện và các xử trí trước đó (nếu có).
 Những dấu hiệu lâm sàng chính:
 Tổng hợp các dấu hiệu và chỉ số lâm sàng quan trọng có giá trị trong chẩn đoán và điều trị.
+Lưu ý ở phần này những dấu hiệu lâm sàng liên quan đến tim, phổi, bụng xếp xuống dưới cùng, nếu những dấu hiệu lâm sàng liên quan đến tim phổi bụng không có gì bất thường thì ghi là (- Tim nhịp đều. Phổi không ran. Bụng mềm, không chướng.) và bỏ qua những dấu hiệu liên quan đến tim, phổi, bụng
+Nếu bệnh nhân có chẩn đoán liên quan đến huyết áp thì lấy ra chỉ số huyết áp của bệnh nhân
 Yêu cầu:
 Trình bày thông tin ngắn gọn, mạch lạc và chính xác, phù hợp với ngôn ngữ y khoa chuyên nghiệp.
 Đảm bảo cấu trúc theo thứ tự, nhấn mạnh các thông tin quan trọng, lược bỏ chi tiết không cần  thiết.
 Chỉnh sửa nội dung để phù hợp với định dạng chuẩn báo cáo y khoa, thay đổi cách diễn đạt nhưng vẫn giữ nguyên ý nghĩa của thông tin.
 Đoạn văn đầu vào:
+Chẩn đoán chính ra viện: @ChanDoanChinhRaVien
+Chẩn đoán phụ ra viện: @ChanDoanPhuRaVien
+Quá trình bệnh lý:
 @QuaTrinhBenhLy
 Tình trạng người bệnh ra viện:
 @TinhTrangNguoiBenhRaVien

@@ -15,14 +15,14 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
 
         <!--  HEADER  -->
-        <control:Header Grid.Column="0" Grid.ColumnSpan="2" />
+        <control:Header />
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
 

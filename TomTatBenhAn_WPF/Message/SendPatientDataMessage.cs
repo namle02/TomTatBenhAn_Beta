@@ -7,7 +7,7 @@ namespace TomTatBenhAn_WPF.Message
         public PatientAllData? patient { get; set; }
         public string CalledBy { get; set; }
 
-        public SendPatientDataMessage(PatientAllData patient, string calledBy)
+        public SendPatientDataMessage(PatientAllData patient, string calledBy = "Search")
         {
             this.patient = patient;
             CalledBy = calledBy;

@@ -17,6 +17,9 @@ Lưu Ý:
 - Không cần  cách dòng với từng xét nghiệm, chỉ cần  xuống dòng
 - Chỉ trả về định dạng văn bản thuần  túy, không bôi đen hay in nghiêng kết quả trả về.
 - YÊU CẦU BẮT BUỘC PHẢI CÓ GẠCH ĐẦU DÒNG ( - ) TRƯỚC MỖI XÉT NGHIỆM
+- Các dịch vụ xét nghiệm kèm theo ngày tháng theo định dạng dd/mm/yyyy hh:mm:ss, nếu có dịch vụ xét nghiệm trùng nhau thì chỉ cần đưa ra dịch vụ vào ngày đầu tiên
+- Các dịch vụ bất thường là các dịch vụ có chỉ số chênh lệch so với mức min/max là 40%
+- Các dịch vụ cùng loại nếu cùng ngày tháng thì viết rút gọn lại trên cùng một dòng, ví dụ: NEU% 37.8 (thấp), EO% 26.8 (cao), BA% 1.5 (cao), EO# 2.4 (cao), MCV 101.3 (cao), MCH 34.4 (cao), MPV 6.6 (thấp) 26/07/2025 09:11:33
 Ví dụ đầu ra:
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái

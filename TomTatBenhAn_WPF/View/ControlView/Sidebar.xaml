@@ -21,7 +21,7 @@
 
             <!--  PHần  FORM  -->
             <ScrollViewer>
-                <StackPanel Grid.Row="0" Margin="0,10">
+                <StackPanel Grid.Row="0" Margin="10">
 
                     <!--  Các TextBox, ComboBox như cũ  -->
                     <TextBox
@@ -218,6 +218,17 @@
                     FontWeight="Bold"
                     Foreground="White" />
 
+                <Button
+                    Height="45"
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Stretch"
+                    Background="#2f84d0"
+                    BorderThickness="0"
+                    Command="{Binding SaveProgressCommand}"
+                    Content="Lưu tiến trình"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="White" />
 
             </StackPanel>
         </Grid>

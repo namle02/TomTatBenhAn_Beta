@@ -20,7 +20,7 @@
     ISNULL(N'Nhiệt độ: ' + CAST(Field_13 AS NVARCHAR(MAX)), '') + N' / ' +
     ISNULL(N'Huyết áp: ' + CAST(Field_14 AS NVARCHAR(MAX)) + N'/' + CAST(Field_15 AS NVARCHAR(MAX)), '') + N' / ' +
     ISNULL(N'Nhịp thở: ' + CAST(Field_16 AS NVARCHAR(MAX)), '') + N' / ' +
-    ISNULL(N'Cân nặng: ' + CAST(Field_17 AS NVARCHAR(MAX)), '') + N' / ' +
+    ISNULL(N'Cân nặng: ' + CAST(Field_17 AS NVARCHAR(MAX)), '') AS QuaTrinhBenhLy,
     ISNULL(N'Bản thân: ' + CAST(Field_4 AS NVARCHAR(MAX)), '') + CHAR(13) + CHAR(10) +
     ISNULL(N'Gia đình: ' + CAST(Field_5 AS NVARCHAR(MAX)), '') + CHAR(13) + CHAR(10) +
     N'Tiền sử phụ khoa:' + CHAR(13) + CHAR(10) +

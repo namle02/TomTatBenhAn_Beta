@@ -18,10 +18,11 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddSingleton<IAiService,AiService>();
             services.AddSingleton<IPhacDoServices, PhacDoServices>();
             services.AddSingleton<IReportService, ReportService>();
+            services.AddSingleton<IBenhNhanService, BenhNhanService>();
 
             services.AddSingleton(new HttpClient()
             {
-                BaseAddress = new Uri("http://localhost:3000/"),
+                BaseAddress = new Uri("http://171.244.61.102:2212"),
                 Timeout = TimeSpan.FromSeconds(100)
             });
        

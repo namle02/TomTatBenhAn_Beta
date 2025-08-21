@@ -11,6 +11,8 @@ namespace TomTatBenhAn_WPF;
 public partial class App : Application
 {
     private readonly IServiceProvider serviceProvider;
+    
+    public IServiceProvider ServiceProvider => serviceProvider;
 
     public App()
     {
