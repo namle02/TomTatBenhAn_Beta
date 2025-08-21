@@ -1,0 +1,344 @@
+{
+    "Mục tiêu kiểm tra": {
+        "I. Đánh giá và chẩn đoán": {
+            "Nội dung kiểm tra": {
+                "Tiền sử": [
+                    {
+                        "Thứ tự tiêu chí": "1",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Bệnh sử": [
+                    {
+                        "Thứ tự tiêu chí": "2",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "3",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Khám bệnh": [
+                    {
+                        "Thứ tự tiêu chí": "4",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "5",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "6",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "7",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Cận lâm sàng": [
+                    {
+                        "Thứ tự tiêu chí": "8",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "9",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Chẩn đoán": [
+                    {
+                        "Thứ tự tiêu chí": "10",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "11",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ]
+            }
+        },
+        "II. Điều trị": {
+            "Nội dung kiểm tra": {
+                "Phẫu thuật": [
+                    {
+                        "Thứ tự tiêu chí": "12",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "1",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Thuốc, dịch": [
+                    {
+                        "Thứ tự tiêu chí": "14",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "15",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "16",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Theo dõi": [
+                    {
+                        "Thứ tự tiêu chí": "17",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "18",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "19",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ]
+            }
+        },
+        "III. Chăm sóc": {
+            "Nội dung kiểm tra": {
+                "Phân cấp chăm sóc": [
+                    {
+                        "Thứ tự tiêu chí": "20",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Thực hiện chăm sóc": [
+                    {
+                        "Thứ tự tiêu chí": "21",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "22",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    },
+                    {
+                        "Thứ tự tiêu chí": "23",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ]
+            }
+        },
+        "IV. Ra viện": {
+            "Nội dung kiểm tra": {
+                "Tiêu chuẩn xuất viện": [
+                    {
+                        "Thứ tự tiêu chí": "25",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ],
+                "Hướng dẫn ra viện": [
+                    {
+                        "Thứ tự tiêu chí": "26",
+                        "Tiêu chuẩn/Yêu cầu đạt được": "Nội dung yêu cầu",
+                        "Kết quả đánh giá": {
+                            "Đạt/có": true,
+                            "Không đạt/ Không có": {
+                                "Checked": false,
+                                "Mô tả nội dung không đạt": "Mô tả"
+                            },
+                            "Không áp dụng": false
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

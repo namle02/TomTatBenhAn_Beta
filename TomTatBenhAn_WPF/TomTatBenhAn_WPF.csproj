@@ -6,28 +6,125 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <ApplicationIcon>Assets\iconApp.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Converter\" />
-    <Folder Include="Repos\Mappers\Interface\" />
-    <Folder Include="Repos\Mappers\Implement\" />
-    <Folder Include="Repos\Model\" />
-    <Folder Include="Repos\Dto\" />
-    <Folder Include="Services\Interface\" />
-    <Folder Include="Services\Implement\" />
-    <Folder Include="ViewModel\ControlViewModel\" />
-    <Folder Include="ViewModel\PageViewModel\" />
+    <None Remove="Assets\Logo_benh_vien-removebg-preview.png" />
+    <None Remove="Promt\KetQuaXNPromt.txt" />
+    <None Remove="Promt\QuaTrinhBenhLyPromt.txt" />
+    <None Remove="Promt\TinhTrangNguoiBenhRaVienPromt.txt" />
+    <None Remove="Repos\ReportTemplate.html" />
+    <None Remove="SqlScripts\BenhAnType.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnBong.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnMat.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnNhiKhoa.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnNoiKhoa.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnPHCN_NoiTru.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnPhuKhoa.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnRangHamMat.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnSanKhoa.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnSoSinh.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnTaiMuiHong.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnTamBenh.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnTruyenNhiem.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnUngBuou.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnYHCT_NgoaiTruMoi.sql" />
+    <None Remove="SqlScripts\BenhAnType\BenhAnYHCT_NoiTruMoi.sql" />
+    <None Remove="SqlScripts\BenhAnType\KhamBenhVaoVien.sql" />
+    <None Remove="SqlScripts\DienBien.sql" />
+    <None Remove="SqlScripts\KetQuaXetNghiemCLS.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>7</VersionMinor>
+      <VersionMajor>8</VersionMajor>
+      <Guid>00020905-0000-0000-c000-000000000046</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Promt\KetQuaXNPromt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Promt\QuaTrinhBenhLyPromt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Promt\TinhTrangNguoiBenhRaVienPromt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnNgoaiKhoa.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnBong.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnMat.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnNhiKhoa.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnNoiKhoa.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnPHCN_NoiTru.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnPhuKhoa.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnRangHamMat.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnSanKhoa.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnSoSinh.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnTaiMuiHong.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnTamBenh.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnTruyenNhiem.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnUngBuou.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnYHCT_NgoaiTruMoi.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\BenhAnYHCT_NoiTruMoi.sql" />
+    <EmbeddedResource Include="SqlScripts\BenhAnType\KhamBenhVaoVien.sql" />
+    <EmbeddedResource Include="SqlScripts\DanhSachSoBenhAn.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\iconApp.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Logo_benh_vien-removebg-preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ReportTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\BenhAnType.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <EmbeddedResource Include="SqlScripts\ChanDoanICD.sql" />
+	  <EmbeddedResource Include="SqlScripts\DienBien.sql" />
+	  <EmbeddedResource Include="SqlScripts\ThongTinHanhChinh.sql" />
+	  <EmbeddedResource Include="SqlScripts\KetQuaXetNghiemCLS.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="DocumentFormat.OpenXml.Framework" Version="3.3.0" />
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\TemplateTomTat1.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

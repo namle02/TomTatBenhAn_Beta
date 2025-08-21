@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bản tóm tắt hồ sơ bệnh án</title>
+    <style>
+        html, body {
+            line-height: 1.05;
+            margin: 0;
+            padding: 0;
+            background: #ccc;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            padding: 24px 0;
+            font-family: "Times New Roman", serif;
+            font-size: 12pt;
+            color: #000;
+            line-height: 1.05;
+        }
+
+        .report-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            padding: 8mm 25mm 20mm 20mm;
+            box-sizing: border-box;
+            position: relative;
+            line-height: 1.05 !important;
+            margin: 0 auto;
+        }
+
+        .header-table {
+            width: 100%;
+            margin-bottom: 14px;
+            font-weight: bold;
+            font-family: "Times New Roman", serif;
+            font-size: 12pt;
+            border-collapse: collapse;
+            line-height: 1.05 !important;
+        }
+
+            .header-table td {
+                vertical-align: middle;
+                width: 50%;
+                padding: 0;
+                text-align: center;
+                line-height: 1.05 !important;
+            }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .title {
+            font-size: 16pt;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 32px !important;
+            text-transform: uppercase;
+            line-height: 1.05 !important;
+        }
+        .first-line-indent {
+            text-indent: 32px;
+            margin-top: 0 !important;
+            margin-bottom: 2px !important;
+            line-height: 1.05 !important;
+        }
+
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 7px;
+            line-height: 1.05 !important;
+        }
+
+        .info-table {
+            width: 100%;
+            margin-bottom: 7px;
+            border-collapse: collapse;
+            line-height: 1.05 !important;
+        }
+
+            .info-table td {
+                vertical-align: top;
+                text-align: left;
+                padding: 1px 6px;
+                line-height: 1.05 !important;
+            }
+
+        .report-container p,
+        .report-container strong {
+            line-height: 1.05 !important;
+        }
+
+        .label-bold {
+            font-weight: bold;
+        }
+
+        .value-bold {
+            font-weight: bold;
+        }
+
+        .diagnosis-section {
+            margin-bottom: 2px !important;
+            margin-top: 0 !important;
+        }
+
+        p {
+            margin-top: 0 !important;
+            margin-bottom: 2px !important;
+            line-height: 1.05 !important;
+        }
+
+        .diagnosis-table {
+            margin-top: 3px;
+        }
+
+        .signature-block * {
+            line-height: 1.2 !important;
+        }
+
+        .indented {
+            margin-left: 32px; 
+            margin-top: 0 !important;
+            margin-bottom: 2px !important;
+            line-height: 1.05 !important;
+        }
+      
+        #btnExportPdf {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 9999;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-family: "Times New Roman", serif;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+            #btnExportPdf:hover {
+                background-color: #005a9e;
+            }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm 2cm 2cm 3cm;
+            }
+
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: auto;
+                height: auto;
+                background: #fff !important;
+            }
+
+            .report-container {
+                box-shadow: none !important;
+                margin: 0 auto !important;
+                background: #fff !important;
+                width: auto !important;
+                min-width: unset !important;
+                padding: 0 !important;
+            }
+
+            #btnExportPdf {
+                display: none;
+            }
+            .all-indent {
+                margin-left: 120px !important; /* Có thể dùng 24px/2em tuỳ thẩm mỹ */
+            }
+
+            
+        }
+    </style>
+
+</head>
+<body>
+    <button id="btnExportPdf">Xuất PDF</button>
+    <div class="report-container">
+        <table class="header-table">
+            <tr>
+                <td> </td>
+                <td>MS: 52/BV2</td>
+            </tr>
+            <tr>
+                <td>UBND TỈNH QUẢNG NINH</td>
+                <td class="nowrap">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</td>
+            </tr>
+            <tr>
+                <td class="nowrap">BỆNH VIỆN VIỆT NAM - THỤY ĐIỂN</td>
+                <td class="underline"><strong>Độc lập - Tự do - Hạnh phúc</strong></td>
+            </tr>
+            <tr>
+                <td class="underline">UÔNG BÍ</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Số: 1355 /TTBA-BVVNTĐ</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <p class="title">BẢN TÓM  TẮT  HỒ  SƠ  BỆNH  ÁN</p>
+        <p class="section-title">I. HÀNH CHÍNH</p>
+
+        <table class="info-table">
+            <colgroup>
+                <col style="width: 0.25%;">
+                <col style="width: 50%;">
+                <col style="width: 49.75%;">
+            </colgroup>
+            <tr>
+                <td>1.</td>
+                <td><strong>Họ và tên:</strong>{{TenBenhNhan}}</td>
+                <td><strong>2. Ngày sinh:</strong>{{NgaySinh}}  &nbsp; <strong>Tuổi:</strong>{{Tuoi}}</td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td><strong>Giới tính:</strong>{{GioiTinh}}</td>
+                <td><strong>4. Dân tộc:</strong>{{DanToc}}</td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td colspan="2"><strong>Địa chỉ cư trú:</strong>{{DiaChi}}</td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td colspan="2"><strong>Số thẻ BHYT:</strong>{{BHYT}}</td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td colspan="2"><strong>Số căn cước/Hộ Chiếu/Mã định danh:</strong>{{CCCD}}</td>
+            </tr>
+            <tr>
+                <td>8.</td>
+                <td><strong>Bệnh án số:</strong>{{SoBenhAn}}</td>
+                <td><strong>Mã y tế:</strong>{{MaYTe}}</td>
+            </tr>
+            <tr>
+                <td>9.</td>
+                <td colspan="2"><span class="label-bold">Vào viện ngày:</span> {{VaoVien}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2"><span class="label-bold">Ra Viện ngày:</span> {{RaVien}}</td>
+            </tr>
+        </table>
+        <p class="section-title">II. CHẨN ĐOÁN</p>
+        <p class="diagnosis-section"><strong>1. Chẩn đoán vào viện:</strong></p>
+        <div style="margin-bottom:4px;">
+            <strong>Bệnh chính:</strong> {{BenhChinhVaoVien}}
+            &nbsp; &nbsp;
+            <strong>Mã ICD:</strong> {{IcdBenhChinhVaoVien}}
+        </div>
+        <div style="margin-bottom:8px;">
+            <strong>Bệnh kèm theo:</strong> {{BenhPhuVaoVien}}
+            &nbsp; &nbsp;
+            <strong>Mã ICD:</strong> {{IcdBenhPhuVaoVien}}
+        </div>
+        <p style="margin-top:3px;" class="diagnosis-section"><strong>2. Chẩn đoán ra viện:</strong></p>
+        <div class="diagnosis-row">
+            <strong>Bệnh chính:</strong> {{BenhChinhRaVien}}
+            &nbsp; &nbsp;
+            <strong>Mã ICD:</strong> {{IcdBenhChinhRaVien}}
+        </div>
+        <div class="diagnosis-row">
+            <strong>Bệnh kèm theo:</strong> {{BenhPhuRaVien}}
+            &nbsp; &nbsp;
+            <strong>Mã ICD:</strong> {{IcdBenhPhuRaVien}}
+        </div>
+        <p class="section-title">III. TÓM TẮT QUÁ TRÌNH ĐIỀU TRỊ</p>
+        <p class="diagnosis-section"><strong>Lý do vào viện:</strong>{{LiDoVaoVien}}</p>
+        <p class="diagnosis-section"><strong>a. Quá trình bệnh lý và diễn biến lâm sàng</strong>(Đặc điểm khởi phát, các triệu chứng lâm sàng, diễn biến bệnh):</p>
+        <p class="first-line-indent" style="white-space: pre-line;">{{AiQuaTrinh}}</p>
+
+        <p class="diagnosis-section"><strong>Tiền sử bệnh:</strong>{{TienSuBenh}}</p>
+        <p class="diagnosis-section"><strong>Những dấu hiệu lâm sàng chính được ghi nhận</strong>(Có giá trị chẩn đoán trong quá trình điều trị):</p>
+
+        <div style="margin-left: 30px; white-space: pre-line;">
+            {{DauHieuLamSang}}
+        </div>
+        <p class="diagnosis-section"><strong>b.Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán:</strong></p>
+        
+        <div style="margin-left: 30px; white-space: pre-line;">
+            {{KetQuaXetNghiemCLS}}
+        </div>
+        <p class="diagnosis-section"><strong>c.Phương pháp điều trị:</strong></p>
+        <table class="info-table diagnosis-table">
+            <colgroup>
+                <col style="width:20%;">
+                <col style="width: 30%;">
+                <col style="width: 50%;">
+            </colgroup>
+            <tr>
+                <td>Nội khoa:</td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaKhong" style="width:16px; height:16px; margin-right:6px;" {{CheckBoxNoiKhoaFalse}}>
+                        Không
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaCo" style="width:16px; height:16px; margin-right:6px;" {{CheckBoxNoiKhoaTrue}}>
+                        Có, ghi rõ phương pháp:{{LydoNoiKhoaTrue}}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Phẫu thuật, thủ thuật</td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="ptttKhong" style="width:16px; height:16px; margin-right:6px;" {{CheckBoxPTTTFalse}}>
+                        Không
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="ptttCo" style="width:16px; height:16px; margin-right:6px;" {{CheckBoxPTTTTrue}}>
+                        Có, ghi rõ phương pháp:{{LydoPTTTTrue}}
+                    </label>
+                </td>
+            </tr>
+        </table>
+        <p class="first-line-indent" style="white-space: pre-line;">{{PhuongPhapDieuTri}}</p>
+
+        <p class="diagnosis-section"><strong>d.Tình trạng người bệnh ra viện:</strong></p>
+        <table class="info-table diagnosis-table">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+            </colgroup>
+            <tr>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaKhong" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedKhoi}}>
+                        Khỏi
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaCo" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedDo}}>
+                        Đỡ
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaCo" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedKhongThayDoi}}>
+                        Không thay đổi
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaCo" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedNangHon}}>
+                        Nặng hơn
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="noiKhoaCo" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedTuVong}}>
+                        Tử vong
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="ptttKhong" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedTienLuongNangXinVe}}>
+                        Tiên lượng nặng xin về
+                    </label>
+                </td>
+                <td>
+                    <label style="display: flex; align-items: center; font-weight: normal;">
+                        <input type="checkbox" name="ptttCo" style="width:16px; height:16px; margin-right:6px;" {{IsCheckedChuaXacDinh}}>
+                        Chưa xác định:
+                    </label>
+                </td>
+            </tr>
+        </table>
+        <p class="first-line-indent" style="white-space: pre-line;">{{TinhTrangRaVien}}</p>
+        <p class="diagnosis-section"><strong>Hướng điều trị và các chế độ tiếp theo: </strong></p>
+        <p class="indented" style="white-space: pre-line;">{{HuongDieuTriTiepTheo}}</p>
+        <div style="width: 100%; margin-top: 32px; display: flex;">
+            <div style="width: 60%;"></div>
+            <div style="width: 40%; display: flex; justify-content: center; align-items: flex-start;">
+                <div class="signature-block" style="text-align: center; width: 410px;">
+                    <div style="font-style: italic; font-size: 14px;">
+                        Uông Bí, Ngày <span id="ngayIn"></span> tháng <span id="thangIn"></span> năm <span id="namIn"></span>
+                    </div>
+                    <div style="font-weight: bold; font-size: 14px; margin-top: 12px;">
+                        ĐẠI DIỆN CƠ SỞ KCB<br>
+                        TRƯỞNG PHÒNG KH-TH
+                    </div>
+                    <div style="font-size: 14px; font-weight: bold; margin-top: 60px;">
+                        Ts.Bs. Vũ Trung Kiên
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            const btn = document.getElementById('btnExportPdf');
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    if (window.chrome?.webview?.postMessage) {
+                        window.chrome.webview.postMessage({ action: 'export-pdf' });
+                    } else {
+                        alert("WebView2 không hỗ trợ gửi message!");
+                    }
+                });
+            }
+            const now = new Date();
+            document.getElementById('ngayIn').innerText = now.getDate();
+            document.getElementById('thangIn').innerText = now.getMonth() + 1;
+            document.getElementById('namIn').innerText = now.getFullYear();
+        };
+    </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace TomTatBenhAn_WPF.View.ControlView
 {
@@ -11,5 +12,6 @@ namespace TomTatBenhAn_WPF.View.ControlView
         {
             InitializeComponent();
         }
+
     }
 }

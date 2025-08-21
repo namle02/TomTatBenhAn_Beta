@@ -1,28 +1,47 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+using TomTatBenhAn_WPF.Message;
+using TomTatBenhAn_WPF.ViewModel.ControlViewModel;
+using TomTatBenhAn_WPF.ViewModel.PageViewModel;
+using TomTatBenhAn_WPF.View.ControlView;
 
 namespace TomTatBenhAn_WPF.ViewModel
 {
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject, IRecipient<NavigationMessage>
     {
-        [ObservableProperty]
-        private string? hello;
+        private readonly IServiceProvider serviceProvider;
+       
 
-        public MainViewModel()
+        [ObservableProperty] private object currentPage;
+
+        public MainViewModel(IServiceProvider serviceProvider, SideBarViewModel sideBarViewModel, ContentViewModel contentViewModel)
         {
-            Hello = "xin ch�o";
+            this.serviceProvider = serviceProvider;
+            CurrentPage = serviceProvider.GetRequiredService<TomTatBenhAnVM>();
+            WeakReferenceMessenger.Default.RegisterAll(this);
+            
+
         }
 
-        [RelayCommand]
-        private void ShowMessage()
+        // Cơ chế chuyển trang
+        public void Receive(NavigationMessage message)
         {
-            MessageBox.Show(Hello + " b?n");
+            switch (message.PageName)
+            {
+                case "PhacDoPage":
+                    CurrentPage = serviceProvider.GetRequiredService<PhacDoVM>();
+                    break;
+                case "TomTatBenhAnPage":
+                    CurrentPage = serviceProvider.GetRequiredService<TomTatBenhAnVM>();
+                    break;
+                default:
+                    CurrentPage = serviceProvider.GetRequiredService<TomTatBenhAnVM>();
+                    break;
+            }
         }
+
+        
+
     }
 }
