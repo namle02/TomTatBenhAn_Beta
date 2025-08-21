@@ -18,7 +18,11 @@
     Field_53 AS NVARCHAR(MAX)
   ) + N'/ Cơ Xương khớp: ' + CAST(
     Field_57 AS NVARCHAR(MAX)
-  ) + N'/ Các dấu hiệu bệnh lý khác: ' + CAST(
+  )  + N', Huyết áp: ' + CAST(
+	Field_48 AS NVARCHAR(MAX)
+  ) + '/' + CAST(
+	Field_49 as NVARCHAR(MAX)
+  ) + N' mmHg '  + N'/ Các dấu hiệu bệnh lý khác: ' + CAST(
     Field_59 AS NVARCHAR(MAX)
   ) AS QuaTrinhBenhLy, 
   Field_4 AS TienSuBenh, 

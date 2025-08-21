@@ -32,7 +32,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 string currentMonth = DateTime.Now.Month.ToString();
                 string currentYear = DateTime.Now.Year.ToString();
-                string baseDirectory = Path.Combine(desktopPath, "HoSoTomTat",$"Nam_{currentYear}", $"Thang_{currentMonth}");
+                string baseDirectory = Path.Combine(desktopPath, "HoSoTomTat", $"Nam_{currentYear}", $"Thang_{currentMonth}");
 
                 // Tạo thư mục nếu chưa tồn tại
                 Directory.CreateDirectory(baseDirectory);
@@ -40,7 +40,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Tạo tên file với ReportNumber và SoBenhAn
                 string reportNumber = patient.ReportNumber ?? "RPT";
                 string soBenhAn = patient.ThongTinHanhChinh?[0]?.SoBenhAn ?? "Unknown";
-                string fileName = $"{reportNumber}_{soBenhAn}.docx";
+                string fileName = $"{reportNumber}_{soBenhAn}_{patient.ThongTinHanhChinh![0].TenBN}.docx";
 
                 outputFilePath = Path.Combine(baseDirectory, fileName);
 
@@ -104,13 +104,13 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Hiển thị Word để người dùng có thể xem và in
                 app.Visible = true;
 
-                // Lưu thông tin bệnh nhân vào database sau khi xuất file thành công
+                //// Lưu thông tin bệnh nhân vào database sau khi xuất file thành công
                 await SavePatientToDatabase(patient);
             }
             catch (Exception ex)
             {
                 // Xử lý lỗi
-                throw new Exception($"Lỗi khi in file Word: {ex.Message}", ex);
+                MessageBox.Show($"Lỗi khi in file Word: {ex.Message}", ex.Message);
             }
             finally
             {
@@ -161,7 +161,9 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 data.Add("KB_LyDoVaoVien", khamBenh.LyDoVaoVien ?? "");
                 data.Add("KB_QuaTrinhBenhLy", khamBenh.QuaTrinhBenhLy ?? "");
                 data.Add("KB_TienSuBenh", khamBenh.TienSuBenh ?? "");
-                data.Add("KB_HuongDieuTri", khamBenh.HuongDieuTri ?? "");
+                data.Add("KB_HuongDieuTriNoiKhoa", khamBenh.HuongDieuTri ?? "");
+                data.Add("KB_HuongDieuTriPTTT", khamBenh.HuongDieuTri_PTTT);
+
             }
 
             // Chẩn đoán ICD
@@ -221,7 +223,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
 
             // Thêm các trường thời gian hiện tại
-            data.Add("NgayInBaoCao", DateTime.Now.ToString("dd/MM/yyyy"));
+            data.Add("NgayInBaoCao", $"Ngày {DateTime.Now.Day} Tháng {DateTime.Now.Month} Năm {DateTime.Now.Year}");
             data.Add("GioInBaoCao", DateTime.Now.ToString("HH:mm"));
 
             return data;
@@ -264,7 +266,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
 
             // Ví dụ: xử lý huớng điều trị -> tick/no-tick theo dữ liệu
-            if (bookmarkName == "KB_HuongDieuTri")
+            if (bookmarkName == "KB_HuongDieuTriNoiKhoa")
             {
                 foreach (Word.ContentControl control in document.ContentControls)
                 {
@@ -274,68 +276,46 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         // Đánh dấu checkbox
                         control.Checked = true;
+                        return;
                     }
-                    else
+                    else if (control.Type == Word.WdContentControlType.wdContentControlCheckBox &&
+                        control.Tag == "NotPPDT_NoiKhoa" && newText.IsNullOrEmpty())
                     {
-                        if (control.Tag == "NoPPDT_NoiKhoa")
-                        {
-                            control.Checked = true;
-                        }
+                        // Đánh dấu checkbox
+                        control.Checked = true;
+                        return;
                     }
                 }
 
-                return;
-
+               
             }
-        }
 
-        /// <summary>
-        /// Thêm phương thức để thay thế text với format nâng cao (dành cho text dài có xuống dòng)
-        /// </summary>
-        private void ReplaceBookmarkWithFormattedText(Word.Document doc, string bookmarkName, string text)
-        {
-            if (!doc.Bookmarks.Exists(bookmarkName)) return;
-
-            Word.Bookmark bookmark = doc.Bookmarks[bookmarkName];
-            Word.Range range = bookmark.Range;
-
-            // Lưu tất cả formatting properties
-            var formatting = new
+            if (bookmarkName ==  "KB_HuongDieuTriPTTT")
             {
-                FontName = range.Font.Name,
-                FontSize = range.Font.Size,
-                Bold = range.Font.Bold,
-                Italic = range.Font.Italic,
-                Underline = range.Font.Underline,
-                Color = range.Font.Color,
-                Alignment = range.ParagraphFormat.Alignment,
-                LineSpacing = range.ParagraphFormat.LineSpacing,
-                SpaceBefore = range.ParagraphFormat.SpaceBefore,
-                SpaceAfter = range.ParagraphFormat.SpaceAfter,
-                LeftIndent = range.ParagraphFormat.LeftIndent,
-                RightIndent = range.ParagraphFormat.RightIndent
-            };
+                foreach (Word.ContentControl control in document.ContentControls)
+                {
 
-            // Thay thế text (xử lý xuống dòng)
-            range.Text = text?.Replace("\n", "\r") ?? "";
+                    // Kiểm tra nếu Content Control là checkbox và có tag khớp
+                    if (control.Type == Word.WdContentControlType.wdContentControlCheckBox &&
+                        control.Tag == "PPDT_PTTT" && !newText.IsNullOrEmpty())
+                    {
+                        // Đánh dấu checkbox
+                        control.Checked = true;
+                        return;
+                    }
+                    else if (control.Type == Word.WdContentControlType.wdContentControlCheckBox &&
+                        control.Tag == "NotPPDT_PTTT" && newText.IsNullOrEmpty())
+                    {
+                        // Đánh dấu checkbox
+                        control.Checked = true;
+                        return;
+                    }
+                }
+            }
 
-            // Áp dụng lại tất cả formatting
-            range.Font.Name = formatting.FontName;
-            range.Font.Size = formatting.FontSize;
-            range.Font.Bold = formatting.Bold;
-            range.Font.Italic = formatting.Italic;
-            range.Font.Underline = formatting.Underline;
-            range.Font.Color = formatting.Color;
-            range.ParagraphFormat.Alignment = formatting.Alignment;
-            range.ParagraphFormat.LineSpacing = formatting.LineSpacing;
-            range.ParagraphFormat.SpaceBefore = formatting.SpaceBefore;
-            range.ParagraphFormat.SpaceAfter = formatting.SpaceAfter;
-            range.ParagraphFormat.LeftIndent = formatting.LeftIndent;
-            range.ParagraphFormat.RightIndent = formatting.RightIndent;
 
-            // Tạo lại bookmark
-            doc.Bookmarks.Add(bookmarkName, range);
         }
+
 
         // ***** Helper mới: set text + giữ format + thụt cả block theo "số ô" (ký tự) *****
         private void SetBookmarkTextWithIndentChars(Word.Document doc, string bookmarkName, string text, int charIndent = 2)
@@ -386,35 +366,35 @@ namespace TomTatBenhAn_WPF.Services.Implement
         #endregion
 
         #region Lưu bản tóm tắt vào cơ sở dữ liệu
-        
+
         /// <summary>
         /// Lưu thông tin bệnh nhân vào database MongoDB
         /// </summary>
         /// <param name="patient">Thông tin bệnh nhân</param>
-        private async Task SavePatientToDatabase(PatientAllData patient)
+        public async Task SavePatientToDatabase(PatientAllData patient)
         {
             try
             {
                 var result = await _benhNhanService.SaveBenhNhanAsync(patient);
-                
+
                 if (result.Success)
                 {
-                    MessageBox.Show("✅ Lưu thông tin bệnh nhân thành công!", "Thông báo", 
+                    MessageBox.Show("✅ Lưu thông tin bệnh nhân thành công!", "Thông báo",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show($"⚠️ Không thể lưu thông tin bệnh nhân: {result.Message}", "Cảnh báo", 
+                    MessageBox.Show($"⚠️ Không thể lưu thông tin bệnh nhân: {result.Message}", "Cảnh báo",
                         MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"🛑 Lỗi khi lưu thông tin bệnh nhân: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"🛑 Lỗi khi lưu thông tin bệnh nhân: {ex.Message}", "Lỗi",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
         #endregion
     }
 }

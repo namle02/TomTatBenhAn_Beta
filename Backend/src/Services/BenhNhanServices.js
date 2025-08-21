@@ -45,7 +45,7 @@ class BenhNhanServices {
     // Tìm kiếm bệnh nhân theo số bệnh án
     async findBenhNhanBySoBenhAn(soBenhAn) {
         try {
-            console.log(soBenhAn);
+           
             if (!soBenhAn) {
                 throw new Error('Số bệnh án không được để trống');
             }

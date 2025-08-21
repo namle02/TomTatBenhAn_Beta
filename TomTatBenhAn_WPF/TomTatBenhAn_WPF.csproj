@@ -122,7 +122,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\TemplateTomTat.docx">
+    <None Update="Templates\TemplateTomTat1.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

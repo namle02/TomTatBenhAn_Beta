@@ -5,6 +5,7 @@ using TomTatBenhAn_WPF.Message;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
@@ -17,7 +18,6 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         [ObservableProperty] private PatientAllData patient = new PatientAllData();
         [ObservableProperty] private bool isLoading = false;
         [ObservableProperty] private string loadingText = "Đang tóm tắt bệnh án...";
-        [ObservableProperty] private bool isHuongDieuTriContains;
         [ObservableProperty] private bool isReportReady = false;
 
         // Computed properties để lấy kết quả điều trị từ Patient
@@ -67,13 +67,13 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
 
                 this.Patient = message.patient;
-                
+
                 // Kiểm tra an toàn trước khi truy cập ThongTinKhamBenh
-                if (Patient.ThongTinKhamBenh != null && 
-                    Patient.ThongTinKhamBenh.Count > 0 && 
+                if (Patient.ThongTinKhamBenh != null &&
+                    Patient.ThongTinKhamBenh.Count > 0 &&
                     !string.IsNullOrEmpty(Patient.ThongTinKhamBenh[0].HuongDieuTri))
                 {
-                    IsHuongDieuTriContains = true;
+                    Patient.ThongTinKhamBenh![0].PPDT_NoiKhoa = true;
                 }
                 OnPropertyChanged(nameof(KetQuaDieuTri));
 
@@ -109,7 +109,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     this.Patient = message.patient;
                     if (Patient.ThongTinKhamBenh![0].HuongDieuTri.Length != 0)
                     {
-                        IsHuongDieuTriContains = true;
+                        Patient.ThongTinKhamBenh![0].PPDT_NoiKhoa = true;
                     }
                     OnPropertyChanged(nameof(KetQuaDieuTri));
                 }
@@ -141,7 +141,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             try
             {
                 OnPropertyChanged(nameof(KetQuaDieuTri));
-                System.Diagnostics.Debug.WriteLine("Đã cập nhật KetQuaDieuTri sau khi Patient thay đổi");
+
             }
             catch (Exception ex)
             {
@@ -181,8 +181,8 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     }
 
                     // Đường dẫn file template (cần điều chỉnh theo đường dẫn thực tế)
-                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "TemplateTomTat.docx");
-                    
+                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "TemplateTomTat1.docx");
+
                     // Kiểm tra file template có tồn tại không
                     if (!File.Exists(templatePath))
                     {
@@ -210,7 +210,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     string soBenhAn = Patient.ThongTinHanhChinh[0]?.SoBenhAn ?? "Unknown";
                     string fileName = $"{reportNumber}_{soBenhAn}.docx";
                     string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                                                  "HoSoTomTat",$"Nam_{year}", $"Thang_{month}", fileName);
+                                                  "HoSoTomTat", $"Nam_{year}", $"Thang_{month}", fileName);
 
                     MessageBox.Show(
                         $"Xuất báo cáo thành công!\n\nFile đã được lưu tại:\n{savePath}\n\nFile Word sẽ được mở để bạn có thể xem và in.",
@@ -227,9 +227,6 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
                     );
-                    
-                    // Log chi tiết lỗi để debug
-                    System.Diagnostics.Debug.WriteLine($"Chi tiết lỗi xuất báo cáo: {ex}");
                 }
                 finally
                 {
@@ -237,7 +234,62 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
                 }
             }
+
+            if (message == "SaveProgress")
+            {
+                try
+                {
+                    // Kiểm tra dữ liệu trước khi xuất
+                    if (Patient == null)
+                    {
+                        MessageBox.Show(
+                            "Không có dữ liệu bệnh nhân để xuất báo cáo.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
+
+                    if (Patient.ThongTinHanhChinh == null || !Patient.ThongTinHanhChinh.Any())
+                    {
+                        MessageBox.Show(
+                            "Thiếu thông tin hành chính của bệnh nhân.",
+                            "Thông báo",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        return;
+                    }
+
+                    // Hiển thị loading
+                    IsLoading = true;
+                    LoadingText = "Đang lưu tiến trình";
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
+
+                    // Gọi services để lưu bệnh nhân hiện tại
+                    _ = Task.Run(() => _reportService.SavePatientToDatabase(Patient));
+
+                    MessageBox.Show(
+                            "Lưu tiến trình thành công",
+                            "Thành công",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information
+                        );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi: {ex.Message}");
+                }
+                finally
+                {
+                    IsLoading = false;
+                    WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
+                }
+
+            }
         }
+
 
     }
 }

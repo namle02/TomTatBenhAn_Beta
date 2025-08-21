@@ -146,7 +146,15 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         {
             WeakReferenceMessenger.Default.Send<string>("PrintReport");
         }
-
+        
+        /// <summary>
+        /// Lưu tiến trình hiện tại
+        /// </summary>
+        [RelayCommand]
+        private void SaveProgress()
+        {
+            WeakReferenceMessenger.Default.Send<string>("SaveProgress");
+        }
 
 
         partial void OnIsMaYTeCheckedChanged(bool oldValue, bool newValue)

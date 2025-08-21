@@ -61,6 +61,12 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string ketQuaDieuTri = patient.ThongTinHanhChinh?.FirstOrDefault()?.KetQuaDieuTri ?? "Không có thông tin";
             prompt = prompt.Replace("@KetQuaDieuTri", ketQuaDieuTri);
 
+            string chanDoanChinhRaVien = patient.ChanDoanIcd?.FirstOrDefault()?.BenhChinhRaVien ?? "";
+            prompt = prompt.Replace("@ChanDoanChinhRaVien", chanDoanChinhRaVien);
+
+            string chanDoanPhuhRaVien = patient.ChanDoanIcd?.FirstOrDefault()?.BenhKemTheoRaVien ?? "";
+            prompt = prompt.Replace("@ChanDoanPhuRaVie", chanDoanPhuhRaVien);
+
             string result = await CallGeminiApi(baseUri, apiKey, prompt);
 
             string marker = "Những dấu hiệu lâm sàng chính:";

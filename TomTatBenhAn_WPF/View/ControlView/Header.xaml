@@ -9,73 +9,67 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
     <UserControl.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <converters:SearchButtonContentConverter x:Key="SearchButtonContentConverter" />
     </UserControl.Resources>
-
-    <Grid>
-        <materialDesign:ColorZone
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Padding="16"
-            Background="#2f84d0"
-            Foreground="White"
-            Mode="Custom">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                    <Image
-                        Height="30"
-                        Margin="20,0,10,0"
-                        Source="/Assets/Logo_benh_vien-removebg-preview.png" />
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontFamily="Times New Roman"
-                        FontSize="25"
-                        FontWeight="Bold"
-                        Text="AI TÓM TẮT BỆNH ÁN" />
-                </StackPanel>
-
-                <!--  Tìm kiếm bệnh nhân  -->
-                <StackPanel
-                    Margin="0,0,20,0"
+    <materialDesign:ColorZone
+        Padding="0"
+        Background="#2f84d0"
+        Foreground="White"
+        Mode="Custom">
+        <DockPanel Margin="0" LastChildFill="False">
+            <StackPanel
+                Margin="20,0,0,0"
+                DockPanel.Dock="Left"
+                Orientation="Horizontal">
+                <Image
+                    Height="30"
+                    Margin="20,0,10,0"
+                    Source="/Assets/Logo_benh_vien-removebg-preview.png" />
+                <TextBlock
                     VerticalAlignment="Center"
-                    DockPanel.Dock="Right"
-                    Orientation="Horizontal">
-                    <TextBox
-                        Width="200"
-                        Height="35"
-                        Margin="0,0,10,0"
-                        VerticalContentAlignment="Center"
-                        materialDesign:HintAssist.Hint="Nhập số bệnh án..."
-                        materialDesign:HintAssist.IsFloating="True"
-                        Background="White"
-                        FontSize="14"
-                        Foreground="Black"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        Text="{Binding SoBenhAn, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding OnEnterKeyCommand}" />
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Background="#1976d2"
-                        Command="{Binding SearchPatientCommand}"
-                        FontSize="14"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"
-                        Style="{StaticResource MaterialDesignRaisedButton}">
-                        <Button.Content>
-                            <TextBlock Text="{Binding IsSearching, Converter={StaticResource SearchButtonContentConverter}}" />
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
-            </DockPanel>
-        </materialDesign:ColorZone>
+                    FontFamily="Times New Roman"
+                    FontSize="25"
+                    FontWeight="Bold"
+                    Text="AI TÓM TẮT BỆNH ÁN" />
+            </StackPanel>
 
-    </Grid>
+            <!--  Tìm kiếm bệnh nhân  -->
+            <StackPanel
+                Margin="0,0,20,0"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Orientation="Horizontal">
+                <TextBox
+                    Width="200"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Nhập số bệnh án..."
+                    Background="White"
+                    FontSize="14"
+                    Foreground="Black"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding SoBenhAn, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding OnEnterKeyCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button
+                    Width="100"
+                    Height="35"
+                    Background="#1976d2"
+                    Command="{Binding SearchPatientCommand}"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"
+                    Style="{StaticResource MaterialDesignRaisedButton}">
+                    <Button.Content>
+                        <TextBlock Text="{Binding IsSearching, Converter={StaticResource SearchButtonContentConverter}}" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+    </materialDesign:ColorZone>
 </UserControl>

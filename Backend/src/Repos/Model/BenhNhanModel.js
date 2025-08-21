@@ -33,7 +33,8 @@ const ThongTinKhamBenhSchema = new mongoose.Schema({
     lyDoVaoVien: { type: String, default: '' },
     quaTrinhBenhLy: { type: String, default: '' },
     tienSuBenh: { type: String, default: '' },
-    huongDieuTri: { type: String, default: '' }
+    huongDieuTri: { type: String, default: '' },
+    huongDieuTri_PTTT: { type: String, default: '' },
 }, { _id: false });
 
 // Schema cho ID bệnh án

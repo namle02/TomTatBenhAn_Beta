@@ -84,7 +84,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                     patient.ChanDoanIcd = (await conn.QueryAsync<ChanDoanICDModel>(query)).ToList();
                     foreach (var item in patient.ChanDoanIcd)
                     {
-                        item.MaICDKemTheoRaVien = item.MaICDKemTheoRaVien?.Replace(";", " / ");
+                        item.MaICDKemTheoRaVien = item.MaICDKemTheoRaVien?.Replace(";", "/");
                     }
                     break;
                 case DataPatientType.DienBien:
