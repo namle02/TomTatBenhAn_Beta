@@ -126,18 +126,6 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             }
         }
 
-
-        /// <summary>
-        /// Chuyển sang trang phác đồ
-        /// </summary>
-        /// <param name="pageName"></param>
-        [RelayCommand]
-        private void ChangePage(string pageName)
-        {
-            WeakReferenceMessenger.Default.Send(new NavigationMessage("PhacDoPage", "SideBar"));
-        }
-
-
         /// <summary>
         /// In bản tóm tắt
         /// </summary>

@@ -9,6 +9,17 @@ class PhacDoServices {
             throw new Error("Thiếu biến môi trường GEMINI_API_KEY");
         }
 
+        // Lưu raw phác đồ trước khi xử lý
+        const rawPhacDo = {
+            protocol: {
+                name: "Phác đồ chưa phân tích",
+                code: null,
+                source: null,
+                sections: [],
+                raw: phacdo
+            }
+        };
+
         const prompt = `Bạn là AI NLP y khoa kiêm backend. Hãy phân tích văn bản phác đồ điều trị (tiếng Việt) và CHỈ TRẢ VỀ MỘT JSON HỢP LỆ, KHÔNG THÊM BẤT KỲ VĂN BẢN NÀO KHÁC (không markdown, không code fence, không giải thích).\n\nYÊU CẦU:\n1) Cấu trúc đầu ra:\n{\n  \"protocol\": {\n    \"name\": string,\n    \"code\": string|null,\n    \"source\": string|null,\n    \"sections\": Section[]\n  }\n}\nSection = {\n  \"id\": string,\n  \"title\": string,\n  \"content\": string[],\n  \"children\": Section[]\n}\n\n2) Quy tắc bóc tách:\n- Giữ nguyên phân cấp và thứ tự mục như bản gốc; không được bỏ sót nội dung.\n- Không trộn khóa: chỉ dùng \"children\" (không dùng \"subItems\"/\"nodes\"/\"items\").\n- Chuẩn hóa khoảng trắng; giữ nguyên dấu tiếng Việt; KHÔNG tự ý sửa nội dung y khoa.\n- Nếu một mục chỉ có các mục con, đặt \"content\": [].\n- Nếu có phần \"Tài liệu tham khảo\", bỏ khỏi sections và đưa vào \"protocol.source\" (gộp thành một chuỗi, phân tách bằng \" | \").\n\n3) Đầu ra phải là JSON hợp lệ duy nhất (parse được ngay bằng JSON.parse).\n\nDỮ LIỆU VÀO:\n${phacdo}`;
 
         const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
@@ -39,6 +50,9 @@ class PhacDoServices {
         const result = data.candidates[0].content.parts[0].text;
         const jsonResult = result.replace(/```json/g, '').replace(/```/g, '');
         const parsedResult = JSON.parse(jsonResult);
+
+        // Thêm raw phác đồ vào kết quả đã phân tích
+        parsedResult.protocol.raw = phacdo;
 
         // Kiểm tra phác đồ đã tồn tại chưa
         try {
@@ -80,10 +94,22 @@ class PhacDoServices {
 
     // Thêm phác đồ với tùy chọn ghi đè
     async AddPhacDoWithForce(phacdo, forceOverwrite = false) {
+        console.log("AddPhacDoWithForce", phacdo, forceOverwrite);
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) {
             throw new Error("Thiếu biến môi trường GEMINI_API_KEY");
         }
+
+        // Lưu raw phác đồ trước khi xử lý
+        const rawPhacDo = {
+            protocol: {
+                name: "Phác đồ chưa phân tích",
+                code: null,
+                source: null,
+                sections: [],
+                raw: phacdo
+            }
+        };
 
         const prompt = `Bạn là AI NLP y khoa kiêm backend. Hãy phân tích văn bản phác đồ điều trị (tiếng Việt) và CHỈ TRẢ VỀ MỘT JSON HỢP LỆ, KHÔNG THÊM BẤT KỲ VĂN BẢN NÀO KHÁC (không markdown, không code fence, không giải thích).\n\nYÊU CẦU:\n1) Cấu trúc đầu ra:\n{\n  \"protocol\": {\n    \"name\": string,\n    \"code\": string|null,\n    \"source\": string|null,\n    \"sections\": Section[]\n  }\n}\nSection = {\n  \"id\": string,\n  \"title\": string,\n  \"content\": string[],\n  \"children\": Section[]\n}\n\n2) Quy tắc bóc tách:\n- Giữ nguyên phân cấp và thứ tự mục như bản gốc; không được bỏ sót nội dung.\n- Không trộn khóa: chỉ dùng \"children\" (không dùng \"subItems\"/\"nodes\"/\"items\").\n- Chuẩn hóa khoảng trắng; giữ nguyên dấu tiếng Việt; KHÔNG tự ý sửa nội dung y khoa.\n- Nếu một mục chỉ có các mục con, đặt \"content\": [].\n- Nếu có phần \"Tài liệu tham khảo\", bỏ khỏi sections và đưa vào \"protocol.source\" (gộp thành một chuỗi, phân tách bằng \" | \").\n\n3) Đầu ra phải là JSON hợp lệ duy nhất (parse được ngay bằng JSON.parse).\n\nDỮ LIỆU VÀO:\n${phacdo}`;
     
@@ -115,6 +141,9 @@ class PhacDoServices {
         const result = data.candidates[0].content.parts[0].text;
         const jsonResult = result.replace(/```json/g, '').replace(/```/g, '');
         const parsedResult = JSON.parse(jsonResult);
+
+        // Thêm raw phác đồ vào kết quả đã phân tích
+        parsedResult.protocol.raw = phacdo;
 
         // Kiểm tra phác đồ đã tồn tại chưa
         try {
@@ -268,6 +297,16 @@ class PhacDoServices {
             return { success: true, message: "Xóa phác đồ thành công" };
         } catch (error) {
             throw new Error(`Lỗi khi xóa phác đồ: ${error.message}`);
+        }
+    }
+
+    // Xóa tất cả phác đồ
+    async deleteAllPhacDo() {
+        try {
+            const result = await PhacDoModel.deleteMany();
+            return { success: true, message: "Xóa tất cả phác đồ thành công" };
+        } catch (error) {
+            throw new Error(`Lỗi khi xóa tất cả phác đồ: ${error.message}`);
         }
     }
 }

@@ -23,4 +23,7 @@ router.put('/:id', PhacDoController.UpdatePhacDo);
 // Xóa phác đồ theo ID
 router.delete('/:id', PhacDoController.DeletePhacDo);
 
+// Xóa tất cả phác đồ
+router.delete('/', PhacDoController.DeleteAllPhacDo);
+
 module.exports = router;

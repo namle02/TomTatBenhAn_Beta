@@ -90,10 +90,8 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                     LoadingText = "Đã tải dữ liệu bệnh nhân...";
                 }
 
-                System.Diagnostics.Debug.WriteLine("Đã load và xử lý dữ liệu bệnh nhân thành công");
-
                 IsReportReady = true;
-                WeakReferenceMessenger.Default.Send(new NavigationMessage("OpenReport", "ContentVM"));
+               
             }
             catch (Exception ex)
             {

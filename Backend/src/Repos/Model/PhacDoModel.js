@@ -21,6 +21,7 @@ const ProtocolInnerSchema = new mongoose.Schema(
     code: { type: String, default: null, trim: true },
     source: { type: String, default: null, trim: true },
     sections: { type: [SectionSchema], default: [] },
+    raw: { type: String, default: null},
   },
   { _id: false }
 );

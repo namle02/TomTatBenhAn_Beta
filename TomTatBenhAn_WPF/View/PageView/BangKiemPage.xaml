@@ -1,0 +1,934 @@
+<UserControl
+    x:Class="TomTatBenhAn_WPF.View.PageView.BangKiemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TomTatBenhAn_WPF.View.PageView"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="ModernCard" TargetType="materialDesign:Card">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4" />
+        </Style>
+
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#2f84d0" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <Style
+            x:Key="ActionButton"
+            BasedOn="{StaticResource MaterialDesignRaisedButton}"
+            TargetType="Button">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Header Section  -->
+        <materialDesign:Card
+            Grid.Row="0"
+            Background="White"
+            Style="{StaticResource ModernCard}">
+            <StackPanel Margin="24,20">
+                <TextBlock Style="{StaticResource HeaderStyle}" Text="QUẢN LÝ BẢNG KIỂM" />
+                <TextBlock
+                    FontSize="14"
+                    Foreground="Gray"
+                    Text="Bảng kiểm đánh giá tuân thủ quy trình chuyên môn KCB theo phác đồ điều trị"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!--  Action Bar  -->
+        <materialDesign:Card
+            Grid.Row="1"
+            Background="White"
+            Style="{StaticResource ModernCard}">
+            <Grid Margin="24,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Search Box  -->
+                <TextBox
+                    Grid.Column="0"
+                    Margin="0,0,16,0"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Tìm kiếm bảng kiểm..."
+                    materialDesign:HintAssist.IsFloating="True"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    FontSize="14"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                <!--  Action Buttons  -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button
+                        Background="#4CAF50"
+                        Command="{Binding OpenModalAddBangKiemrCommand}"
+                        Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Plus" />
+                            <TextBlock Text="Thêm mới" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Background="#2196F3"
+                        Command="{Binding GetDanhSachBangKiemCommand}"
+                        Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Refresh" />
+                            <TextBlock Text="Làm mới" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <!--  Data Grid  -->
+        <materialDesign:Card
+            Grid.Row="2"
+            Background="White"
+            Style="{StaticResource ModernCard}">
+            <Grid Margin="24">
+                <DataGrid
+                    materialDesign:DataGridAssist.CellPadding="8"
+                    materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    FontSize="14"
+                    GridLinesVisibility="Horizontal"
+                    HeadersVisibility="Column"
+                    ItemsSource="{Binding DanhSachBangKiem}"
+                    SelectionMode="Single">
+
+                    <DataGrid.Columns>
+                        <!--  ID Column  -->
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding BangKiemId}"
+                            Header="ID"
+                            IsReadOnly="True">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <!--  Tên Bảng Kiểm  -->
+                        <DataGridTextColumn
+                            Width="*"
+                            MinWidth="200"
+                            Binding="{Binding TenBangKiem}"
+                            Header="Tên Bảng Kiểm"
+                            IsReadOnly="True">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <!--  Phác Đồ Liên Kết  -->
+                        <DataGridTextColumn
+                            Width="200"
+                            Binding="{Binding TenPhacDo}"
+                            Header="Phác Đồ Liên Kết"
+                            IsReadOnly="True">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+
+
+                        <!--  Ngày Tạo  -->
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}"
+                            Header="Ngày Tạo"
+                            IsReadOnly="True">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <!--  Actions  -->
+                        <DataGridTemplateColumn Width="180" Header="Thao Tác">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <!--  View Button  -->
+                                        <Button
+                                            Margin="2"
+                                            Command="{Binding DataContext.XemNoiDungBangKiemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Xem chi tiết">
+                                            <materialDesign:PackIcon Foreground="#2196F3" Kind="Eye" />
+                                        </Button>
+
+                                        <!--  Delete Button  -->
+                                        <Button
+                                            Margin="2"
+                                            Command="{Binding DataContext.XoaBangKiemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding BangKiemId}"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Xóa">
+                                            <materialDesign:PackIcon Foreground="#F44336" Kind="Delete" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowStyle>
+                        <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
+                            <Setter Property="Height" Value="56" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F5F5F5" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+
+                <!--  Empty State  -->
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding IsEmptyDataGrid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon
+                        Width="64"
+                        Height="64"
+                        Margin="0,0,0,16"
+                        HorizontalAlignment="Center"
+                        Foreground="Gray"
+                        Kind="FileDocumentOutline" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="18"
+                        Foreground="Gray"
+                        Text="Chưa có bảng kiểm nào" />
+                    <TextBlock
+                        Margin="0,8,0,24"
+                        HorizontalAlignment="Center"
+                        FontSize="14"
+                        Foreground="Gray"
+                        Text="Hãy tạo bảng kiểm đầu tiên" />
+                    <Button
+                        Background="#4CAF50"
+                        Command="{Binding DataContext.OpenModalAddBangKiemrCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Content="Tạo Bảng Kiểm"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <!--  Add Bang Kiem Overlay  -->
+        <Grid
+            Grid.RowSpan="3"
+            d:Visibility="Hidden"
+            Background="#80000000"
+            Visibility="{Binding IsAddBangKiem, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <materialDesign:Card Background="White" Style="{StaticResource ModernCard}">
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Header  -->
+                    <StackPanel Grid.Row="0">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="#2f84d0"
+                            Text="Thêm Bảng Kiểm Mới" />
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontSize="14"
+                            Foreground="Gray"
+                            Text="Nhập thông tin bảng kiểm đánh giá tuân thủ phác đồ" />
+                    </StackPanel>
+
+                    <!--  Form Content  -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="0,16">
+                            <!--  Tên Bảng Kiểm  -->
+                            <TextBlock
+                                Margin="0,0,0,4"
+                                FontWeight="Medium"
+                                Text="Tên Bảng Kiểm *" />
+                            <TextBox
+                                Margin="0,0,0,16"
+                                materialDesign:HintAssist.Hint="Nhập tên bảng kiểm..."
+                                materialDesign:HintAssist.IsFloating="True"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding BangKiemMoi.TenBangKiem}" />
+
+                            <!--  Chọn Phác Đồ  -->
+                            <TextBlock
+                                Margin="0,0,0,4"
+                                FontWeight="Medium"
+                                Text="Phác Đồ Liên Kết *" />
+                            <ComboBox
+                                Margin="0,0,0,24"
+                                materialDesign:HintAssist.Hint="Chọn phác đồ..."
+                                DisplayMemberPath="Protocol.Name"
+                                ItemsSource="{Binding DanhSachPhacDo}"
+                                SelectedValue="{Binding SelectedPhacDo, Mode=TwoWay}"
+                                SelectedValuePath="_id"
+                                Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+                            <!--  Hạng Mục 1: Đánh giá và chẩn đoán  -->
+                            <materialDesign:Card
+                                Margin="0,0,0,16"
+                                Background="#F8F9FA"
+                                Style="{StaticResource ModernCard}">
+                                <Grid Margin="16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  Header Hạng Mục  -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#2f84d0"
+                                            Text="1. Đánh giá và chẩn đoán" />
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Background="#4CAF50"
+                                            Command="{Binding ThemHangMucCommand}"
+                                            CommandParameter="1"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                            <materialDesign:PackIcon Kind="Plus" />
+                                        </Button>
+                                    </Grid>
+
+                                    <!--  Danh Sách Nội Dung  -->
+                                    <ItemsControl
+                                        Grid.Row="1"
+                                        Margin="0,8,0,0"
+                                        ItemsSource="{Binding BangKiemMoi.DanhGiaVaChanDoan.DanhSachNoiDung, Mode=TwoWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding DanhSachTieuChi[0].Stt}" />
+                                                    <ComboBox
+                                                        Grid.Column="1"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nội dung kiểm tra"
+                                                        ItemsSource="{Binding DataContext.NoiDungKiemTra, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        SelectedItem="{Binding TenNoiDungKiemTra, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                                                    <TextBox
+                                                        Grid.Column="2"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nhập yêu cầu đạt được..."
+                                                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                        Text="{Binding DanhSachTieuChi[0].YeuCauDatDuoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <CheckBox
+                                                        Grid.Column="3"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Content="Quan trọng"
+                                                        IsChecked="{Binding DanhSachTieuChi[0].IsImportant, Mode=TwoWay}" />
+                                                    <Button
+                                                        Grid.Column="4"
+                                                        Command="{Binding DataContext.XoaNoiDungDanhGiaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Foreground="#F44336"
+                                                        Style="{StaticResource MaterialDesignIconButton}">
+                                                        <materialDesign:PackIcon Kind="Delete" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </materialDesign:Card>
+
+                            <!--  Hạng Mục 2: Điều trị  -->
+                            <materialDesign:Card
+                                Margin="0,0,0,16"
+                                Background="#F8F9FA"
+                                Style="{StaticResource ModernCard}">
+                                <Grid Margin="16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  Header Hạng Mục  -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#2f84d0"
+                                            Text="2. Điều trị" />
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Background="#4CAF50"
+                                            Command="{Binding ThemHangMucCommand}"
+                                            CommandParameter="2"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                            <materialDesign:PackIcon Kind="Plus" />
+                                        </Button>
+                                    </Grid>
+
+                                    <!--  Danh Sách Nội Dung  -->
+                                    <ItemsControl
+                                        Grid.Row="1"
+                                        Margin="0,8,0,0"
+                                        ItemsSource="{Binding BangKiemMoi.DieuTri.DanhSachNoiDung, Mode=TwoWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding DanhSachTieuChi[0].Stt}" />
+                                                    <ComboBox
+                                                        Grid.Column="1"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nội dung kiểm tra"
+                                                        ItemsSource="{Binding DataContext.NoiDungKiemTra, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        SelectedItem="{Binding TenNoiDungKiemTra, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                                                    <TextBox
+                                                        Grid.Column="2"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nhập yêu cầu đạt được..."
+                                                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                        Text="{Binding DanhSachTieuChi[0].YeuCauDatDuoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <CheckBox
+                                                        Grid.Column="3"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Content="Quan trọng"
+                                                        IsChecked="{Binding DanhSachTieuChi[0].IsImportant, Mode=TwoWay}" />
+                                                    <Button
+                                                        Grid.Column="4"
+                                                        Command="{Binding DataContext.XoaNoiDungDieuTriCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Foreground="#F44336"
+                                                        Style="{StaticResource MaterialDesignIconButton}">
+                                                        <materialDesign:PackIcon Kind="Delete" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </materialDesign:Card>
+
+                            <!--  Hạng Mục 3: Chăm sóc  -->
+                            <materialDesign:Card
+                                Margin="0,0,0,16"
+                                Background="#F8F9FA"
+                                Style="{StaticResource ModernCard}">
+                                <Grid Margin="16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  Header Hạng Mục  -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#2f84d0"
+                                            Text="3. Chăm sóc" />
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Background="#4CAF50"
+                                            Command="{Binding ThemHangMucCommand}"
+                                            CommandParameter="3"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                            <materialDesign:PackIcon Kind="Plus" />
+                                        </Button>
+                                    </Grid>
+
+                                    <!--  Danh Sách Nội Dung  -->
+                                    <ItemsControl
+                                        Grid.Row="1"
+                                        Margin="0,8,0,0"
+                                        ItemsSource="{Binding BangKiemMoi.ChamSoc.DanhSachNoiDung, Mode=TwoWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding DanhSachTieuChi[0].Stt}" />
+                                                    <ComboBox
+                                                        Grid.Column="1"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nội dung kiểm tra"
+                                                        ItemsSource="{Binding DataContext.NoiDungKiemTra, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        SelectedItem="{Binding TenNoiDungKiemTra, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                                                    <TextBox
+                                                        Grid.Column="2"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nhập yêu cầu đạt được..."
+                                                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                        Text="{Binding DanhSachTieuChi[0].YeuCauDatDuoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <CheckBox
+                                                        Grid.Column="3"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Content="Quan trọng"
+                                                        IsChecked="{Binding DanhSachTieuChi[0].IsImportant, Mode=TwoWay}" />
+                                                    <Button
+                                                        Grid.Column="4"
+                                                        Command="{Binding DataContext.XoaNoiDungChamSocCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Foreground="#F44336"
+                                                        Style="{StaticResource MaterialDesignIconButton}">
+                                                        <materialDesign:PackIcon Kind="Delete" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </materialDesign:Card>
+
+                            <!--  Hạng Mục 4: Ra viện  -->
+                            <materialDesign:Card
+                                Margin="0,0,0,16"
+                                Background="#F8F9FA"
+                                Style="{StaticResource ModernCard}">
+                                <Grid Margin="16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  Header Hạng Mục  -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#2f84d0"
+                                            Text="4. Ra viện" />
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Background="#4CAF50"
+                                            Command="{Binding ThemHangMucCommand}"
+                                            CommandParameter="4"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                            <materialDesign:PackIcon Kind="Plus" />
+                                        </Button>
+                                    </Grid>
+
+                                    <!--  Danh Sách Nội Dung  -->
+                                    <ItemsControl
+                                        Grid.Row="1"
+                                        Margin="0,8,0,0"
+                                        ItemsSource="{Binding BangKiemMoi.RaVien.DanhSachNoiDung, Mode=TwoWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding DanhSachTieuChi[0].Stt}" />
+                                                    <ComboBox
+                                                        Grid.Column="1"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nội dung kiểm tra"
+                                                        ItemsSource="{Binding DataContext.NoiDungKiemTra, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        SelectedItem="{Binding TenNoiDungKiemTra, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                                                    <TextBox
+                                                        Grid.Column="2"
+                                                        Margin="0,0,8,0"
+                                                        materialDesign:HintAssist.Hint="Nhập yêu cầu đạt được..."
+                                                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                        Text="{Binding DanhSachTieuChi[0].YeuCauDatDuoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <CheckBox
+                                                        Grid.Column="3"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Content="Quan trọng"
+                                                        IsChecked="{Binding DanhSachTieuChi[0].IsImportant, Mode=TwoWay}" />
+                                                    <Button
+                                                        Grid.Column="4"
+                                                        Command="{Binding DataContext.XoaNoiDungRaVienCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Foreground="#F44336"
+                                                        Style="{StaticResource MaterialDesignIconButton}">
+                                                        <materialDesign:PackIcon Kind="Delete" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </materialDesign:Card>
+
+                            <!--  Action Buttons  -->
+                            <StackPanel
+                                Grid.Row="2"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <Button
+                                    Width="100"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding CloseModalAddBangKiemrCommand}"
+                                    Content="Hủy"
+                                    Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                <Button
+                                    Width="120"
+                                    Margin="8,0,0,0"
+                                    Background="#4CAF50"
+                                    Command="{Binding SaveBangKiemCommand}"
+                                    Content="Lưu"
+                                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                            </StackPanel>
+                        </StackPanel>
+
+
+
+                    </ScrollViewer>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <!--  Loading Overlay  -->
+        <Border
+            Grid.RowSpan="3"
+            d:Visibility="Hidden"
+            Background="#80000000"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar
+                        Width="50"
+                        Height="50"
+                        IsIndeterminate="True"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                    <TextBlock
+                        Margin="0,16,0,0"
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Foreground="White"
+                        Text="Đang xử lý..." />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  View Bảng kiểm overlay  -->
+        <Border
+            Grid.RowSpan="3"
+            Margin="10"
+            d:Visibility="Hidden"
+            Background="#80000000"
+            CornerRadius="5"
+            Visibility="{Binding IsViewBangKiem, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Background="#ffffff">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!--  Header tên bảng kiểm  -->
+                <TextBlock
+                    Margin="10"
+                    d:Text="BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB VIÊM RUỘT THỪA (K35.9)"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="#2196F3"
+                    Text="{Binding SelectedBangKiem.TenBangKiem}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+
+                <!--  Datagrid hiển thị nội dung bảng kiểm  -->
+                <materialDesign:Card Grid.Row="1" Style="{StaticResource ModernCard}">
+                    <DataGrid
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        materialDesign:DataGridAssist.CellPadding="8"
+                        materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ColumnWidth="*"
+                        FontSize="18"
+                        GridLinesVisibility="Horizontal"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding DanhSachTieuChiHienThi}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="60"
+                                Binding="{Binding Stt}"
+                                Header="STT"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn
+                                Width="150"
+                                Binding="{Binding TenNoiDungKiemTra}"
+                                Header="Nội dung kiểm tra"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn
+                                Binding="{Binding YeuCauDatDuoc}"
+                                Header="Yêu cầu đạt được"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="AcceptsReturn" Value="True" />
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+
+                            <!--<DataGridTemplateColumn Width="90" Header="Đạt">
+                                    <DataGridTemplateColumn.HeaderStyle>
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                        </Style>
+                                    </DataGridTemplateColumn.HeaderStyle>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                IsChecked="{Binding Dat}"
+                                                IsEnabled="False" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Width="110" Header="Không đạt">
+                                    <DataGridTemplateColumn.HeaderStyle>
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                        </Style>
+                                    </DataGridTemplateColumn.HeaderStyle>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                IsChecked="{Binding KhongDat}"
+                                                IsEnabled="False" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn
+                                    Binding="{Binding LyDoKhongDat}"
+                                    Header="Lý do không đạt"
+                                    IsReadOnly="True">
+                                    <DataGridTextColumn.HeaderStyle>
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                        </Style>
+                                    </DataGridTextColumn.HeaderStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTemplateColumn Width="130" Header="Không áp dụng">
+                                    <DataGridTemplateColumn.HeaderStyle>
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                        </Style>
+                                    </DataGridTemplateColumn.HeaderStyle>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                IsChecked="{Binding KhongApDung}"
+                                                IsEnabled="False" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Width="110" Header="Quan trọng">
+                                    <DataGridTemplateColumn.HeaderStyle>
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="FontSize" Value="14" />
+                                        </Style>
+                                    </DataGridTemplateColumn.HeaderStyle>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                IsChecked="{Binding IsImportant}"
+                                                IsEnabled="False" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </materialDesign:Card>
+
+                <!--  Action Button  -->
+                <StackPanel
+                    Grid.Row="2"
+                    Height="70"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <Button
+                        Width="100"
+                        Height="50"
+                        Margin="10"
+                        Command="{Binding XemNoiDungBangKiemCommand}">
+                        <Button.Content>
+                            <TextBlock
+                                FontSize="18"
+                                Foreground="White"
+                                Text="Đóng" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

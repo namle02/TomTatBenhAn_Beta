@@ -23,6 +23,7 @@
                 Margin="20,0,0,0"
                 DockPanel.Dock="Left"
                 Orientation="Horizontal">
+                <ToggleButton IsChecked="{Binding IsOpenSideBar}" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
                 <Image
                     Height="30"
                     Margin="20,0,10,0"
@@ -32,7 +33,7 @@
                     FontFamily="Times New Roman"
                     FontSize="25"
                     FontWeight="Bold"
-                    Text="AI TÓM TẮT BỆNH ÁN" />
+                    Text="AI TÓM TẮT BỆNH ÁN VÀ ĐÁNH GIÁ TUÂN THỦ PHÁC ĐỒ" />
             </StackPanel>
 
             <!--  Tìm kiếm bệnh nhân  -->

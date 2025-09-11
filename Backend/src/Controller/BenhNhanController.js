@@ -1,4 +1,5 @@
 const BenhNhanServices = require('../Services/BenhNhanServices');
+const ApiResponse = require('../Utils/ApiResponse');
 
 class BenhNhanController {
     
@@ -9,53 +10,42 @@ class BenhNhanController {
             
             // Validate dữ liệu cơ bản
             if (!benhNhanData || Object.keys(benhNhanData).length === 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Dữ liệu bệnh nhân không được để trống',
-                    data: null
-                });
+                return ApiResponse.badRequest('Dữ liệu bệnh nhân không được để trống').send(res);
             }
 
             const result = await BenhNhanServices.saveBenhNhan(benhNhanData);
             
-            return res.status(200).json(result);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            } else {
+                return ApiResponse.error(result.message, 400).send(res);
+            }
         } catch (error) {
             console.error('Lỗi trong saveBenhNhan:', error);
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-                data: null
-            });
+            return ApiResponse.error(`Lỗi khi lưu bệnh nhân: ${error.message}`, 500).send(res);
         }
     }
 
     // Tìm kiếm bệnh nhân theo số bệnh án
     async getBenhNhanBySoBenhAn(req, res) {
         try {
+            console.log('đã nhận yêu cầu lấy bệnh nhân theo số bệnh án');
             const { soBenhAn } = req.params;
             
             if (!soBenhAn) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Số bệnh án không được để trống',
-                    data: null
-                });
+                return ApiResponse.badRequest('Số bệnh án không được để trống').send(res);
             }
 
             const result = await BenhNhanServices.findBenhNhanBySoBenhAn(soBenhAn);
             
-            if (!result.success) {
-                return res.status(404).json(result);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            } else {
+                return ApiResponse.notFound(result.message).send(res);
             }
-            
-            return res.status(200).json(result);
         } catch (error) {
             console.error('Lỗi trong getBenhNhanBySoBenhAn:', error);
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-                data: null
-            });
+            return ApiResponse.error(`Lỗi khi tìm kiếm bệnh nhân: ${error.message}`, 500).send(res);
         }
     }
 
@@ -67,14 +57,14 @@ class BenhNhanController {
             
             const result = await BenhNhanServices.getAllBenhNhan(page, limit);
             
-            return res.status(200).json(result);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            } else {
+                return ApiResponse.error(result.message, 400).send(res);
+            }
         } catch (error) {
             console.error('Lỗi trong getAllBenhNhan:', error);
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-                data: null
-            });
+            return ApiResponse.error(`Lỗi khi lấy danh sách bệnh nhân: ${error.message}`, 500).send(res);
         }
     }
 
@@ -84,27 +74,19 @@ class BenhNhanController {
             const { id } = req.params;
             
             if (!id) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'ID bệnh nhân không được để trống',
-                    data: null
-                });
+                return ApiResponse.badRequest('ID bệnh nhân không được để trống').send(res);
             }
 
             const result = await BenhNhanServices.deleteBenhNhan(id);
             
-            if (!result.success) {
-                return res.status(404).json(result);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            } else {
+                return ApiResponse.notFound(result.message).send(res);
             }
-            
-            return res.status(200).json(result);
         } catch (error) {
             console.error('Lỗi trong deleteBenhNhan:', error);
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-                data: null
-            });
+            return ApiResponse.error(`Lỗi khi xóa bệnh nhân: ${error.message}`, 500).send(res);
         }
     }
 
@@ -114,23 +96,19 @@ class BenhNhanController {
             const { tenBN } = req.query;
             
             if (!tenBN) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Tên bệnh nhân không được để trống',
-                    data: null
-                });
+                return ApiResponse.badRequest('Tên bệnh nhân không được để trống').send(res);
             }
 
             const result = await BenhNhanServices.findBenhNhanByName(tenBN);
             
-            return res.status(200).json(result);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            } else {
+                return ApiResponse.error(result.message, 400).send(res);
+            }
         } catch (error) {
             console.error('Lỗi trong getBenhNhanByName:', error);
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-                data: null
-            });
+            return ApiResponse.error(`Lỗi khi tìm kiếm bệnh nhân theo tên: ${error.message}`, 500).send(res);
         }
     }
 }

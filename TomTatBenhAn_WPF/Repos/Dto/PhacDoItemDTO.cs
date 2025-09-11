@@ -1,25 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TomTatBenhAn_WPF.Repos.Dto
 {
     public partial class PhacDoItemDTO : ObservableObject
     {
-        [ObservableProperty] private string _id = string.Empty;
+        public string _id { get; set; } = string.Empty;
         [ObservableProperty] private ProtocolDTO protocol = new();
         [ObservableProperty] private DateTime createdAt;
         [ObservableProperty] private DateTime updatedAt;
-    }
 
+    }
     public partial class ProtocolDTO : ObservableObject
     {
         [ObservableProperty] private string name = string.Empty;
         [ObservableProperty] private string? code = null;
         [ObservableProperty] private string? source = null;
+        public string raw { get; set; } = string.Empty;
         [ObservableProperty] private List<SectionDTO> sections = new();
     }
 

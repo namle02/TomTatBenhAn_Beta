@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Repos._Model.PatientData;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
@@ -23,6 +24,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
         public async Task<PatientAllData> GetAllPatientData(string SoBenhAn)
         {
             string connectionString = _configServices.Get("Db_String")!;
+            connectionString += ";Connect Timeout=10";
 
             PatientAllData patient = new PatientAllData();
             using (SqlConnection connection = new SqlConnection(connectionString))

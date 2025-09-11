@@ -7,7 +7,7 @@ using TomTatBenhAn_WPF.Services.Interface;
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
 {
-    public partial class HeaderViewModel : ObservableObject
+    public partial class HeaderViewModel : ObservableObject, IRecipient<SideBarStateMessage>
     {
         private readonly IBenhNhanService _benhNhanService;
 
@@ -17,9 +17,13 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         [ObservableProperty]
         private bool isSearching = false;
 
+        [ObservableProperty]
+        private bool isOpenSideBar;
+
         public HeaderViewModel(IBenhNhanService benhNhanService)
         {
             _benhNhanService = benhNhanService ?? throw new ArgumentNullException(nameof(benhNhanService));
+            WeakReferenceMessenger.Default.RegisterAll(this);
         }
 
         [RelayCommand]
@@ -37,10 +41,10 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         private async Task SearchPatient()
         {
             var soBenhAnTrimmed = SoBenhAn?.Trim();
-            
+
             if (string.IsNullOrEmpty(soBenhAnTrimmed))
             {
-                MessageBox.Show("Vui lòng nhập số bệnh án!", "Thông báo", 
+                MessageBox.Show("Vui lòng nhập số bệnh án!", "Thông báo",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -48,7 +52,7 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
             try
             {
                 IsSearching = true;
-                
+
                 // Hiển thị loading
                 WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(true));
 
@@ -59,22 +63,22 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 {
                     // Gửi dữ liệu bệnh nhân về ContentViewModel
                     WeakReferenceMessenger.Default.Send(new SendPatientDataMessage(result.Data));
-                    
-                    MessageBox.Show("✅ Tìm thấy thông tin bệnh nhân!", "Thành công", 
+
+                    MessageBox.Show("✅ Tìm thấy thông tin bệnh nhân!", "Thành công",
                         MessageBoxButton.OK, MessageBoxImage.Information);
-                    
+
                     // Xóa text trong ô tìm kiếm
                     SoBenhAn = string.Empty;
                 }
                 else
                 {
-                    MessageBox.Show($"❌ Không tìm thấy bệnh nhân với số bệnh án: {soBenhAnTrimmed}", "Không tìm thấy", 
+                    MessageBox.Show($"❌ Không tìm thấy bệnh nhân với số bệnh án: {soBenhAnTrimmed}", "Không tìm thấy",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"🛑 Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"🛑 Lỗi khi tìm kiếm: {ex.Message}", "Lỗi",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
@@ -83,6 +87,16 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
                 // Ẩn loading
                 WeakReferenceMessenger.Default.Send(new LoadingStatusMessage(false));
             }
+        }
+
+        partial void OnIsOpenSideBarChanged(bool oldValue, bool newValue)
+        {
+            WeakReferenceMessenger.Default.Send<SideBarStateMessage>(new SideBarStateMessage(newValue));
+        }
+
+        public void Receive(SideBarStateMessage message)
+        {
+            IsOpenSideBar = message.isOpen;
         }
     }
 }
