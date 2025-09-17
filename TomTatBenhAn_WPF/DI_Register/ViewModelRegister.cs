@@ -11,12 +11,15 @@ namespace TomTatBenhAn_WPF.DI_Register
         public static void Register(IServiceCollection services)
         {
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<SideBarViewModel>();
-            services.AddSingleton<ContentViewModel>();
-            services.AddSingleton<HeaderViewModel>();
-            services.AddSingleton<TomTatBenhAnVM>();
-            services.AddSingleton<PhacDoVM>();
-            services.AddSingleton<ReportPageViewModel>();
+            services.AddTransient<SideBarViewModel>();
+            services.AddTransient<ContentViewModel>();
+            services.AddTransient<HeaderViewModel>();
+            services.AddTransient<TomTatBenhAnVM>();
+            services.AddTransient<PhacDoVM>();
+            services.AddTransient<SideBarNavigationViewModel>();
+            services.AddTransient<BangKiemVM>();
+            services.AddTransient<KiemTraPhacDoVM>();
+            services.AddTransient<DashBoardVM>();
         }
     }
 }

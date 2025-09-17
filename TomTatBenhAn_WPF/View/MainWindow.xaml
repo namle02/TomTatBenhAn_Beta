@@ -13,23 +13,45 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="35" />
-        </Grid.RowDefinitions>
+
+    <materialDesign:DrawerHost
+        x:Name="DrawerHost"
+        BorderBrush="{DynamicResource MaterialDesignDivider}"
+        BorderThickness="2"
+        BottomDrawerBackground="{DynamicResource SecondaryHueLightBrush}"
+        BottomDrawerCornerRadius="20 20 0 0"
+        IsLeftDrawerOpen="{Binding IsSideBarOpen}">
+        <materialDesign:DrawerHost.Style>
+            <Style BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}" TargetType="materialDesign:DrawerHost">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=BackgroundToggle}" Value="True">
+                        <Setter Property="OverlayBackground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </materialDesign:DrawerHost.Style>
+        <materialDesign:DrawerHost.LeftDrawerContent>
+            <control:NavigationSideBar DataContext="{Binding SideBaerNavigation}" />
+        </materialDesign:DrawerHost.LeftDrawerContent>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
 
 
-        <!--  HEADER  -->
-        <control:Header />
+            <!--  HEADER  -->
+            <control:Header DataContext="{Binding HeaderViewModel}" />
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
 
-        <!--  FOOTER  -->
-        <control:Footer
-            Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="2" />
-    </Grid>
+            <!--  FOOTER  -->
+            <control:Footer
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2" />
+        </Grid>
+    </materialDesign:DrawerHost>
+
 </Window>

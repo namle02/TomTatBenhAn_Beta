@@ -1,17 +1,18 @@
 const PhacDoServices = require('../Services/PhacDoServices');
+const ApiResponse = require('../Utils/ApiResponse');
 
-
+// Thêm phác đồ
 const AddPhacDo = async (req, res) => {
     try {
         // Xử lý cả text thuần và JSON
         let phacDoText;
         let force = false;
-        
+
         // Kiểm tra force từ query parameter trước (ưu tiên cao hơn)
         if (req.query.force === 'true' || req.query.force === true) {
             force = true;
         }
-        
+
         if (typeof req.body === 'string') {
             // Request dạng text/plain
             phacDoText = req.body;
@@ -25,28 +26,22 @@ const AddPhacDo = async (req, res) => {
             }
             console.log("Nhận phác đồ dạng JSON, force:", force);
         } else {
-            return res.status(400).json({
-                success: false,
-                message: "Thiếu dữ liệu phác đồ (Rawtext hoặc text/plain)"
-            });
+            return ApiResponse.badRequest("Thiếu dữ liệu phác đồ (Rawtext hoặc text/plain)").send(res);
         }
-        
+
         // Sử dụng method mới có hỗ trợ force
         const result = await PhacDoServices.AddPhacDoWithForce(phacDoText, force);
-        
+
         // Trả về status code khác nhau tùy theo kết quả
         if (result.success) {
-            res.status(200).json(result);
+            return ApiResponse.success(result.data, result.message).send(res);
         } else {
             // Phác đồ đã tồn tại và không force
-            res.status(409).json(result); // 409 Conflict
+            return ApiResponse.error(result.message, 409).send(res);
         }
-    } catch(ex) {
+    } catch (ex) {
         console.error("Lỗi AddPhacDo:", ex);
-        res.status(400).json({
-            success: false,
-            message: `Lỗi khi phân tích phác đồ: ${ex.message}`
-        });
+        return ApiResponse.error(`Lỗi khi phân tích phác đồ: ${ex.message}`, 400).send(res);
     }
 }
 
@@ -54,17 +49,10 @@ const AddPhacDo = async (req, res) => {
 const GetAllPhacDo = async (req, res) => {
     try {
         const protocols = await PhacDoServices.getAllPhacDo();
-        res.status(200).json({
-            success: true,
-            message: "Lấy danh sách phác đồ thành công",
-            data: protocols
-        });
+        return ApiResponse.success(protocols, "Lấy danh sách phác đồ thành công").send(res);
     } catch (error) {
         console.error("Lỗi GetAllPhacDo:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
+        return ApiResponse.error(error.message, 400).send(res);
     }
 };
 
@@ -127,6 +115,20 @@ const DeletePhacDo = async (req, res) => {
     }
 };
 
+// Xóa tất cả phác đồ
+const DeleteAllPhacDo = async (req, res) => {
+    try {
+        const result = await PhacDoServices.deleteAllPhacDo();
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Lỗi DeleteAllPhacDo:", error);
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 // Kiểm tra phác đồ có tồn tại hay không
 const CheckProtocolExists = async (req, res) => {
     try {
@@ -137,9 +139,9 @@ const CheckProtocolExists = async (req, res) => {
                 message: "Thiếu tham số 'name' để kiểm tra"
             });
         }
-        
+
         const existingProtocol = await PhacDoServices.checkProtocolExists(name, code);
-        
+
         if (existingProtocol) {
             res.status(200).json({
                 success: true,
@@ -168,14 +170,14 @@ const UpdatePhacDo = async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
-        
+
         if (!updateData || Object.keys(updateData).length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Thiếu dữ liệu để cập nhật"
             });
         }
-        
+
         const result = await PhacDoServices.updateExistingProtocol(id, updateData);
         res.status(200).json(result);
     } catch (error) {
@@ -194,5 +196,6 @@ module.exports = {
     SearchPhacDo,
     DeletePhacDo,
     CheckProtocolExists,
-    UpdatePhacDo
+    UpdatePhacDo,
+    DeleteAllPhacDo
 }

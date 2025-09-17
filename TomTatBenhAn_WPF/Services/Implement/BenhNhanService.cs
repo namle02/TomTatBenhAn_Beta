@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
+using TomTatBenhAn_WPF.Core;
 
 namespace TomTatBenhAn_WPF.Services.Implement
 {
@@ -42,24 +43,16 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return result ?? new ApiResponse<PatientAllData> { Success = false, Message = "Lỗi khi parse response" };
+                    return result ?? ApiResponse<PatientAllData>.ErrorResult("Lỗi khi parse response");
                 }
                 else
                 {
-                    return new ApiResponse<PatientAllData>
-                    {
-                        Success = false,
-                        Message = $"API Error: {response.StatusCode} - {responseContent}"
-                    };
+                    return ApiResponse<PatientAllData>.ErrorResult($"API Error: {response.StatusCode} - {responseContent}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<PatientAllData>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi lưu bệnh nhân: {ex.Message}"
-                };
+                return ApiResponse<PatientAllData>.ErrorResult($"Lỗi khi lưu bệnh nhân: {ex.Message}");
             }
         }
 
@@ -76,7 +69,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return result ?? new ApiResponse<PatientAllData> { Success = false, Message = "Lỗi khi parse response" };
+                    return result ?? ApiResponse<PatientAllData>.ErrorResult("Lỗi khi parse response");
                 }
                 else
                 {
@@ -84,20 +77,12 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return errorResult ?? new ApiResponse<PatientAllData>
-                    {
-                        Success = false,
-                        Message = $"API Error: {response.StatusCode}"
-                    };
+                    return errorResult ?? ApiResponse<PatientAllData>.ErrorResult($"API Error: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<PatientAllData>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi tìm kiếm bệnh nhân: {ex.Message}"
-                };
+                return ApiResponse<PatientAllData>.ErrorResult($"Lỗi khi tìm kiếm bệnh nhân: {ex.Message}");
             }
         }
 
@@ -114,24 +99,16 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return result ?? new ApiResponse<List<PatientAllData>> { Success = false, Message = "Lỗi khi parse response" };
+                    return result ?? ApiResponse<List<PatientAllData>>.ErrorResult("Lỗi khi parse response");
                 }
                 else
                 {
-                    return new ApiResponse<List<PatientAllData>>
-                    {
-                        Success = false,
-                        Message = $"API Error: {response.StatusCode} - {responseContent}"
-                    };
+                    return ApiResponse<List<PatientAllData>>.ErrorResult($"API Error: {response.StatusCode} - {responseContent}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<PatientAllData>>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi lấy danh sách bệnh nhân: {ex.Message}"
-                };
+                return ApiResponse<List<PatientAllData>>.ErrorResult($"Lỗi khi lấy danh sách bệnh nhân: {ex.Message}");
             }
         }
 
@@ -148,24 +125,16 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return result ?? new ApiResponse<bool> { Success = false, Message = "Lỗi khi parse response" };
+                    return result ?? ApiResponse<bool>.ErrorResult("Lỗi khi parse response");
                 }
                 else
                 {
-                    return new ApiResponse<bool>
-                    {
-                        Success = false,
-                        Message = $"API Error: {response.StatusCode} - {responseContent}"
-                    };
+                    return ApiResponse<bool>.ErrorResult($"API Error: {response.StatusCode} - {responseContent}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi xóa bệnh nhân: {ex.Message}"
-                };
+                return ApiResponse<bool>.ErrorResult($"Lỗi khi xóa bệnh nhân: {ex.Message}");
             }
         }
 
@@ -182,24 +151,16 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
-                    return result ?? new ApiResponse<List<PatientAllData>> { Success = false, Message = "Lỗi khi parse response" };
+                    return result ?? ApiResponse<List<PatientAllData>>.ErrorResult("Lỗi khi parse response");
                 }
                 else
                 {
-                    return new ApiResponse<List<PatientAllData>>
-                    {
-                        Success = false,
-                        Message = $"API Error: {response.StatusCode} - {responseContent}"
-                    };
+                    return ApiResponse<List<PatientAllData>>.ErrorResult($"API Error: {response.StatusCode} - {responseContent}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<PatientAllData>>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi tìm kiếm bệnh nhân theo tên: {ex.Message}"
-                };
+                return ApiResponse<List<PatientAllData>>.ErrorResult($"Lỗi khi tìm kiếm bệnh nhân theo tên: {ex.Message}");
             }
         }
 
@@ -209,3 +170,4 @@ namespace TomTatBenhAn_WPF.Services.Implement
         }
     }
 }
+ 
