@@ -1,5 +1,6 @@
 ﻿using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Repos._Model.PatientData;
+using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo;
 
 namespace TomTatBenhAn_WPF.Repos.Mappers.Interface
 {
@@ -10,14 +11,6 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Interface
 
     }
 
-    //public enum BenhAnType
-    //{
-    //    BenhAnBong, BenhAnMat, BenhAnNgoaiKhoa, BenhAnNhiKhoa, BenhAnNoiKhoa, 
-    //    BenhAnPHCN_NoiTru, BenhAnPhuKhoa, BenhAnRangHamMat, BenhAnSanKhoa, 
-    //    BenhAnSoSinh, BenhAnTaiMuiHong, BenhAnTamBenh, BenhAnTruyenNhiem, 
-    //    BenhAnUngBuou, BenhAnYHCT_NgoaiTruMoi, BenhAnYHCT_NoiTruMoi, 
-    //    KhamBenhVaoVien
-    //}
     public interface IDataMapper
     {
         /// <summary>
@@ -33,6 +26,8 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Interface
         /// <param name="MaYTe"></param>
         /// <returns></returns>
         Task<List<BenhAnIdModel>> GetBenhAnList(string MaYTe);
+
+        Task<PatientPhacDoAllData> GetAllPatientPhacDoData(string SoBenhAn);
     }
 }
 

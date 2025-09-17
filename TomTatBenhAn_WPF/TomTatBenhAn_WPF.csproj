@@ -37,6 +37,10 @@
     <None Remove="SqlScripts\BenhAnType\KhamBenhVaoVien.sql" />
     <None Remove="SqlScripts\DienBien.sql" />
     <None Remove="SqlScripts\KetQuaXetNghiemCLS.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruChamSoc.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruCLS.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruKhamBenh.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruToaThuoc.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -106,6 +110,10 @@
   <ItemGroup>
 	  <EmbeddedResource Include="SqlScripts\ChanDoanICD.sql" />
 	  <EmbeddedResource Include="SqlScripts\DienBien.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruChamSoc.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruCLS.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruKhamBenh.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruToaThuoc.sql" />
 	  <EmbeddedResource Include="SqlScripts\ThongTinHanhChinh.sql" />
 	  <EmbeddedResource Include="SqlScripts\KetQuaXetNghiemCLS.sql" />
   </ItemGroup>

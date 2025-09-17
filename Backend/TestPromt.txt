@@ -1,0 +1,4268 @@
+Bạn là hệ thống đánh giá tuân thủ phác đồ điều trị.  
+Nhiệm vụ của bạn:
+
+1. Đọc **JSON phác đồ chuẩn** và **JSON hồ sơ bệnh nhân** ở dưới.  
+2. Với mỗi "danhSachTieuChi" trong phác đồ:  
+   - Nếu trong hồ sơ có bằng chứng thỏa mãn yêu cầu → đánh dấu `"dat": true`.  
+   - Nếu có dữ liệu nhưng không đạt yêu cầu → `"khongDat": true` và điền `"lyDoKhongDat"`.  
+   - Nếu tiêu chí không áp dụng cho ca bệnh → `"khongApDung": true`.  
+   - Nếu không tìm thấy dữ liệu liên quan → `"khongDat": true` và `"lyDoKhongDat": "Không tìm thấy dữ liệu trong hồ sơ"`.  
+3. Với mỗi tiêu chí, phải trả về nguyên cấu trúc JSON của tiêu chí trong phác đồ, chỉ cập nhật các field `dat`, `khongDat`, `khongApDung`, `lyDoKhongDat`.  
+4. Output cuối cùng phải giữ nguyên schema của **bảng kiểm phác đồ** (y như ví dụ ở dưới), không thêm văn bản, không giải thích.  
+5. Tuyệt đối không bịa: mọi đánh giá phải có bằng chứng trích từ hồ sơ JSON.  
+Dữ liệu phác đồ chuẩn (JSON)
+SỎI NIỆU QUẢN
+(N20.1)
+
+1. Định nghĩa
+Sỏi niệu quản được hình thành chủ yếu do sỏi di chuyển từ thận xuống, sẽ được tống ra ngoài theo đường tự nhiên. Một số còn lại sẽ dừng lại ở bất kỳ vị trí nào của niệu quản. Hoặc sỏi niệu quản có thể được hình thành tại chỗ do có dị dạng và biến đổi giải phẫu bất thường của niệu quản.
+Sỏi niệu quản không được chẩn đoán và điều trị kịp thời dễ gây ra những biến chứng nặng nề và ảnh hưởng nhanh chóng đến chức năng thận.
+2. Chẩn đoán
+2.1. Lâm sàng
+a) Cơ năng
+- Đau thắt lưng, mạng sườn lan xuống bộ phận sinh dục ngoài hoặc có cơn đau quặn thận. 
+- Có thể đái máu
+- Trường hợp có nhiễm khuẩn đường tiết niệu: Có thể đái buốt, đái rắt, đái đục, sốt cao, rét run.
+- Có thể vô niệu 
+- Một số trường hợp không điển hình được phát hiện tình cờ.
+b) Thực thể
+- Nắn mạng sườn, thắt lưng có thể đau hoặc bụng chướng 
+- Trường hợp thận to: Chạm thận (+), bập bềnh thận (+)
+2.2. Cận lâm sàng
+a) Các xét nghiệm, cận lâm sàng để chẩn đoán bệnh.
+- XQ bụng không chuẩn bị:Phần lớn có sỏi cản quang trên đường đi của niệu quản.
+- Siêu âm: Có thể thấy giãn đài - bể thận, niệu quản, hình ảnh sỏi niệu quản.
+- CT Scanner ổ bụng.
+- Hoá sinh: Ure, creatinin, protein, albumin, SGOT, SGPT, glucose, điện giải đồ, cholesterol, LDL, HDL, Triglycerid.
+- Tổng phân tích nước tiểu.
+- Nuôi cấy nước tiểu, kháng sinh đồ.
+- Huyết học: Tổng phân tích tế bào máu, nhóm máu ABO - Rh, máu lắng.
+b) Các xét nghiệm, cận lâm sàng để điều trị, chăm sóc và theo dõi.
+- Đông - cầm máu: APTT, PT, Fibrinogen, INR. 
+- HBsAg, HIV, HCV (Khi nghi ngờ phơi nhiễm). 
+- X.Quang phổi, điện tim.
+2.3. Chẩn đoán phân biệt
+- Thủng dạ dày
+- Viêm đại tràng co thắt 
+- Viêm ruột thừa 
+- Viêm túi mật 
+- Viêm phần phụ...
+2.4. Biến chứng
+- Nhiễm khuẩn tiết niệu
+- Thận ứ nước
+- Thận xơ hóa, teo lại do nhiễm khuẩn
+- Thận ứ mủ
+- Suy thận cấp, suy thận mạn
+- Vô niệu
+3. Điều trị
+3.1. Nguyên tắc điều trị
+- Điều trị triệu chứng
+- Điều trị triệt để
+3.2. Điều trị cụ thể
+3.2.1. Điều trị nội khoa
+- Giảm đau, hạ sốt: Lựa chọn 1 trong các thuốc sau: Diclofenac, Paracetamol, giảm đau, giãn cơ trơn hoặc phối hợp khi có cơn đau quặn thận.
+- Kháng sinh chỉ định khi có dấu hiệu nhiễm khuẩn: Khi chưa có kháng sinh đồ lựa chọn 1 trong các thuốc sau: Ciprofloxacin, Ceftazidim, Amikacin.
+Khi có kháng sinh đồ lựa chọn theo kháng sinh đồ.
+3.2.2. Điều trị ngoại khoa
+a) Tán sỏi ngoài cơ thể 
+- Sỏi ở mọi vị trí của niệu quản, kích thước 0,5 - 1,5 cm.
+- Chức năng thận bên sỏi niệu quản cần tán còn tốt hoặc trung bình. 
+- Niệu quản bên tán sỏi lưu thông tốt.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh ổn định.
+b) Tán sỏi nội soi bằng Laser 
+- Sỏi ở đoạn tiểu khung (1/3 dưới), đoạn khớp cùng chậu (1/3 giữa), 1/3 trên.
+- Kích thước sỏi ≤ 1,5 cm.
+- Chức năng thận bên sỏi còn.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh.
+c) Tán sỏi nội soi qua da 
+- Sỏi niệu quản bể thận.
+- Kích thước sỏi >1cm
+- Sỏi niệu quản 1/3 trên kèm sỏi thận.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh
+d) Phẫu thuật lấy sỏi 
+Trường hợp không có chỉ định tán sỏi ngoài cơ thể và tán sỏi nội soi hoặc không chấp nhận phương pháp tán sỏi.
+- Phẫu thuật nội soi sau phúc mạc lấy sỏi: Sỏi niệu quản 1/3 trên, kích thước sỏi ≥ 1cm.
+- Phẫu thuật nội soi qua ổ bụng lấy sỏi: Sỏi niệu quản 1/3 giữa hoặc dưới kích thước sỏi ≥ 1cm.
+- Phẫu thuật mở lấy sỏi: Sỏi niệu quản kèm theo có hẹp niệu quản hoặc nội soi niệu quản thất bại. 
+e) Phẫu thuật cắt thận
+- Thận mất chức năng, thận ứ mủ. 
++ Chức năng thận bên kia còn tốt.
+f) Phẫu thuật nội soi cắt thận
+Thận mất chức năng, ứ nước, thận bên kia chức năng tốt.
+g) Nội soi đặt sonde JJ niệu quản cấp cứu: 
+- Sỏi niệu quản 2 bên gây suy thận cấp
+- Sỏi niệu quản 1 bên gây ứ mủ thận, sốc nhiễm khuẩn, nhiễm trùng điều trị nội khoa không có kết quả.
+h) Thuốc 
+- Kháng sinh dự phòng: Cefazolin x 2g, tiêm tĩnh mạch chậm trong vòng 30 phút trước khi rạch da hoặc nội soi.
+- Kháng sinh thay thế khi dị ứng Penicilin: Gentamicin x 5mg/kg, tiêm tĩnh mạch chậm trong vòng 30 phút trước khi rạch da hoặc nội soi.
+- Kháng sinh khi có chỉ định tán sỏi qua da: Ciprofloxacin (Trước phẫu thuật)
+- Dịch truyền: Natri clorid 0,9%, Glucose 5%, Ringer lactate.
+- Giảm đau: lựa chọn 1 trong các thuốc sau: Morphin, Paracetamol, Diclofenac hoặc phối hợp (Trường hợp tán sỏi ngoài cơ thể dùng trước khi tán sỏi 1h).
+- An thần: Diazepam 5mg x 02 viên, uống tối ngày trước phẫu thuật.
+- Thuốc chuẩn bị trước phẫu thuật: Glycerol 9g x 2 tuyp thụt hậu môn, sáng ngày phẫu thuật. Ciprofloxacin truyền TM sáng ngày phẫu thuật tán sỏi qua da
+- Kháng sinh phối hợp sau phẫu thuật tán sỏi qua da: Ciprofloxacin phối hợp Cefalosporin hoặc Amikacin
+4. Theo dõi
+4.1. Theo dõi lâm sàng
+4.1.1. Trước phẫu thuật
+- Theo dõi DHST 1 lần/ngày (nếu không có tăng HA, tim mạch), hoặc theo chỉ định
+- Tình trạng đau mạng sườn và thắt lưng
+- Tình trạng tiểu máu, tiểu buốt, dắt
+4.1.2 Sau thủ thuật, phẫu thuật
+a) Theo dõi DHST
+- Giai đoạn hồi tỉnh: DHST, SP02, tri giác 15-30 phút/lần
+* Tán sỏi nội soi bằng Laser 
+- Giai đoạn sau hồi tỉnh: DHST 2h/lần trong 4h đầu, tiếp theo 6h/lần hết ngày đầu sau phẫu thuật, những ngày sau 1 lần/ngày(nếu không có bệnh HA, tim mạch) hoặc theo chỉ định.
+* Tán sỏi nội soi sau phúc mạc
+- Giai đoạn sau hồi tỉnh: 2h/lần trong 4h đầu, tiếp theo 6h/lần hết ngày thứ 2, ngày thứ 3 theo dõi 1lần/ngày(nếu không có bệnh HA, tim mạch, hoặc theo chỉ định)
+* Sau tán sỏi ngoài cơ thể
+- Dấu hiệu sinh tồn 1 lần/ngày
+b) Các tai biến, biến chứng sau phẫu thuật
+- Các tai biến sau gây mê: Co thắt thanh quản, tụt lưỡi, tụt huyết áp,...
+- Giai đoạn hồi tỉnh: Da và niêm mạc, dẫn lưu,nước tiểu: màu sắc, số lượng.
+- Tình trạng vết mổ: đau, chảy máu vết mổ
+c) Theo dõi ăn uống, dịch vào ra, đại tiểu tiện.
+- Tình trạng ăn uống, đại tiện
+d) Tình trạng bụng
+- Đau vết mổ, trung và đại tiện
+- Dẫn lưu số lượng, màu sắc.
+- Nước tiểu: số lượng, màu sắc trong 2 ngày đầu sau phẫu thuật (nội soi sau phúc mạc). Nội soi bằng Lazer theo dõi nước tiểu ngày đầu sau phẫu thuật.
+4.2. Theo dõi cận lâm sàng
+ - Xét nghiệm huyết học, sinh hóa máu, siêu âm ổ bụng, XQ bụng sau 2-3 ngày sau mổ, trường hợp tán sỏi ngoài cơ thể sau 10 ngày.
+5. Chăm sóc
+5.1. Phân cấp chăm sóc
+- Chăm sóc cấp 1: Giai đoạn hồi tỉnh và sau hồi tỉnh 2h.
+- Chăm sóc cấp 2: Từ giờ thứ 3 đến hết ngày thứ 2 sau phẫu thuật (phẫu thuật nội soi sau phúc mạc lấy sỏi)
++ Từ giờ thứ 3 đến ngày đầu sau phẫu thuật (nội soi tán sỏi Lazer). 
+- Chăm sóc cấp 3: Trước phẫu thuật và đến hết ngày thứ 2 sau phẫu thuật (nếu phẫu thuật mở, nội soi sau phúc mạc); Nội soi tán sỏi lazer từ ngày thứ 2 sau phẫu thuật
+5.2. Chế độ dinh dưỡng
+- Trước phẫu thuật: Ăn uống theo nhu cầu; Nhịn ăn uống trước phẫu thuật 6h .
+- Uống Carbonhydrat trước phẫu thuật theo chỉ định
+- Sau phẫu thuật: Ăn lỏng sau phẫu thuật 6-8h hoặc khi tỉnh hẳn, từ ngày thứ 2 ăn uống theo nhu cầu, uống 2l nước/ ngày
+- Ăn tăng đạm thịt cá, tôm cua… ăn thêm hoa quả, rau xanh tránh táo bón
+5.3. Các chăm sóc cần thiết
+a) Trước phẫu thuật, thủ thuật 
+- Chuẩn bị người bệnh theo hướng dẫn.
+b) Sau phẫu thuật, thủ thuật
+- Theo dõi toàn trạng: DHST
+- Tập PHCN
++ Vận động sớm sau mổ
++ Trường hợp gây tê tủy sống/ngoài màng cứng: Nằm đầu bằng trong vòng 8-10h.
++ Người bệnh nội soi tán sỏi Lazer ngồi dậy đi lại khi hết dịch truyền
++ Phẫu thuật nội soi sau phúc mạc lấy sỏi, mổ mở: Ngày đầu người bệnh vận động tại giường, từ ngày thứ 2 trở đi người bệnh ngồi dậy đi lại nhẹ nhàng. Trường hợp bất thường theo chỉ định bác sĩ.
++ Tập ho, thở khi có bội nhiễm phổi
+- Thay băng vết mổ, cắt chỉ sau 5-7 ngày.
+- Chăm sonde sonde bàng quang: Vệ sinh sonde tiểu ngày 1 lần hoặc khi bẩn
+- Rút dẫn lưu, sonde bàng quang sau 2-3 ngày, hoặc rút theo chỉ định.
+- Vệ sinh lau người thay quần áo
+5.4. Tư¬ vấn, giáo dục sức khoẻ và chăm sóc tinh thần
+- Hướng dẫn người bệnh phối hợp theo dõi, chăm sóc trong và sau điều trị.  
+- Hướng dẫn chế độ ăn uống: Ăn tăng đạm thịt cá, tôm cua… ăn thêm hoa quả, rau xanh tránh táo bón, uống 2l/ngày
+- Vệ sinh thân thể, luyện tập phục hồi chức năng, phòng ngừa biến chứng.
+- Hướng dẫn người bệnh không được tự ý rút ống thông bàng quang.
+6. Ra viện
+6.1 Tiêu chuẩn ra viện
+6.1.1 Lâm sàng
+- Dấu hiệu sinh tồn ổn định; ăn uống được, tiểu không máu
+- Không đau bụng, vết mổ liền tốt.
+- VAS < 3
+6.1.2. Cận lâm sàng:
+- XN phân tích tế bào máu, SH, 
+- Siêu âm hố thận không có dịch, không có sỏi.
+- Xquang ổ bụng không chuẩn bị không còn sỏi niệu quản.
+6.2. Hướng dẫn người bệnh khi ra viện  
+- Tư vấn ăn uống, vệ sinh, phát hiện các dấu hiệu bất thường sau phẫu thuật (Đau vết phẫu thuật, tiểu máu, sốt, chảy dịch vết phẫu thuật...) cần đến khám lại. Hẹn lịch tái khám, rút sonde JJ theo hẹn.
+TÀI LIỆU THAM KHẢO
+1. Hội Tiết niệu thận học Việt Nam. (2015), Hướng dẫn chẩn đoán và điều trị sỏi tiết niệu, Nhà xuất bản Y học.
+2. Hội Tiết niệu thận học Việt Nam. (2013), Hướng dẫn chẩn đoán và điều trị nhiễm khuẩn tiết niệu, Tr 28.
+3. Bộ Y tế. (2015), Hướng dẫn sử dụng kháng sinh, Nhà xuất bản y học, Tr 293-297.
+4. Bộ y tế (2002), Hướng dẫn quy trình chăm sóc người bệnh sau phẫu thuật, trang 132-136
+5. Hướng dẫn nhịn ăn uống và cung cấp Carbonhydrat trước phẫu thuật chương trình. Quyết định số 181/QĐ-BYT ngày 23/01/2024.SỎI NIỆU QUẢN
+(N20.1)
+
+1. Định nghĩa
+Sỏi niệu quản được hình thành chủ yếu do sỏi di chuyển từ thận xuống, sẽ được tống ra ngoài theo đường tự nhiên. Một số còn lại sẽ dừng lại ở bất kỳ vị trí nào của niệu quản. Hoặc sỏi niệu quản có thể được hình thành tại chỗ do có dị dạng và biến đổi giải phẫu bất thường của niệu quản.
+Sỏi niệu quản không được chẩn đoán và điều trị kịp thời dễ gây ra những biến chứng nặng nề và ảnh hưởng nhanh chóng đến chức năng thận.
+2. Chẩn đoán
+2.1. Lâm sàng
+a) Cơ năng
+- Đau thắt lưng, mạng sườn lan xuống bộ phận sinh dục ngoài hoặc có cơn đau quặn thận. 
+- Có thể đái máu
+- Trường hợp có nhiễm khuẩn đường tiết niệu: Có thể đái buốt, đái rắt, đái đục, sốt cao, rét run.
+- Có thể vô niệu 
+- Một số trường hợp không điển hình được phát hiện tình cờ.
+b) Thực thể
+- Nắn mạng sườn, thắt lưng có thể đau hoặc bụng chướng 
+- Trường hợp thận to: Chạm thận (+), bập bềnh thận (+)
+2.2. Cận lâm sàng
+a) Các xét nghiệm, cận lâm sàng để chẩn đoán bệnh.
+- XQ bụng không chuẩn bị:Phần lớn có sỏi cản quang trên đường đi của niệu quản.
+- Siêu âm: Có thể thấy giãn đài - bể thận, niệu quản, hình ảnh sỏi niệu quản.
+- CT Scanner ổ bụng.
+- Hoá sinh: Ure, creatinin, protein, albumin, SGOT, SGPT, glucose, điện giải đồ, cholesterol, LDL, HDL, Triglycerid.
+- Tổng phân tích nước tiểu.
+- Nuôi cấy nước tiểu, kháng sinh đồ.
+- Huyết học: Tổng phân tích tế bào máu, nhóm máu ABO - Rh, máu lắng.
+b) Các xét nghiệm, cận lâm sàng để điều trị, chăm sóc và theo dõi.
+- Đông - cầm máu: APTT, PT, Fibrinogen, INR. 
+- HBsAg, HIV, HCV (Khi nghi ngờ phơi nhiễm). 
+- X.Quang phổi, điện tim.
+2.3. Chẩn đoán phân biệt
+- Thủng dạ dày
+- Viêm đại tràng co thắt 
+- Viêm ruột thừa 
+- Viêm túi mật 
+- Viêm phần phụ...
+2.4. Biến chứng
+- Nhiễm khuẩn tiết niệu
+- Thận ứ nước
+- Thận xơ hóa, teo lại do nhiễm khuẩn
+- Thận ứ mủ
+- Suy thận cấp, suy thận mạn
+- Vô niệu
+3. Điều trị
+3.1. Nguyên tắc điều trị
+- Điều trị triệu chứng
+- Điều trị triệt để
+3.2. Điều trị cụ thể
+3.2.1. Điều trị nội khoa
+- Giảm đau, hạ sốt: Lựa chọn 1 trong các thuốc sau: Diclofenac, Paracetamol, giảm đau, giãn cơ trơn hoặc phối hợp khi có cơn đau quặn thận.
+- Kháng sinh chỉ định khi có dấu hiệu nhiễm khuẩn: Khi chưa có kháng sinh đồ lựa chọn 1 trong các thuốc sau: Ciprofloxacin, Ceftazidim, Amikacin.
+Khi có kháng sinh đồ lựa chọn theo kháng sinh đồ.
+3.2.2. Điều trị ngoại khoa
+a) Tán sỏi ngoài cơ thể 
+- Sỏi ở mọi vị trí của niệu quản, kích thước 0,5 - 1,5 cm.
+- Chức năng thận bên sỏi niệu quản cần tán còn tốt hoặc trung bình. 
+- Niệu quản bên tán sỏi lưu thông tốt.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh ổn định.
+b) Tán sỏi nội soi bằng Laser 
+- Sỏi ở đoạn tiểu khung (1/3 dưới), đoạn khớp cùng chậu (1/3 giữa), 1/3 trên.
+- Kích thước sỏi ≤ 1,5 cm.
+- Chức năng thận bên sỏi còn.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh.
+c) Tán sỏi nội soi qua da 
+- Sỏi niệu quản bể thận.
+- Kích thước sỏi >1cm
+- Sỏi niệu quản 1/3 trên kèm sỏi thận.
+- Không nhiễm khuẩn nước tiểu hoặc nhiễm khuẩn đã điều trị kháng sinh
+d) Phẫu thuật lấy sỏi 
+Trường hợp không có chỉ định tán sỏi ngoài cơ thể và tán sỏi nội soi hoặc không chấp nhận phương pháp tán sỏi.
+- Phẫu thuật nội soi sau phúc mạc lấy sỏi: Sỏi niệu quản 1/3 trên, kích thước sỏi ≥ 1cm.
+- Phẫu thuật nội soi qua ổ bụng lấy sỏi: Sỏi niệu quản 1/3 giữa hoặc dưới kích thước sỏi ≥ 1cm.
+- Phẫu thuật mở lấy sỏi: Sỏi niệu quản kèm theo có hẹp niệu quản hoặc nội soi niệu quản thất bại. 
+e) Phẫu thuật cắt thận
+- Thận mất chức năng, thận ứ mủ. 
++ Chức năng thận bên kia còn tốt.
+f) Phẫu thuật nội soi cắt thận
+Thận mất chức năng, ứ nước, thận bên kia chức năng tốt.
+g) Nội soi đặt sonde JJ niệu quản cấp cứu: 
+- Sỏi niệu quản 2 bên gây suy thận cấp
+- Sỏi niệu quản 1 bên gây ứ mủ thận, sốc nhiễm khuẩn, nhiễm trùng điều trị nội khoa không có kết quả.
+h) Thuốc 
+- Kháng sinh dự phòng: Cefazolin x 2g, tiêm tĩnh mạch chậm trong vòng 30 phút trước khi rạch da hoặc nội soi.
+- Kháng sinh thay thế khi dị ứng Penicilin: Gentamicin x 5mg/kg, tiêm tĩnh mạch chậm trong vòng 30 phút trước khi rạch da hoặc nội soi.
+- Kháng sinh khi có chỉ định tán sỏi qua da: Ciprofloxacin (Trước phẫu thuật)
+- Dịch truyền: Natri clorid 0,9%, Glucose 5%, Ringer lactate.
+- Giảm đau: lựa chọn 1 trong các thuốc sau: Morphin, Paracetamol, Diclofenac hoặc phối hợp (Trường hợp tán sỏi ngoài cơ thể dùng trước khi tán sỏi 1h).
+- An thần: Diazepam 5mg x 02 viên, uống tối ngày trước phẫu thuật.
+- Thuốc chuẩn bị trước phẫu thuật: Glycerol 9g x 2 tuyp thụt hậu môn, sáng ngày phẫu thuật. Ciprofloxacin truyền TM sáng ngày phẫu thuật tán sỏi qua da
+- Kháng sinh phối hợp sau phẫu thuật tán sỏi qua da: Ciprofloxacin phối hợp Cefalosporin hoặc Amikacin
+4. Theo dõi
+4.1. Theo dõi lâm sàng
+4.1.1. Trước phẫu thuật
+- Theo dõi DHST 1 lần/ngày (nếu không có tăng HA, tim mạch), hoặc theo chỉ định
+- Tình trạng đau mạng sườn và thắt lưng
+- Tình trạng tiểu máu, tiểu buốt, dắt
+4.1.2 Sau thủ thuật, phẫu thuật
+a) Theo dõi DHST
+- Giai đoạn hồi tỉnh: DHST, SP02, tri giác 15-30 phút/lần
+* Tán sỏi nội soi bằng Laser 
+- Giai đoạn sau hồi tỉnh: DHST 2h/lần trong 4h đầu, tiếp theo 6h/lần hết ngày đầu sau phẫu thuật, những ngày sau 1 lần/ngày(nếu không có bệnh HA, tim mạch) hoặc theo chỉ định.
+* Tán sỏi nội soi sau phúc mạc
+- Giai đoạn sau hồi tỉnh: 2h/lần trong 4h đầu, tiếp theo 6h/lần hết ngày thứ 2, ngày thứ 3 theo dõi 1lần/ngày(nếu không có bệnh HA, tim mạch, hoặc theo chỉ định)
+* Sau tán sỏi ngoài cơ thể
+- Dấu hiệu sinh tồn 1 lần/ngày
+b) Các tai biến, biến chứng sau phẫu thuật
+- Các tai biến sau gây mê: Co thắt thanh quản, tụt lưỡi, tụt huyết áp,...
+- Giai đoạn hồi tỉnh: Da và niêm mạc, dẫn lưu,nước tiểu: màu sắc, số lượng.
+- Tình trạng vết mổ: đau, chảy máu vết mổ
+c) Theo dõi ăn uống, dịch vào ra, đại tiểu tiện.
+- Tình trạng ăn uống, đại tiện
+d) Tình trạng bụng
+- Đau vết mổ, trung và đại tiện
+- Dẫn lưu số lượng, màu sắc.
+- Nước tiểu: số lượng, màu sắc trong 2 ngày đầu sau phẫu thuật (nội soi sau phúc mạc). Nội soi bằng Lazer theo dõi nước tiểu ngày đầu sau phẫu thuật.
+4.2. Theo dõi cận lâm sàng
+ - Xét nghiệm huyết học, sinh hóa máu, siêu âm ổ bụng, XQ bụng sau 2-3 ngày sau mổ, trường hợp tán sỏi ngoài cơ thể sau 10 ngày.
+5. Chăm sóc
+5.1. Phân cấp chăm sóc
+- Chăm sóc cấp 1: Giai đoạn hồi tỉnh và sau hồi tỉnh 2h.
+- Chăm sóc cấp 2: Từ giờ thứ 3 đến hết ngày thứ 2 sau phẫu thuật (phẫu thuật nội soi sau phúc mạc lấy sỏi)
++ Từ giờ thứ 3 đến ngày đầu sau phẫu thuật (nội soi tán sỏi Lazer). 
+- Chăm sóc cấp 3: Trước phẫu thuật và đến hết ngày thứ 2 sau phẫu thuật (nếu phẫu thuật mở, nội soi sau phúc mạc); Nội soi tán sỏi lazer từ ngày thứ 2 sau phẫu thuật
+5.2. Chế độ dinh dưỡng
+- Trước phẫu thuật: Ăn uống theo nhu cầu; Nhịn ăn uống trước phẫu thuật 6h .
+- Uống Carbonhydrat trước phẫu thuật theo chỉ định
+- Sau phẫu thuật: Ăn lỏng sau phẫu thuật 6-8h hoặc khi tỉnh hẳn, từ ngày thứ 2 ăn uống theo nhu cầu, uống 2l nước/ ngày
+- Ăn tăng đạm thịt cá, tôm cua… ăn thêm hoa quả, rau xanh tránh táo bón
+5.3. Các chăm sóc cần thiết
+a) Trước phẫu thuật, thủ thuật 
+- Chuẩn bị người bệnh theo hướng dẫn.
+b) Sau phẫu thuật, thủ thuật
+- Theo dõi toàn trạng: DHST
+- Tập PHCN
++ Vận động sớm sau mổ
++ Trường hợp gây tê tủy sống/ngoài màng cứng: Nằm đầu bằng trong vòng 8-10h.
++ Người bệnh nội soi tán sỏi Lazer ngồi dậy đi lại khi hết dịch truyền
++ Phẫu thuật nội soi sau phúc mạc lấy sỏi, mổ mở: Ngày đầu người bệnh vận động tại giường, từ ngày thứ 2 trở đi người bệnh ngồi dậy đi lại nhẹ nhàng. Trường hợp bất thường theo chỉ định bác sĩ.
++ Tập ho, thở khi có bội nhiễm phổi
+- Thay băng vết mổ, cắt chỉ sau 5-7 ngày.
+- Chăm sonde sonde bàng quang: Vệ sinh sonde tiểu ngày 1 lần hoặc khi bẩn
+- Rút dẫn lưu, sonde bàng quang sau 2-3 ngày, hoặc rút theo chỉ định.
+- Vệ sinh lau người thay quần áo
+5.4. Tư¬ vấn, giáo dục sức khoẻ và chăm sóc tinh thần
+- Hướng dẫn người bệnh phối hợp theo dõi, chăm sóc trong và sau điều trị.  
+- Hướng dẫn chế độ ăn uống: Ăn tăng đạm thịt cá, tôm cua… ăn thêm hoa quả, rau xanh tránh táo bón, uống 2l/ngày
+- Vệ sinh thân thể, luyện tập phục hồi chức năng, phòng ngừa biến chứng.
+- Hướng dẫn người bệnh không được tự ý rút ống thông bàng quang.
+6. Ra viện
+6.1 Tiêu chuẩn ra viện
+6.1.1 Lâm sàng
+- Dấu hiệu sinh tồn ổn định; ăn uống được, tiểu không máu
+- Không đau bụng, vết mổ liền tốt.
+- VAS < 3
+6.1.2. Cận lâm sàng:
+- XN phân tích tế bào máu, SH, 
+- Siêu âm hố thận không có dịch, không có sỏi.
+- Xquang ổ bụng không chuẩn bị không còn sỏi niệu quản.
+6.2. Hướng dẫn người bệnh khi ra viện  
+- Tư vấn ăn uống, vệ sinh, phát hiện các dấu hiệu bất thường sau phẫu thuật (Đau vết phẫu thuật, tiểu máu, sốt, chảy dịch vết phẫu thuật...) cần đến khám lại. Hẹn lịch tái khám, rút sonde JJ theo hẹn.
+TÀI LIỆU THAM KHẢO
+1. Hội Tiết niệu thận học Việt Nam. (2015), Hướng dẫn chẩn đoán và điều trị sỏi tiết niệu, Nhà xuất bản Y học.
+2. Hội Tiết niệu thận học Việt Nam. (2013), Hướng dẫn chẩn đoán và điều trị nhiễm khuẩn tiết niệu, Tr 28.
+3. Bộ Y tế. (2015), Hướng dẫn sử dụng kháng sinh, Nhà xuất bản y học, Tr 293-297.
+4. Bộ y tế (2002), Hướng dẫn quy trình chăm sóc người bệnh sau phẫu thuật, trang 132-136
+5. Hướng dẫn nhịn ăn uống và cung cấp Carbonhydrat trước phẫu thuật chương trình. Quyết định số 181/QĐ-BYT ngày 23/01/2024.
+
+Dữ liệu hồ sơ bệnh nhân (JSON)
+{
+  "SoBenhAn": "24.061727",
+  "ChanDoanICD": [
+    {
+      "BenhChinhVaoVien": "Đái tháo đường típ 2/ Rối loạn Lipid máu\r\n",
+      "MaICDChinhVaoVien": "E11.9",
+      "BenhPhuVaoVien": null,
+      "MaICDPhuVaoVien": null,
+      "BenhChinhRaVien": "Đái tháo đường type 2 ",
+      "MaICDChinhRaVien": "E11.9",
+      "BenhKemTheoRaVien": "Rối loạn lipid máu/ Xơ vữa động mạch chi dưới",
+      "MaICDKemTheoRaVien": "E78.5;I70.2"
+    }
+  ],
+  "NoiTruKhamBenh": [
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB lên khoa D31: \r\nTiền sử khỏe mạnh, chưa phát hiện đái tháo đường\r\nKhoảng 1 tháng nay, NB mệt, mệt tăng, khát nước, uống khoảng 5-6 lít/ ngày. Tiểu nhiều không rõ số lượng. NB ăn bình thường, gầy sút 8kg/ 1 tháng. Không tê tay chân, nhìn mờ. Ở nhà chưa điều trị gì, vào viện\r\nKhám: \r\nNB tỉnh, tiếp xúc tốt. Thể trạng gầy\r\nDấu hiệu mất nước (+/-)\r\nDa niêm mạc hồng\r\nKhông phù, không xuất huyết dưới da\r\nTim nhịp đều, T1, T2 rõ\r\nPhổi thông khí đều 2 bên, không có ran\r\nBụng mềm, gan lách không to\r\nKhông liệt\r\nHội chứng não, màng não âm tính\r\nGlucose máu: 20\r\nMỡ máu tăng: LDL: 3.1\r\nChẩn đoán: Đái tháo đường típ 2/ Rối loạn Lipid máu\r\nNguy cơ ngã thấp\r\nKhông ngã trong 3 tháng gần đây\r\nHướng điều trị: Chỉnh đường máu, statin, nâng cao thể trạng\r\nTiên lượng dè dặt\r\nDự kiến 10 ngày điều trị\r\nMục tiêu điều trị đường máu mao mạch 7- 10 mml/l\r\nĐã giải thích tình trạng bệnh, chẩn đoán, tiên lượng, hướng điều trị, nguy cơ có thể xảy ra cho NB + NNNB\r\n",
+      "LoiDan": "Thử đường máu mao mạch lúc:  16h; 17h; 21h\r\nTư vấn hướng dẫn phòng tránh ngã cho NB và NNNB\r\n\r\n",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3, cấp 2 khi truyền\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Thử đường máu mao mạch lúc: 5h; 11h; 16h\r\n",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Thứ bảy ",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Chủ nhật ",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Đi buồng cùng BS Dũng Trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát nước, không đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to\r\nĐường máu còn dao động",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nĐỡ mệt, đỡ khát nước\r\nKhông cảm giác đói\r\nĂn ngủ được\r\nTiểu bình thường\r\nMạch, HA ổn định \r\nDấu hiệu mất nước (-). \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát nước, không đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát nước, không đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to\r\nĐường máu còn dao động\r\nTư vấn lại chế độ ăn, chế độ vận động thể lực cho NB",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Đi buồng cùng BS Dũng Trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát\r\nKhông cảm giác đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Đi buồng cùng BS Dũng Trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát\r\nKhông cảm giác đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to\r\nĐiện tim 06/12: Block phân nhánh trái trước, block nhánh phải không hoàn toàn\r\nLàm điện tim lần 2, siêu âm tim đánh giá tình trạng bệnh\r\nĐường máu ổn định hơn. Chuyển phác đồ tiêm 2 mũi từ ngày mai",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Thứ bảy ",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Chủ nhật ",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát, không đói\r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to\r\nChuyển phác đồ thuốc uống từ ngày mai",
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "Đi buồng cùng BS Dũng Trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát, không đói\r\nĂn được\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát, không đói\r\nĂn được\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to\r\nSiêu âm: Xơ vữa động mạch chi dưới\r\nĐường máu buổi chiều còn cao",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "Đi buồng cùng BS Dung Phó trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát, không đói\r\nĂn được\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm, không chướng\r\nGan, lách không to",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát\r\nKhông có cơn hạ đường máu \r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm. Gan, lách không to",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "Thứ bảy ",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "Chủ nhật ",
+      "LoiDan": "Đường mao mạch 5h 11h 16h ",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "Đi buồng cùng BS Dũng Trưởng khoa, thống nhất chẩn đoán và điều trị hiện tại \r\nNB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát\r\nKhông có cơn hạ đường máu \r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm. Gan, lách không to\r\nĐường máu còn cao",
+      "LoiDan": "Đường mao mạch 5h 11h 16h",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": "CNDD Linh đã trao đổi với BS Tô Phương\r\nNB suy dinh dưỡng mức độ vừa, teo cơ mức độ vừa, sụt 10kg trong 3 tháng, thiếu kiến thức chăm sóc dinh dưỡng, thói quen ăn uống không hợp lý (không cố định giờ ăn, số bữa ăn, ăn vặt nhiều: hay cắn hạt hướng dương, ít ăn rau xanh, hay bỏ bữa), khẩu phần ăn đạt 70% so với nhu cầu khuyến nghị\r\nCân nặng khuyến nghị: 60kg\r\nNhu cầu khuyến nghị: 1800kCal",
+      "LoiDan": "- Hướng dẫn NB đăng ký cơm viện => NB ăn cơm canteen\r\n- Hướng dẫn NB lựa chọn thực phẩm nên dùng, không nên dùng ở NB ĐTĐ\r\n- Hướng dẫn NB cố định giờ ăn, số bữa ăn, lượng thức ăn, ăn theo thứ tự: rau xanh - thức ăn - cơm\r\n- Đường miệng: 3 bữa (cơm, mỳ, phở) + 2 bữa phụ 9h, 21h (sữa dành cho NB ĐTĐ)\r\n- Hướng dẫn NB khi cảm thấy thèm ăn, uống nước/ dưa chuột, củ đậu (70g) thay thế\r\n- Nước: 2,1l/ ngày (sữa, nước lọc, nước canh)\r\n- Theo dõi lượng ăn, nước uống\r\n- Theo dõi phân, nước tiểu\r\n- Cân lại NB sau 5 ngày",
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu/ Xơ vữa động mạch chi dưới",
+      "DienBien": "NB tỉnh, tiếp xúc tốt\r\nKhông mệt, không khát\r\nKhông có cơn hạ đường máu \r\nĂn bình thường\r\nĐại tiểu tiện bình thường\r\nMạch, HA ổn định \r\nTim nhịp đều, rõ\r\nPhổi không có ran\r\nBụng mềm. Gan, lách không to\r\nNB xin ra viện, đã giải thích tình trạng cần theo dõi điều trị thêm nhưng NB vẫn kiên quyết ký hồ sơ xin ra viện. Cho NB ra viện theo nguyện vọng\r\nTư vấn cách phát hiện triệu chứng bệnh và cách xử trí ban đầu. Hẹn khám lại ",
+      "LoiDan": "Đường mao mạch 5h 11h",
+      "CheDoAn": "Cơm DD02 ",
+      "CheDoChamSoc": "Chăm sóc cấp 3 "
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": null,
+      "CheDoChamSoc": null
+    },
+    {
+      "ThoiGianThucHien": null,
+      "DinhBenh": "Đái tháo đường típ 2/ Rối loạn Lipid máu",
+      "DienBien": null,
+      "LoiDan": null,
+      "CheDoAn": "Cơm DD02",
+      "CheDoChamSoc": "Chăm sóc cấp 3\r\n"
+    }
+  ],
+  "NoiTruCLS": [
+    {
+      "TenNhomDichVu": "VT-TB Y TẾ",
+      "NoiDungChiTiet": "Vòng đeo tay bệnh nhân người lớn",
+      "TenPhongBan": "PK Nội tiết 01",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Thủ Thuật Khác",
+      "NoiDungChiTiet": "Chỉ định khám",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Khám Bệnh",
+      "NoiDungChiTiet": "Khám Mắt",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "TT Mắt",
+      "NoiDungChiTiet": "Soi đáy mắt trực tiếp",
+      "TenPhongBan": "PK Mắt",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Giường Nội Khoa",
+      "NoiDungChiTiet": "Giường Nội khoa loại 1 Hạng I - Khoa Nội tiết",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": null,
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": null,
+      "ThoiGianThucHien": null,
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": ">35",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-05T16:01:25",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "16.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-05T17:00:12",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-05T21:01:55",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T05:04:29",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Định lượng HbA1c [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Định lượng HbA1c [Máu]",
+      "KetQua": "14.34",
+      "MucBinhThuong": "< 6.5",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "< 6.5",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-06T07:57:57.313",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T11:02:26",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "SIÊU ÂM",
+      "NoiDungChiTiet": "Siêu âm ổ bụng (gan mật, tụy, lách, thận, bàng quang)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Siêu âm ổ bụng (gan mật, tụy, lách, thận, bàng quang)",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T15:00:25.45",
+      "KetLuan": "Hiện tại không thấy hình ảnh bất thường trên siêu âm ổ bụng . ",
+      "MoTa_Text": "Gan: Kích thước không to, nhu mô gan đồng nhất.\r\n   Đường mật trong và ngoài gan không giãn, không có sỏi\r\nTúi mật: Không căng, thành mỏng, không u, không sỏi.\r\nTụy: Kích thước bình thường, nhu mô đồng nhất, ống tụy không giãn, không có sỏi.\r\nLách: không to, mật độ đều, tĩnh mạch lách không giãn.\r\nThận phải: Nhu mô đều, ranh giới tủy vỏ rõ. Đài bể thận không giãn, không có sỏi.\r\nThận trái: Nhu mô đều, ranh giới tủy vỏ rõ. Đài bể thận không giãn, không có sỏi.\r\nBàng quang: Thành mỏng, không u, không sỏi, dịch đồng nhất.\r\nỔ bụng: Không có dịch tự do. \r\n"
+    },
+    {
+      "TenNhomDichVu": "Điện tim",
+      "NoiDungChiTiet": "Điện tim thường",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Điện tim thường",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T15:15:54.723",
+      "KetLuan": "Điện tim Block phân nhánh trái trước, block nhánh phải không hoàn toàn, không tăng gánh nhĩ thất\r\n",
+      "MoTa_Text": "- Nhịp: Xoang . Tần số : 60  chu kỳ/ phút.\r\n- Trục : Trái. \r\n- Sóng P : Bình thường.           Thời gian PQ: Bình thường.\r\n- Phức bộ QRS: DI,DIII dạng block phân nhánh trái trước. V1 dạng block nhánh phải\r\n- Sóng T: Bình thường              Đoạn ST: Bình thường. \r\n- Thời gian QT: Bình thường. \r\n- RV5+SV1=   1.8 mV\r\n\r\n"
+    },
+    {
+      "TenNhomDichVu": "X-QUANG",
+      "NoiDungChiTiet": "Chụp Xquang ngực thẳng [số hóa 1 phim]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Chụp X-quang ngực thẳng [số hóa 1 phim]",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T15:53:10.72",
+      "KetLuan": null,
+      "MoTa_Text": "Không thấy hình ảnh tổn thương tim phổi. "
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "15.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-06T16:02:12",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.2",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-07T05:03:15",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.5",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-07T11:01:15",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "17.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-07T16:01:33",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-08T05:05:27",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "10.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-08T11:05:19",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "14.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-08T16:05:47",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-09T05:04:36",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.9",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-09T11:04:48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Thăm dò chức năng",
+      "NoiDungChiTiet": "Đo nhãn áp (Maclakov, Goldmann, Schiotz…..)",
+      "TenPhongBan": "PK Mắt",
+      "TenDichVu": "Đo nhãn áp (Maclakov, Goldmann, Schiotz…..)",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-09T15:05:47",
+      "KetLuan": null,
+      "MoTa_Text": "Mắt phải:\t10\tmmHg\r\n\r\nMắt trái:\t10\tmmHg"
+    },
+    {
+      "TenNhomDichVu": "X-QUANG",
+      "NoiDungChiTiet": "Chụp OCT bán phần sau nhãn cầu",
+      "TenPhongBan": "PK Mắt",
+      "TenDichVu": "Chụp OCT bán phần sau nhãn cầu",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-09T15:10:27",
+      "KetLuan": null,
+      "MoTa_Text": "Mô tả chụp OCT bán phần sau nhãn cầu\r\n\r\n* Mắt phải:\r\n\r\n - Hoàng điểm: không phù\r\n\t\r\n* Mắt trái:\r\n\r\n - Hoàng điểm: không phù\r\n\t"
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "14.2",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-09T16:03:34",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "11.2",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-10T05:02:48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.9",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-10T11:04:01",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "13.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-10T16:02:45",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.0",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-11T05:03:07",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "19.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-11T11:03:12",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-11T16:03:37",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-12T05:03:38",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "5.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-12T11:01:54",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "6.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-12T16:02:32",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "9.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-13T05:02:18",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-13T11:03:35",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Điện tim",
+      "NoiDungChiTiet": "Điện tim thường",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Điện tim thường",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-13T14:54:48.953",
+      "KetLuan": "Điện tim bình thường",
+      "MoTa_Text": "- Nhịp: Xoang . Tần số :   68chu kỳ/ phút.\r\n- Trục : Trung gian. \r\n- Sóng P : Bình thường.           Thời gian PQ: Bình thường.\r\n- Phức bộ QRS: Bình thường.\r\n- Sóng T: Bình thường              Đoạn ST: Bình thường. \r\n- Thời gian QT: Bình thường. \r\n- RV5+SV1=   2.0 mV\r\n\r\n"
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.0",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-13T16:02:46",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "9.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T05:03:46",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Đo hoạt độ ALT (GPT) [Máu]",
+      "KetQua": "44.99",
+      "MucBinhThuong": "≤ 50",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "≤ 50",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Đo hoạt độ AST (GOT) [Máu]",
+      "KetQua": "22.51",
+      "MucBinhThuong": "≤ 50",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "≤ 50",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Định lượng Creatinin (máu)",
+      "KetQua": "94.92",
+      "MucBinhThuong": "74 - 110",
+      "MucBinhThuongMin": "74",
+      "MucBinhThuongMax": "110",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Điện giải đồ (Na, K, Cl) [Máu]",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Định lượng Urê [Máu]",
+      "KetQua": "6.51",
+      "MucBinhThuong": "2.8 - 7.2",
+      "MucBinhThuongMin": "2.8",
+      "MucBinhThuongMax": "7.2",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Na+",
+      "KetQua": "137",
+      "MucBinhThuong": "135 - 145",
+      "MucBinhThuongMin": "135",
+      "MucBinhThuongMax": "145",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "K+",
+      "KetQua": "4.3",
+      "MucBinhThuong": "3.5 - 5.5",
+      "MucBinhThuongMin": "3.5",
+      "MucBinhThuongMax": "5.5",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Cl-",
+      "KetQua": "100",
+      "MucBinhThuong": "98 - 108",
+      "MucBinhThuongMin": "98",
+      "MucBinhThuongMax": "108",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T07:53:46.887",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "3.9",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T11:04:01",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "13.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-14T16:03:14",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "6.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-15T05:04:07",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "3.9",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-15T11:01:10",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-15T16:01:27",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.0",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-16T05:02:40",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "5.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-16T11:02:03",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-16T16:02:25",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "5.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-17T05:02:52",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.5",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-17T11:03:26",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "Siêu Âm Tim",
+      "NoiDungChiTiet": "Siêu âm Doppler tim",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Siêu âm Doppler tim",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-17T14:59:09.897",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "SIÊU ÂM",
+      "NoiDungChiTiet": "Siêu âm Doppler động mạch, tĩnh mạch chi dưới",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Siêu âm Doppler động mạch, tĩnh mạch chi dưới",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-17T15:02:06.37",
+      "KetLuan": "Hình ảnh xơ vữa động mạch chi dưới. ",
+      "MoTa_Text": "Chân trái:\r\n-Động mạch đùi, động mạch khoeo, động mạch chày trước, động mạch chày sau: Nội mạc dày, xơ vữa, phổ doppler và vận tốc dòng chảy trong giới hạn bình thường. \r\n-TM đùi, TM khoeo, chày trước, chày sau, TM hiển lớn, hiển bé: Không giãn, không huyết khối.  \r\nChân phải:\r\n-Động mạch đùi, động mạch khoeo, động mạch chày trước, động mạch chày sau: Nội mạc dày, xơ vữa, phổ doppler và vận tốc dòng chảy trong giới hạn bình thường. \r\n-TM đùi, TM khoeo, chày trước, chày sau, TM hiển lớn, hiển bé: Không giãn, không huyết khối.  \r\n"
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "16.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-17T16:01:34",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "9.6",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-18T05:05:03",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "14.2",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-18T11:03:47",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "15.0",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-18T16:03:14",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-19T05:02:16",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "6.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-19T11:03:13",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "13.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-19T16:02:13",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.1",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-20T05:04:19",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "19.8",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-20T11:03:26",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.9",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-20T16:04:28",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.6",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T05:03:18",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Đo hoạt độ ALT (GPT) [Máu]",
+      "KetQua": "24.73",
+      "MucBinhThuong": "≤ 50",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "≤ 50",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Đo hoạt độ AST (GOT) [Máu]",
+      "KetQua": "15.24",
+      "MucBinhThuong": "≤ 50",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "≤ 50",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Định lượng Creatinin (máu)",
+      "KetQua": "102.68",
+      "MucBinhThuong": "74 - 110",
+      "MucBinhThuongMin": "74",
+      "MucBinhThuongMax": "110",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Điện giải đồ (Na, K, Cl) [Máu]",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Định lượng Urê [Máu]",
+      "KetQua": "6.65",
+      "MucBinhThuong": "2.8 - 7.2",
+      "MucBinhThuongMin": "2.8",
+      "MucBinhThuongMax": "7.2",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Na+",
+      "KetQua": "139",
+      "MucBinhThuong": "135 - 145",
+      "MucBinhThuongMin": "135",
+      "MucBinhThuongMax": "145",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "K+",
+      "KetQua": "4.3",
+      "MucBinhThuong": "3.5 - 5.5",
+      "MucBinhThuongMin": "3.5",
+      "MucBinhThuongMax": "5.5",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Đo hoạt độ ALT (GPT) [Máu]; Đo hoạt độ AST (GOT) [Máu]; Định lượng Creatinin (máu); Điện giải đồ (Na, K, Cl) [Máu]; Định lượng Urê [Máu]",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Cl-",
+      "KetQua": "102",
+      "MucBinhThuong": "98 - 108",
+      "MucBinhThuongMin": "98",
+      "MucBinhThuongMax": "108",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T07:47:24.93",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Tỉ Trọng",
+      "KetQua": "1.021",
+      "MucBinhThuong": "1.015 - 1.025",
+      "MucBinhThuongMin": "1.015",
+      "MucBinhThuongMax": "1.025",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "PH",
+      "KetQua": "5",
+      "MucBinhThuong": "5 - 6",
+      "MucBinhThuongMin": "5",
+      "MucBinhThuongMax": "6",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Bạch Cầu ",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Nitrit",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Protein nước tiểu",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Glucose nước tiểu",
+      "KetQua": "Bình thường",
+      "MucBinhThuong": "Bình thường",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Bình thường",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Thể cetonic",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Urobilinogen",
+      "KetQua": "Bình thường",
+      "MucBinhThuong": "Bình thường",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Bình thường",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Bilirubil nước tiểu",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN NƯỚC TIỂU",
+      "NoiDungChiTiet": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Hồng cầu",
+      "KetQua": "Âm tính",
+      "MucBinhThuong": "Âm tính",
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": "Âm tính",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:00:06.65",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "KetQua": null,
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "WBC (Bạch cầu)",
+      "KetQua": "6.0",
+      "MucBinhThuong": "4 - 11",
+      "MucBinhThuongMin": "4",
+      "MucBinhThuongMax": "11",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "NEU%",
+      "KetQua": "58.8",
+      "MucBinhThuong": "55 - 75",
+      "MucBinhThuongMin": "55",
+      "MucBinhThuongMax": "75",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "EO%",
+      "KetQua": "2.2",
+      "MucBinhThuong": "1 - 8",
+      "MucBinhThuongMin": "1",
+      "MucBinhThuongMax": "8",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "BA%",
+      "KetQua": "3.1",
+      "MucBinhThuong": "0 - 1",
+      "MucBinhThuongMin": "0",
+      "MucBinhThuongMax": "1",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MO%",
+      "KetQua": "7.3",
+      "MucBinhThuong": "0 - 8",
+      "MucBinhThuongMin": "0",
+      "MucBinhThuongMax": "8",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "LYM%",
+      "KetQua": "28.6",
+      "MucBinhThuong": "25 - 35",
+      "MucBinhThuongMin": "25",
+      "MucBinhThuongMax": "35",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "NEU#",
+      "KetQua": "3.5",
+      "MucBinhThuong": "3 - 7",
+      "MucBinhThuongMin": "3",
+      "MucBinhThuongMax": "7",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "EO#",
+      "KetQua": "0.1",
+      "MucBinhThuong": "0 - 0.5",
+      "MucBinhThuongMin": "0",
+      "MucBinhThuongMax": "0.5",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "BA#",
+      "KetQua": "0.2",
+      "MucBinhThuong": "0 - 0.1",
+      "MucBinhThuongMin": "0",
+      "MucBinhThuongMax": "0.1",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MO#",
+      "KetQua": "0.4",
+      "MucBinhThuong": "0 - 0.85",
+      "MucBinhThuongMin": "0",
+      "MucBinhThuongMax": "0.85",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "LYM#",
+      "KetQua": "1.7",
+      "MucBinhThuong": "1 - 4",
+      "MucBinhThuongMin": "1",
+      "MucBinhThuongMax": "4",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "RBC (Hồng cầu)",
+      "KetQua": "4.22",
+      "MucBinhThuong": "3.9 - 5.8",
+      "MucBinhThuongMin": "3.9",
+      "MucBinhThuongMax": "5.8",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "HGB",
+      "KetQua": "137",
+      "MucBinhThuong": "125 - 160",
+      "MucBinhThuongMin": "125",
+      "MucBinhThuongMax": "160",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "HCT",
+      "KetQua": "0.405",
+      "MucBinhThuong": "0.36 - 0.5",
+      "MucBinhThuongMin": "0.36",
+      "MucBinhThuongMax": "0.5",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MCV",
+      "KetQua": "96.1",
+      "MucBinhThuong": "83 - 92",
+      "MucBinhThuongMin": "83",
+      "MucBinhThuongMax": "92",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MCH",
+      "KetQua": "32.5",
+      "MucBinhThuong": "27 - 32",
+      "MucBinhThuongMin": "27",
+      "MucBinhThuongMax": "32",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MCHC",
+      "KetQua": "338",
+      "MucBinhThuong": "322 - 360",
+      "MucBinhThuongMin": "322",
+      "MucBinhThuongMax": "360",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "RDW",
+      "KetQua": "12.9",
+      "MucBinhThuong": "12 - 14.5",
+      "MucBinhThuongMin": "12",
+      "MucBinhThuongMax": "14.5",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "PLT (Tiểu cầu)",
+      "KetQua": "306",
+      "MucBinhThuong": "140 - 450",
+      "MucBinhThuongMin": "140",
+      "MucBinhThuongMax": "450",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN HUYẾT HỌC",
+      "NoiDungChiTiet": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "MPV",
+      "KetQua": "7.7",
+      "MucBinhThuong": "7 - 12",
+      "MucBinhThuongMin": "7",
+      "MucBinhThuongMax": "12",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:27:01.48",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN Đông máu",
+      "NoiDungChiTiet": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+      "KetQua": null,
+      "MucBinhThuong": "11 - 13",
+      "MucBinhThuongMin": "11",
+      "MucBinhThuongMax": "13",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:34:28.33",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN Đông máu",
+      "NoiDungChiTiet": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "PT(%)",
+      "KetQua": "140",
+      "MucBinhThuong": "70 - 140",
+      "MucBinhThuongMin": "70",
+      "MucBinhThuongMax": "140",
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T08:34:28.33",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN Đông máu",
+      "NoiDungChiTiet": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "PT(s)",
+      "KetQua": "9.4",
+      "MucBinhThuong": "11 - 13",
+      "MucBinhThuongMin": "11",
+      "MucBinhThuongMax": "13",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:34:28.33",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN Đông máu",
+      "NoiDungChiTiet": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "INR",
+      "KetQua": "0.85",
+      "MucBinhThuong": "0.9 - 1.1",
+      "MucBinhThuongMin": "0.9",
+      "MucBinhThuongMax": "1.1",
+      "BatThuong": "True",
+      "ThoiGianThucHien": "2024-12-21T08:34:28.33",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "10.5",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T11:03:49",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "12.0",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-21T16:01:16",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "7.5",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-22T05:12:00",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "15.5",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-22T16:01:39",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "6.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-23T05:02:16",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-23T11:02:14",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.3",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-23T11:02:39",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "8.6",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-23T16:02:43",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "6.7",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-24T05:02:56",
+      "KetLuan": null,
+      "MoTa_Text": null
+    },
+    {
+      "TenNhomDichVu": "XN SINH HÓA",
+      "NoiDungChiTiet": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "TenPhongBan": "Khoa Nội tiết",
+      "TenDichVu": "Xét nghiệm đường máu mao mạch tại giường (một lần)",
+      "KetQua": "11.4",
+      "MucBinhThuong": null,
+      "MucBinhThuongMin": null,
+      "MucBinhThuongMax": null,
+      "BatThuong": "False",
+      "ThoiGianThucHien": "2024-12-24T11:03:26",
+      "KetLuan": null,
+      "MoTa_Text": null
+    }
+  ],
+  "NoiTruToaThuoc": [
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Dây truyền dịch",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:26:16.12"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim luồn tĩnh mạch số 20G",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:26:16.153"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim trích máu",
+      "SoLuong": "4.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:26:16.11"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim trích máu",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T10:06:32.137"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim trích máu",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-20T11:26:08.31"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim trích máu",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-21T12:32:04.673"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Kim trích máu",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T09:56:24.653"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "4.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:26:16.097"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T12:46:11.27"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-07T10:59:29.307"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-08T12:43:09.197"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T10:25:50.497"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-10T11:00:17.273"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T09:56:24.647"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-24T08:43:57.563"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-17T10:17:40.77"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:55:18.65"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T10:06:32.13"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-20T11:26:08.303"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-21T12:32:04.663"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-22T09:33:50.6"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T16:20:23.367"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-12T10:58:44.283"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:41:51.1"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-14T10:28:04.39"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-15T08:51:39.513"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Que thử đường huyết máy Onetouch",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T10:25:00.103"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm tiêm sử dụng một lần Banapha (5ml)",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T22:24:43.333"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm tiêm sử dụng một lần Banapha (5ml)",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T17:40:10.097"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm tiêm sử dụng một lần Banapha (5ml)",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-20T20:53:20.057"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "4.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:26:16.13"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T12:46:11.28"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-07T10:59:29.32"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-08T12:43:09.203"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T10:25:50.503"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-10T11:00:17.287"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-20T22:36:19.287"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T16:20:23.37"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-12T10:58:44.287"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:41:51.113"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-14T10:28:04.397"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-15T08:51:39.52"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Bơm kim tiêm Insulin sử dụng một lần",
+      "SoLuong": "3.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T10:25:00.11"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glucophage XR 500mg 500mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:17.79"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glucophage XR 500mg 500mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:47.487"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Metsav 1000 1000mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:23:43.16"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Metsav 1000 1000mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:25:27.157"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Metsav 1000 1000mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:27:00.737"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lantus 100 đơn vị/ml (1000 đơn vị/lọ 10ml)",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:00:14.283"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:17.753"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:47.433"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:09:11.947"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:51.437"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:19:51.16"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:16.843"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 30mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:32.403"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Diamicron MR 60mg 60mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T08:43:51.157"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:13:40.287"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:39:59.083"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:18.303"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:37.49"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:00.76"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:15.963"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:20.45"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:36.49"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:22:27.033"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:22:44.147"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:23:13.86"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Mixtard 30 (700IU + 300IU)/10ml",
+      "SoLuong": "0.0800",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-24T10:00:36.5"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:08:38.113"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:09:11.973"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:51.487"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:19:51.17"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:16.857"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:32.417"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Glumeform 850 Metformin hydroclorid 850 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T08:43:51.083"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:00:14.277"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:13:40.243"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:39:58.98"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:18.267"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:37.403"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:00.643"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:15.873"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:20.437"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0100",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:36.47"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Actrapid 1000 IU/10ml",
+      "SoLuong": "0.0800",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-24T10:00:36.483"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:08:40.483"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:14:09.06"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:57.273"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:22.17"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:39.617"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:55.403"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:32.44"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T08:43:51.117"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-15T19:04:20.743"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:47.56"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:09:11.96"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:51.6"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:19:51.193"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:16.89"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:14:21.263"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:52.24"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:41:06.653"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:23:43.133"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:25:27.183"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Tidicoba 125 mg; 12,5 mg; 125 mcg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:27:00.807"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Natri clorid0,9g/100ml 500ml 0,9g/100ml",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:00:14.233"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:10:47.14"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:07.817"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:51.53"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:19:51.183"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:16.877"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:32.43"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Daklife 75mg 75mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T08:43:51.1"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Dipartate Magnesi aspartat (dưới dạng Magnesi aspartat .2H2O) 140 mg; Kali aspartat (dưới dạng Kali aspartat .1/2H20) 158 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T17:44:41.007"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Dipartate Magnesi aspartat (dưới dạng Magnesi aspartat .2H2O) 140 mg; Kali aspartat (dưới dạng Kali aspartat .1/2H20) 158 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:57.287"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Dipartate Magnesi aspartat (dưới dạng Magnesi aspartat .2H2O) 140 mg; Kali aspartat (dưới dạng Kali aspartat .1/2H20) 158 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:22.183"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Dipartate Magnesi aspartat (dưới dạng Magnesi aspartat .2H2O) 140 mg; Kali aspartat (dưới dạng Kali aspartat .1/2H20) 158 mg",
+      "SoLuong": "2.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:39.63"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:08:40.477"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-05T16:14:09.04"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:40:57.26"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:22.157"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-06T08:41:39.607"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:13:55.373"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:32.437"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-23T08:43:51.11"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-15T19:04:20.74"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-16T09:30:47.52"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:09:11.953"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-18T09:11:51.567"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:19:51.187"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-19T20:20:16.883"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-09T09:14:21.14"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:40:52.237"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-11T09:41:06.647"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:23:43.127"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:25:27.17"
+    },
+    {
+      "DuocId": null,
+      "TenDuocDayDu": "Lipotatin 10mg 10mg",
+      "SoLuong": "1.0000",
+      "SoLanTrenNgay": "4",
+      "NgayTao": "2024-12-13T09:27:00.773"
+    }
+  ],
+  "NoiTruChamSoc": [
+    {
+      "DienBenh": "NB vào khoa D31 tỉnh, tiếp xúc tốt\r\nMệt mỏi",
+      "YLenhChamSoc": "Đón tiếp NB.\r\nHướng dẫn NB nội quy khoa phòng, chế độ BHYT, thực hiện 2K.\r\nHướng dẫn NB nghỉ ngơi, vận động nhẹ nhàng, tránh gắng sức.\r\nĐã giải thích cho NB, người nhà NB là phải nằm điều trị tại khoa 24/24, nếu vắng mặt thì NB phải hoàn toàn chịu trách nhiệm.\r\nBáo Bs Nhân khám NB. ",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": "NB có chỉ định ăn cơm DD02",
+      "YLenhChamSoc": "Hướng dẫn NB mua vé báo ăn trong viện.\r\nNB đồng ý.\r\n",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": "NB tự đi lại được và tự làm vệ sinh cá nhân sạch sẽ\r\nCó nguy cơ ngã thấp 5 điểm",
+      "YLenhChamSoc": "Hướng dẫn NB duy trì tự vệ sinh cá nhân sạch sẽ hàng ngày\r\nHướng dẫn NB các vị trí trơn trượt, có nguy cơ ngã trong khoa: hành lang, cầu thang, sàn nhà, gờ của nhà vệ sinh, ban công, cửa sổ, khu vực đặt biển cảnh báo ngã, trơn trượt.\r\nHướng dẫn NB lựa chọn dép có ma sát chống trơn trượt \r\nTư vấn phòng ngã cho NB ",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu mao mạch 16.8mmo/l",
+      "YLenhChamSoc": "Báo BS Nhân\r\nKhông xử trí gì thêm",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt, đường máu mao mạch HI",
+      "YLenhChamSoc": "Báo BS Nhân\r\nThực hiện y lệnh\r\nTD thêm",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": "NB thể trạng gầy sút cân, khát nước, uống nhiều, tiểu nhiều\r\nXN: Glucose: 20.34; Choles: 5.38; LDL: 3.19; Na: 133; Glucose niệu(++++)\r\nNB lần đầu phát hiện ra bệnh đái tháo đường, còn chưa có hiểu biết đầy đủ về bệnh\r\n",
+      "YLenhChamSoc": "Hướng dẫn và tư vấn GDSK cho NB:\r\n- Chế độ ăn bệnh lý: Hướng dẫn NB ăn kiêng đường, hạn chế tinh bột, kiêng mỡ phủ tạng động vật, đồ xào rán, ăn tăng rau xanh, kiêng các chất kích thích, uống nước theo nhu cầu.\r\n- Các nguy cơ và biến chứng của bệnh.\r\n- Các dấu hiệu của hạ đường huyết và cách xử trí.\r\n- Cách chăm sóc bàn chân đái tháo đường.\r\n- Các chế độ vệ sinh bệnh lý.\r\n- Cách vận động bệnh lý.\r\nTD đường máu mao mạch.\r\n",
+      "NgayThucHien": "2024-12-05T00:00:00"
+    },
+    {
+      "DienBenh": " NB tỉnh, tiếp xúc tốt\r\nĐỡ mệt, đỡ khát nước\r\nĐường máu sáng đỡ cao, chưa ổn định",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập theo chế độ bệnh lý.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-06T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt\r\nĐỡ mệt, đỡ khát nước\r\nNB đường máu chưa ổn định",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập theo chế độ bệnh lý.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-07T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chưa ổn định",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập đều sau ăn.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-08T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chưa ổn định ",
+      "YLenhChamSoc": "Động viên NB.\r\nGiải thích cho NB các biến chứng có thể xảy ra khi đường máu không ổn định.\r\nHướng dẫn NB ăn uống tuân thủ theo đúng chế độ bệnh lý đã tư vấn.\r\nNghỉ ngơi, vận động và vệ sinh theo chế độ bệnh lý.\r\nTD đường máu mao mạch. \r\nThực hiện y lệnh. ",
+      "NgayThucHien": "2024-12-09T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chưa ổn định ",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập theo chế độ bệnh lý.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-10T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chiều chưa ổn định ",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-11T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu ngày qua chưa ổn định do chế độ ăn chưa hợp lý",
+      "YLenhChamSoc": "Động viên NB tuân thủ đúng chế độ ăn bệnh lý.\r\nĂn đều bữa. Không ăn thức ăn có đường\r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-12T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt\r\nĐiện tim 06/12: Block phân nhánh trái trước, block nhánh phải không hoàn toàn. \r\nĐường máu ổn định hơn",
+      "YLenhChamSoc": "Động viên NB\r\nHướng dẫn NB tuân thủ đúng chế độ ăn bệnh lý.\r\nĂn đều bữa. Không ăn thức ăn có đường\r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-13T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt\r\nĐường máu ổn định hơn",
+      "YLenhChamSoc": "Động viên NB\r\nHướng dẫn NB tuân thủ đúng chế độ ăn bệnh lý.\r\nĂn đều bữa. Không ăn thức ăn có đường\r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-14T00:00:00"
+    },
+    {
+      "DienBenh": "NB ổn định",
+      "YLenhChamSoc": "Chăm sóc thường quy",
+      "NgayThucHien": "2024-12-15T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt\r\nĐường máu chưa ổn định",
+      "YLenhChamSoc": "Động viên NB\r\nHướng dẫn NB tuân thủ đúng chế độ ăn bệnh lý.\r\nĂn đều bữa. Không ăn thức ăn có đường\r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-16T00:00:00"
+    },
+    {
+      "DienBenh": "NB ổn định không diễn biến gì thêm",
+      "YLenhChamSoc": "Chăm sóc thường quy",
+      "NgayThucHien": "2024-12-17T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt\r\nSiêu âm: Xơ vữa động mạch chi dưới\r\nĐường máu buổi chiều còn cao",
+      "YLenhChamSoc": "Động viên NB\r\nHướng dẫn NB tuân thủ đúng chế độ ăn bệnh lý.\r\nĂn đều bữa. Không ăn thức ăn có đường\r\nHướng dẫn NB luyện tập, đi bộ đều sau ăn\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-18T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chưa ổn định ",
+      "YLenhChamSoc": "Động viên NB.\r\nGiải thích cho NB các biến chứng có thể xảy ra khi đường máu không ổn định.\r\nHướng dẫn NB ăn uống tuân thủ theo đúng chế độ bệnh lý đã tư vấn.\r\nNghỉ ngơi, vận động và vệ sinh theo chế độ bệnh lý.\r\nTD đường máu mao mạch. \r\nThực hiện y lệnh. ",
+      "NgayThucHien": "2024-12-19T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu chưa ổn định ",
+      "YLenhChamSoc": "Động viên NB.\r\nGiải thích cho NB các biến chứng có thể xảy ra khi đường máu không ổn định.\r\nHướng dẫn NB ăn uống tuân thủ theo đúng chế độ bệnh lý đã tư vấn.\r\nNghỉ ngơi, vận động và vệ sinh theo chế độ bệnh lý.\r\nTD đường máu mao mạch. \r\nThực hiện y lệnh. ",
+      "NgayThucHien": "2024-12-20T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu ổn định hơn",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập theo chế độ bệnh lý.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-21T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu ổn định hơn",
+      "YLenhChamSoc": "Động viên NB tuân thủ chế độ ăn bệnh lý.\r\nĂn đều bữa. \r\nHướng dẫn NB luyện tập theo chế độ bệnh lý.\r\nTheo dõi đường máu ",
+      "NgayThucHien": "2024-12-22T00:00:00"
+    },
+    {
+      "DienBenh": "NB đường máu dần ổn định",
+      "YLenhChamSoc": "Động viên NB.\r\nHướng dẫn NB ăn uống tuân thủ theo đúng chế độ bệnh lý đã tư vấn.\r\nNghỉ ngơi, vận động và vệ sinh theo chế độ bệnh lý.\r\nTD đường máu mao mạch. \r\nThực hiện y lệnh. ",
+      "NgayThucHien": "2024-12-23T00:00:00"
+    },
+    {
+      "DienBenh": "NB tỉnh, tiếp xúc tốt \r\nĐường máu chưa ổn định\r\nNB xin ra viện",
+      "YLenhChamSoc": "Động viên NB.\r\nHướng dẫn NB ký hồ sơ và làm các thủ tục ra viện.\r\nPhát thuốc tối về cho NB và hướng dẫn NB giờ uống tối.\r\nHướng dẫn NB dùng thuốc theo đơn.\r\nHẹn khám lại theo hẹn hoặc ngay khi có bất thường.\r\nTư vấn và hướng dẫn NB chăm sóc sức khỏe tại nhà: \r\n- Ăn uống, nghỉ ngơi, vận động, vệ sinh theo đúng chế độ bệnh lý.\r\n- Cách chăm sóc bàn chân đái tháo đường.\r\n- Các dấu hiệu của hạ đường huyết và cách xử trí tại nhà.\r\n- Các biến chứng của bệnh và cách phòng tránh. ",
+      "NgayThucHien": "2024-12-24T00:00:00"
+    }
+  ]
+}
+Output yêu cầu (chỉ trả về JSON, đúng schema)
+  {
+            "_id": "68c7ba25b77fb20289cfa43d",
+            "bangKiemId": "68c7ba25b77fb20289cfa43d",
+            "phacDoId": "68b404ffdc9d838f78fd357e",
+            "tenBangKiem": "BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB SỎI NIỆU QUẢN (N20.1)",
+            "tenPhacDo": "SỎI NIỆU QUẢN",
+            "danhGiaVaChanDoan": {
+                "stt": "1",
+                "tenHangMucKiemTra": "Đánh giá và chẩn đoán",
+                "danhSachNoiDung": [
+                    {
+                        "tenNoiDungKiemTra": "Tiền sử",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "1",
+                                "yeuCauDatDuoc": "Có hỏi tiền sử đái ra sỏi, điều trị sỏi tiết niệu, bệnh kèm theo",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            },
+                            {
+                                "stt": "2",
+                                "yeuCauDatDuoc": "Có hỏi tiền sử bệnh trong gia đình có người cùng mắc",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Bệnh sử",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "3",
+                                "yeuCauDatDuoc": "Có hỏi đặc điểm, tính chất triệu chứng sỏi niệu quản",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            },
+                            {
+                                "stt": "4",
+                                "yeuCauDatDuoc": "Có hỏi các triệu chứng liên quan để phân biệt các bệnh lý đau bụng cấp",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Khám",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "5",
+                                "yeuCauDatDuoc": "Khám, đánh giá tình trạng toàn thân, nhiễm trùng (nếu có)",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "6",
+                                "yeuCauDatDuoc": "Khám các dấu hiệu tổn thương vùng thận, niệu quản",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "7",
+                                "yeuCauDatDuoc": "Khám các bộ phận liên quan",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Cận lâm sàng",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "8",
+                                "yeuCauDatDuoc": "Có đủ CLS cần chẩn đoán",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "9",
+                                "yeuCauDatDuoc": "Có đủ CLS đánh giá NB, điều trị",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Chẩn đoán",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "10",
+                                "yeuCauDatDuoc": "Chẩn đoán phù hợp với triệu chứng và tình trạng NB",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "11",
+                                "yeuCauDatDuoc": "Chẩn đoán các nguy cơ biến chứng, nhiễm khuẩn tiết niệu",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dieuTri": {
+                "stt": "2",
+                "tenHangMucKiemTra": "Điều trị",
+                "danhSachNoiDung": [
+                    {
+                        "tenNoiDungKiemTra": "Xử trí cấp cứu",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "12",
+                                "yeuCauDatDuoc": "Thuốc giảm đau, kháng viêm không Steroid đúng hướng dẫn",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "13",
+                                "yeuCauDatDuoc": "Điều trị nội khoa đúng hướng dẫn",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Phương pháp điều trị",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "14",
+                                "yeuCauDatDuoc": "Điều trị ngoại khoa đúng chỉ định",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "15",
+                                "yeuCauDatDuoc": "PT soi, cắt bỏ sỏi niệu quản",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Thuốc điều trị",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "16",
+                                "yeuCauDatDuoc": "Sử dụng kháng sinh hợp lý",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            },
+                            {
+                                "stt": "17",
+                                "yeuCauDatDuoc": "Giảm đau đúng phác đồ",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "chamSoc": {
+                "stt": "3",
+                "tenHangMucKiemTra": "Chăm sóc",
+                "danhSachNoiDung": [
+                    {
+                        "tenNoiDungKiemTra": "Theo dõi",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "18",
+                                "yeuCauDatDuoc": "Có đủ CLS theo dõi",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            },
+                            {
+                                "stt": "19",
+                                "yeuCauDatDuoc": "Phân cấp CS phù hợp",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            },
+                            {
+                                "stt": "20",
+                                "yeuCauDatDuoc": "Giảm đau, vệ sinh, phòng ngừa biến chứng",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            },
+                            {
+                                "stt": "21",
+                                "yeuCauDatDuoc": "Có nội dung GDSK cho NB",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            "raVien": {
+                "stt": "4",
+                "tenHangMucKiemTra": "Ra viện",
+                "danhSachNoiDung": [
+                    {
+                        "tenNoiDungKiemTra": "Tiêu chuẩn ra viện",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "22",
+                                "yeuCauDatDuoc": "Đạt tiêu chuẩn ra viện",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            }
+                        ]
+                    },
+                    {
+                        "tenNoiDungKiemTra": "Hướng dẫn ra viện",
+                        "danhSachTieuChi": [
+                            {
+                                "stt": "23",
+                                "yeuCauDatDuoc": "Có nội dung cụ thể hướng dẫn NB khi ra viện",
+                                "dat": false,
+                                "khongDat": false,
+                                "lyDoKhongDat": "",
+                                "khongApDung": false,
+                                "isImportant": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "createdAt": "2025-09-15T07:03:01.996Z",
+            "updatedAt": "2025-09-15T07:03:01.996Z"
+        }
+
+Trong đó các field `danhSachTieuChi` đã được cập nhật `dat`, `khongDat`, `khongApDung`, `lyDoKhongDat` dựa trên hồ sơ bệnh nhân.

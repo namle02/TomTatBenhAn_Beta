@@ -11,8 +11,8 @@ namespace TomTatBenhAn_WPF.DI_Register
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddTransient<IFileServices, FileServices>();
-            services.AddTransient<IDataMapper, DataMapper>();
+            services.AddSingleton<IFileServices, FileServices>();
+            services.AddSingleton<IDataMapper, DataMapper>();
             services.AddSingleton<IConfigServices, ConfigServices>();
             services.AddSingleton<IDataMapper, DataMapper>();
             services.AddSingleton<IAiService,AiService>();
@@ -26,6 +26,8 @@ namespace TomTatBenhAn_WPF.DI_Register
                 BaseAddress = new Uri("http://localhost:3000"),
                 Timeout = TimeSpan.FromSeconds(100)
             });
+
+            services.AddSingleton<IKiemTraPhacDoServices, KiemTraPhacDoServices>();
        
 
         }
