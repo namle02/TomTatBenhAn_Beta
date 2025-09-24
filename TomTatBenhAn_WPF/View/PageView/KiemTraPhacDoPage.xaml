@@ -93,7 +93,7 @@
                         Content="Đạt"
                         FontSize="16"
                         IsChecked="{Binding Dat}"
-                        IsEnabled="False" />
+                        IsEnabled="True" />
                 </Border>
 
                 <Border Grid.Column="3" Style="{StaticResource TableCell}">
@@ -102,7 +102,7 @@
                         Content="Không đạt"
                         FontSize="16"
                         IsChecked="{Binding KhongDat}"
-                        IsEnabled="False" />
+                        IsEnabled="True" />
                 </Border>
 
                 <Border Grid.Column="4" Style="{StaticResource TableCell}">
@@ -111,7 +111,7 @@
                         Content="Không áp dụng"
                         FontSize="16"
                         IsChecked="{Binding KhongApDung}"
-                        IsEnabled="False" />
+                        IsEnabled="True" />
                 </Border>
 
                 <Border Grid.Column="5" Style="{StaticResource TableCell}">
@@ -229,7 +229,11 @@
                                         FontSize="12"
                                         Foreground="Gray"
                                         Text="Tên bệnh nhân" />
-                                    <TextBlock FontSize="16" FontWeight="Medium" />
+                                    <TextBlock
+                                        FontSize="14"
+                                        FontWeight="Medium"
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ThongTinHanhChinh.TenBN}" />
                                 </StackPanel>
                             </materialDesign:Card>
 
@@ -243,7 +247,11 @@
                                         FontSize="12"
                                         Foreground="Gray"
                                         Text="Giới tính / Tuổi" />
-                                    <TextBlock FontSize="16" FontWeight="Medium" />
+                                    <TextBlock
+                                        FontSize="16"
+                                        FontWeight="Medium"
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ThongTinHanhChinh.GioiTinh}" />
                                 </StackPanel>
                             </materialDesign:Card>
 
@@ -257,7 +265,11 @@
                                         FontSize="12"
                                         Foreground="Gray"
                                         Text="Số bệnh án" />
-                                    <TextBlock FontSize="16" FontWeight="Medium" />
+                                    <TextBlock
+                                        FontSize="16"
+                                        FontWeight="Medium"
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ThongTinHanhChinh.SoBenhAn}" />
                                 </StackPanel>
                             </materialDesign:Card>
 
@@ -271,7 +283,11 @@
                                         FontSize="12"
                                         Foreground="Gray"
                                         Text="Ngày vào viện" />
-                                    <TextBlock FontSize="16" FontWeight="Medium" />
+                                    <TextBlock
+                                        FontSize="16"
+                                        FontWeight="Medium"
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ThongTinHanhChinh.NgayVaoVien}" />
                                 </StackPanel>
                             </materialDesign:Card>
 
@@ -288,7 +304,8 @@
                                     <TextBlock
                                         FontSize="16"
                                         FontWeight="Medium"
-                                        Text="" />
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ThongTinHanhChinh.NgayRaVien}" />
                                 </StackPanel>
                             </materialDesign:Card>
 
@@ -305,6 +322,8 @@
                                     <TextBlock
                                         FontSize="16"
                                         FontWeight="Medium"
+                                        Foreground="#2f84d0"
+                                        Text="{Binding PatientData.ChanDoanICD.GetToanBoChanDoanICD}"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
                             </materialDesign:Card>
@@ -505,6 +524,8 @@
                                                 Grid.Column="2"
                                                 Margin="5"
                                                 Background="CadetBlue"
+                                                Command="{Binding DataContext.XuatBangKiemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding BangKiemId}"
                                                 Style="{StaticResource MaterialDesignRaisedButton}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon
@@ -546,12 +567,9 @@
                         </StackPanel>
                     </StackPanel>
                 </materialDesign:Card>
-
-
-
-
             </Grid>
         </ScrollViewer>
+
         <!--  Loading Overlay  -->
         <Border
             d:Visibility="Hidden"
@@ -573,39 +591,34 @@
                 </StackPanel>
             </Grid>
         </Border>
+
         <!--  Preview bảng kiểm đã đánh giá  -->
         <Border
             d:Visibility="Visible"
             Background="#80000000"
             Visibility="{Binding IsViewBangKiem, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <Grid MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ViewportWidth}" HorizontalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="16*" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid
-                        Grid.Row="1"
-                        Margin="5,0"
-                        Background="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+            <Grid Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
 
-                        <!--  Tên bảng kiểm  -->
-                        <TextBlock
-                            Margin="5"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="#0277BD"
-                            Text="BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB ĐẺ THƯỜNG 1 THAI NGÔI ĐẦU (O80.0)"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap" />
 
-                        <!--  Hiển thị dữ liệu bảng kiểm  -->
+                <!--  Tên bảng kiểm  -->
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="5"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="#0277BD"
+                    Text="BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB ĐẺ THƯỜNG 1 THAI NGÔI ĐẦU (O80.0)"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+
+                <!--  Bảng hiển thị dữ liệu bảng kiểm  -->
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                    <Grid MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ViewportWidth}" HorizontalAlignment="Stretch">
                         <materialDesign:Card Grid.Row="1" Style="{StaticResource ModernCard}">
                             <!--  Viền ngoài khối chi tiết (góc bo nhẹ cho đẹp)  -->
                             <Border
@@ -917,43 +930,47 @@
                                 </Grid>
                             </Border>
                         </materialDesign:Card>
-
-                        <!--  Action Button  -->
-                        <StackPanel
-                            Grid.Row="2"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-                            <Button
-                                Margin="8"
-                                Background="CadetBlue"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Harddisk" />
-                                    <TextBlock Text="Xuất bảng kiểm" />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                Margin="8"
-                                Background="Red"
-                                Command="{Binding ClosePreviewBangKiemCommand}"
-                                Style="{StaticResource MaterialDesignRaisedButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Close" />
-                                    <TextBlock Text="Đóng" />
-                                </StackPanel>
-                            </Button>
-
-                        </StackPanel>
                     </Grid>
-                </Grid>
-            </ScrollViewer>
+                </ScrollViewer>
+
+                <!--  Action Button  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="8"
+                        Background="CadetBlue"
+                        Command="{Binding XuatBangKiemCommand}"
+                        CommandParameter="{Binding BangKiemDaDanhGia.BangKiemId}"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Harddisk" />
+                            <TextBlock Text="Xuất bảng kiểm" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Margin="8"
+                        Background="Red"
+                        Command="{Binding ClosePreviewBangKiemCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Close" />
+                            <TextBlock Text="Đóng" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
         </Border>
+
     </Grid>
 
 </UserControl>

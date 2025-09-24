@@ -31,6 +31,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
             string NoiTruKhamBenhQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruKhamBenh.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             string NoiTruToaThuocQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruToaThuoc.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             string ChanDoanIcdQuery = (_fileServices.GetQuery("ChanDoanICD.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string ThongTinHanhChinhQuery = (_fileServices.GetQuery("ThongTinHanhChinh.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             PatientPhacDoAllData patient = new PatientPhacDoAllData();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -41,7 +42,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                 patient.NoiTruChamSoc = (await connection.QueryAsync<NoiTruChamSoc>(NoiTruChamSocQuery)).ToList();
                 patient.NoiTruCLS = (await connection.QueryAsync<NoiTruCls>(NoiTruCLSQuery)).ToList();
                 patient.NoiTruToaThuoc = (await connection.QueryAsync<NoiTruToaThuoc>(NoiTruToaThuocQuery)).ToList();
-
+                patient.ThongTinHanhChinh = (await connection.QueryAsync<ThongTinHanhChinhModel>(ThongTinHanhChinhQuery)).FirstOrDefault();
             }
             return patient;
         }

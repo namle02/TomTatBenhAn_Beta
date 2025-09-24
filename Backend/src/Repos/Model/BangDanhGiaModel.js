@@ -37,7 +37,12 @@ const BangDanhGiaSchema = new mongoose.Schema(
         danhGiaVaChanDoan: { type: HangMucKiemTraSchema, default: () => ({ stt: "1", tenHangMucKiemTra: "Đánh giá và chẩn đoán" }) },
         dieuTri: { type: HangMucKiemTraSchema, default: () => ({ stt: "2", tenHangMucKiemTra: "Điều trị" }) },
         chamSoc: { type: HangMucKiemTraSchema, default: () => ({ stt: "3", tenHangMucKiemTra: "Chăm sóc" }) },
-        raVien: { type: HangMucKiemTraSchema, default: () => ({ stt: "4", tenHangMucKiemTra: "Ra viện" }) }
+        raVien: { type: HangMucKiemTraSchema, default: () => ({ stt: "4", tenHangMucKiemTra: "Ra viện" }) },
+        // Thêm trường lưu trữ file Word gốc
+        originalFileName: { type: String, trim: true }, // Tên file gốc
+        originalFilePath: { type: String, trim: true }, // Đường dẫn file trên server
+        fileSize: { type: Number }, // Kích thước file (bytes)
+        uploadedAt: { type: Date, default: Date.now } // Thời gian upload
     },
     { timestamps: true }
 );
