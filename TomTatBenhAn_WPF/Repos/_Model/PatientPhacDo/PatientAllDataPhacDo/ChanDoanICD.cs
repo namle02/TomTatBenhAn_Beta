@@ -17,5 +17,13 @@ namespace TomTatBenhAn_WPF.Repos._Model.PatientPhacDo.PatientAllDataPhacDo
         [ObservableProperty] private string? maICDChinhRaVien;
         [ObservableProperty] private string? benhKemTheoRaVien;
         [ObservableProperty] private string? maICDKemTheoRaVien;
+
+        public string GetToanBoChanDoanICD =>
+       $"{MaICDChinhVaoVien}/{MaICDChinhRaVien}/{MaICDPhuVaoVien}/{MaICDKemTheoRaVien}";
+
+        partial void OnMaICDChinhVaoVienChanged(string? value) => OnPropertyChanged(nameof(GetToanBoChanDoanICD));
+        partial void OnMaICDPhuVaoVienChanged(string? value) => OnPropertyChanged(nameof(GetToanBoChanDoanICD));
+        partial void OnMaICDChinhRaVienChanged(string? value) => OnPropertyChanged(nameof(GetToanBoChanDoanICD));
+        partial void OnMaICDKemTheoRaVienChanged(string? value) => OnPropertyChanged(nameof(GetToanBoChanDoanICD));
     }
 }

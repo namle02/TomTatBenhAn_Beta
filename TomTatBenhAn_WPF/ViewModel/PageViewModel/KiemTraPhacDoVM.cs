@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DocumentFormat.OpenXml.Drawing;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo;
 using TomTatBenhAn_WPF.Repos.Dto;
@@ -16,6 +17,7 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
         private readonly IPhacDoServices _phacDoServices;
         private readonly IBangKiemServices _bangKiemServices;
         private readonly IKiemTraPhacDoServices _kiemTraPhacDoServices;
+        private readonly IPhacDoReportServices _phacDoReportServices;
 
         [ObservableProperty] private PatientPhacDoAllData patientData = new PatientPhacDoAllData();
 
@@ -32,12 +34,13 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
         [ObservableProperty] private bool isViewBangKiem = false;
         [ObservableProperty] private bool hasNoBangKiem = true;
 
-        public KiemTraPhacDoVM(IDataMapper dataMapper, IBangKiemServices bangKiemServices, IPhacDoServices phacDoServices, IKiemTraPhacDoServices kiemTraPhacDoServices)
+        public KiemTraPhacDoVM(IDataMapper dataMapper, IBangKiemServices bangKiemServices, IPhacDoServices phacDoServices, IKiemTraPhacDoServices kiemTraPhacDoServices, IPhacDoReportServices phacDoReportServices)
         {
             _dataMapper = dataMapper;
             _bangKiemServices = bangKiemServices;
             _phacDoServices = phacDoServices;
             _kiemTraPhacDoServices = kiemTraPhacDoServices;
+            _phacDoReportServices = phacDoReportServices;
 
             _ = Task.Run(async () =>
             {
@@ -132,24 +135,131 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
         private void PreviewBangKiem(string BangKiemId)
         {
             IsViewBangKiem = true;
-            foreach(var item in DanhSachBangKiemDaDanhGia)
+            foreach (var item in DanhSachBangKiemDaDanhGia)
             {
-                if(item.BangKiemId == BangKiemId)
+                if (item.BangKiemId == BangKiemId)
                 {
                     BangKiemDaDanhGia = item;
                 }
             }
         }
+
+        /// <summary>
+        /// Xuất dữ liệu bảng kiểm đã đánh giá ra file Word
+        /// </summary>
+        [RelayCommand]
+        private async Task XuatBangKiem(string bangKiemId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(bangKiemId))
+                {
+                    MessageBox.Show("Không tìm thấy ID bảng kiểm.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Tìm bảng kiểm đã đánh giá
+                var bangKiemDaDanhGia = DanhSachBangKiemDaDanhGia.FirstOrDefault(x => x.BangKiemId == bangKiemId);
+                if (bangKiemDaDanhGia == null)
+                {
+                    MessageBox.Show("Không tìm thấy bảng kiểm đã đánh giá.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                IsLoading = true;
+
+                // Tạo thư mục temp để lưu file tạm
+                var tempDir = Path.Combine(Path.GetTempPath(), "BangKiemExport");
+                if (!Directory.Exists(tempDir))
+                {
+                    Directory.CreateDirectory(tempDir);
+                }
+
+                // Download file Word gốc từ server
+                var tempFilePath = Path.Combine(tempDir, $"temp_{bangKiemId}.docx");
+                var downloadResult = await _bangKiemServices.DownloadOriginalFileAsync(bangKiemId, tempFilePath);
+
+                if (!downloadResult.Success)
+                {
+                    MessageBox.Show($"Không thể tải file Word gốc: {downloadResult.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Tạo file output với dữ liệu đã đánh giá
+                var outputFileName = $"BangKiem_{bangKiemDaDanhGia.TenBangKiem}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
+                var outputPath = await CreateOutputFileWithData(tempFilePath, bangKiemDaDanhGia, outputFileName);
+
+                if (!string.IsNullOrWhiteSpace(outputPath))
+                {
+                    MessageBox.Show($"Xuất bảng kiểm thành công!\nFile đã lưu tại: {outputPath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Có lỗi xảy ra khi xuất bảng kiểm.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                // Dọn dẹp file tạm
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi xuất bảng kiểm: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        /// <summary>
+        /// Tạo file Word output với dữ liệu đã đánh giá
+        /// </summary>
+        private async Task<string?> CreateOutputFileWithData(string originalFilePath, BangKiemResponseDTO bangKiemData, string outputFileName)
+        {
+            try
+            {
+                // Mở dialog để chọn nơi lưu file
+                var saveDialog = new SaveFileDialog
+                {
+                    Title = "Lưu bảng kiểm đã đánh giá",
+                    FileName = outputFileName,
+                    Filter = "Word Documents (*.docx)|*.docx|All files (*.*)|*.*",
+                    DefaultExt = "docx"
+                };
+
+                if (saveDialog.ShowDialog() != true)
+                {
+                    return null;
+                }
+
+                var outputPath = saveDialog.FileName;
+                var resultPath = await _phacDoReportServices.CreateOutputFileWithDataAsync(originalFilePath, outputPath, bangKiemData);
+                if (string.IsNullOrWhiteSpace(resultPath))
+                {
+                    MessageBox.Show("Không thể tạo file Word output.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return null;
+                }
+                return resultPath;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tạo file output: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+        }
+        
         [RelayCommand]
         private void ClosePreviewBangKiem()
         {
             IsViewBangKiem = false;
         }
-        
 
         partial void OnDanhSachBangKiemDaDanhGiaChanged(ObservableCollection<BangKiemResponseDTO>? oldValue, ObservableCollection<BangKiemResponseDTO> newValue)
         {
-            if(newValue.Count != 0)
+            if (newValue.Count != 0)
             {
                 HasNoBangKiem = false;
             }

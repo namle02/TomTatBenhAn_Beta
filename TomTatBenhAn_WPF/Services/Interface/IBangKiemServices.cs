@@ -26,7 +26,15 @@ namespace TomTatBenhAn_WPF.Services.Interface
         Task<ApiResponse<BangKiemResponseDTO>> GetByIdAsync(string id);
 
         /// <summary>
-        /// Tạo bảng kiểm mới
+        /// Tạo bảng kiểm mới với file Word gốc
+        /// </summary>
+        /// <param name="payload">Dữ liệu bảng kiểm</param>
+        /// <param name="wordFilePath">Đường dẫn file Word</param>
+        /// <returns>Kết quả tạo bảng kiểm</returns>
+        Task<ApiResponse<BangKiemResponseDTO>> CreateWithFileAsync(BangKiemRequestDTO payload, string wordFilePath);
+
+        /// <summary>
+        /// Tạo bảng kiểm mới (method cũ - giữ lại để tương thích)
         /// </summary>
         /// <param name="payload">Dữ liệu bảng kiểm</param>
         /// <returns>Kết quả tạo bảng kiểm</returns>
@@ -46,6 +54,14 @@ namespace TomTatBenhAn_WPF.Services.Interface
         /// <param name="id">ID bảng kiểm</param>
         /// <returns>Kết quả xóa</returns>
         Task<ApiResponse<object>> DeleteAsync(string id);
+
+        /// <summary>
+        /// Download file Word gốc của bảng kiểm
+        /// </summary>
+        /// <param name="bangKiemId">ID bảng kiểm</param>
+        /// <param name="outputPath">Đường dẫn lưu file (tùy chọn)</param>
+        /// <returns>Dữ liệu file Word</returns>
+        Task<ApiResponse<byte[]>> DownloadOriginalFileAsync(string bangKiemId, string outputPath);
 
         /// <summary>
         /// Kiểm tra bảng kiểm có tồn tại không

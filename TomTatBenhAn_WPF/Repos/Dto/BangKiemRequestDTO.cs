@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace TomTatBenhAn_WPF.Repos.Dto
 {
@@ -13,6 +14,15 @@ namespace TomTatBenhAn_WPF.Repos.Dto
         [ObservableProperty] private HangMucKiemTra dieuTri = new HangMucKiemTra { Stt = "2", TenHangMucKiemTra = "Điều trị" };
         [ObservableProperty] private HangMucKiemTra chamSoc = new HangMucKiemTra { Stt = "3", TenHangMucKiemTra = "Chăm sóc" };
         [ObservableProperty] private HangMucKiemTra raVien = new HangMucKiemTra { Stt = "4", TenHangMucKiemTra = "Ra viện" };
+
+        partial void OnTenBangKiemChanged(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                // Viết hoa chữ cái đầu
+                tenBangKiem = value.ToUpper();
+            }
+        }
     }
 
     /// <summary>
@@ -31,6 +41,12 @@ namespace TomTatBenhAn_WPF.Repos.Dto
         [ObservableProperty] private HangMucKiemTra raVien = new();
         [ObservableProperty] private DateTime createdAt;
         [ObservableProperty] private DateTime updatedAt;
+
+        // Metadata file Word gốc
+        [ObservableProperty] private string originalFileName = string.Empty;
+        [ObservableProperty] private string originalFilePath = string.Empty;
+        [ObservableProperty] private long fileSize;
+        [ObservableProperty] private DateTime uploadedAt;
     }
 
     /// <summary>
