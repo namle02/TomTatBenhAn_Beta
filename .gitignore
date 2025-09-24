@@ -89,6 +89,10 @@ ipch/
 node_module
 .env
 
+# Backend specific ignores
+Backend/.env
+Backend/node_modules/
+
 # TFS 2012 Local Workspace
 $tf/
 
