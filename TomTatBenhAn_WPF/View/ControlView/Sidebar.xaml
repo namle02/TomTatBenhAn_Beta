@@ -201,17 +201,6 @@
                     HorizontalAlignment="Stretch"
                     Background="#2f84d0"
                     BorderThickness="0"
-                    Content="Đánh giá tuân thủ phác đồ"
-                    FontSize="18"
-                    FontWeight="Bold"
-                    Foreground="White" />
-
-                <Button
-                    Height="45"
-                    Margin="0,0,0,10"
-                    HorizontalAlignment="Stretch"
-                    Background="#2f84d0"
-                    BorderThickness="0"
                     Command="{Binding PrintReportCommand}"
                     Content="Xuất file"
                     FontSize="18"

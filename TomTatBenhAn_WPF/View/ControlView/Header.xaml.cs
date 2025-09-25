@@ -13,10 +13,6 @@ namespace TomTatBenhAn_WPF.View.ControlView
         public Header()
         {
             InitializeComponent();
-            
-            // Thiết lập DataContext từ DI container
-            var app = (App)Application.Current;
-            DataContext = app.ServiceProvider.GetRequiredService<HeaderViewModel>();
         }
     }
 }

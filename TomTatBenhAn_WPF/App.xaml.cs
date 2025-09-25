@@ -33,8 +33,9 @@ public partial class App : Application
     {
         var configService = serviceProvider.GetRequiredService<IConfigServices>();
         await configService.GetConfigFromSheet();
+        
+        // Khởi tạo main window
         var mainwindow = serviceProvider.GetRequiredService<MainWindow>();
-
         mainwindow.Show();
         base.OnStartup(e);
     }

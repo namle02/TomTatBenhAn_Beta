@@ -1,216 +1,126 @@
 const BangDanhGiaServices = require('../Services/BangDanhGiaServices');
+const ApiResponse = require('../Utils/ApiResponse');
+const fs = require('fs');
+const path = require('path');
 
-// Tạo bảng đánh giá mới
-const CreateBangDanhGia = async (req, res) => {
-    try {
-        const result = await BangDanhGiaServices.createBangDanhGia(req.body);
-        res.status(201).json(result);
-    } catch (error) {
-        console.error("Lỗi CreateBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Tạo bảng đánh giá từ template phác đồ
-const CreateBangDanhGiaFromPhacDo = async (req, res) => {
-    try {
-        const { phacDoId } = req.params;
-        const thongTinDanhGia = req.body;
-        
-        const result = await BangDanhGiaServices.createBangDanhGiaFromPhacDo(phacDoId, thongTinDanhGia);
-        res.status(201).json(result);
-    } catch (error) {
-        console.error("Lỗi CreateBangDanhGiaFromPhacDo:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Lấy tất cả bảng đánh giá
-const GetAllBangDanhGia = async (req, res) => {
-    try {
-        const bangDanhGiaList = await BangDanhGiaServices.getAllBangDanhGia();
-        res.status(200).json({
-            success: true,
-            message: "Lấy danh sách bảng đánh giá thành công",
-            data: bangDanhGiaList
-        });
-    } catch (error) {
-        console.error("Lỗi GetAllBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Lấy bảng đánh giá theo ID
-const GetBangDanhGiaById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const bangDanhGia = await BangDanhGiaServices.getBangDanhGiaById(id);
-        res.status(200).json({
-            success: true,
-            message: "Lấy bảng đánh giá thành công",
-            data: bangDanhGia
-        });
-    } catch (error) {
-        console.error("Lỗi GetBangDanhGiaById:", error);
-        res.status(404).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Cập nhật bảng đánh giá
-const UpdateBangDanhGia = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updateData = req.body;
-        
-        if (!updateData || Object.keys(updateData).length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Thiếu dữ liệu để cập nhật"
-            });
+class BangDanhGiaController {
+    /**
+     * GET /api/bang-danh-gia - Lấy danh sách tất cả bảng kiểm
+     */
+    async getAll(req, res) {
+        try {
+            const { phacDoId, search } = req.query;
+            const result = await BangDanhGiaServices.getAllBangDanhGia({ phacDoId, search });
+            return ApiResponse.success(result.data, result.message).send(res);
+        } catch (error) {
+            return ApiResponse.error(error.message, 400).send(res);
         }
-        
-        const result = await BangDanhGiaServices.updateBangDanhGia(id, updateData);
-        res.status(200).json(result);
-    } catch (error) {
-        console.error("Lỗi UpdateBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
     }
-};
 
-// Xóa bảng đánh giá
-const DeleteBangDanhGia = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await BangDanhGiaServices.deleteBangDanhGia(id);
-        res.status(200).json(result);
-    } catch (error) {
-        console.error("Lỗi DeleteBangDanhGia:", error);
-        res.status(404).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
+    /**
+     * POST /api/bang-danh-gia - Tạo mới bảng kiểm với file Word gốc
+     */
+    async create(req, res) {
+        try {
+            // Kiểm tra có file upload không
+            if (!req.file) {
+                return ApiResponse.badRequest('Vui lòng upload file Word bảng kiểm').send(res);
+            }
 
-// Tìm kiếm bảng đánh giá
-const SearchBangDanhGia = async (req, res) => {
-    try {
-        const { search } = req.query;
-        if (!search) {
-            return res.status(400).json({
-                success: false,
-                message: "Thiếu từ khóa tìm kiếm"
-            });
+            // Validate file type
+            const allowedTypes = ['.docx', '.doc'];
+            const fileExt = path.extname(req.file.originalname).toLowerCase();
+            if (!allowedTypes.includes(fileExt)) {
+                // Xóa file đã upload nếu không đúng định dạng
+                fs.unlinkSync(req.file.path);
+                return ApiResponse.badRequest('Chỉ chấp nhận file Word (.docx, .doc)').send(res);
+            }
+
+            // Parse JSON từ field multipart 'data' (client gửi JSON trong trường này)
+            // Nếu client gửi các field phẳng (không bọc 'data') thì fallback sang req.body
+            let parsedData = {};
+            if (typeof req.body?.data === 'string') {
+                try {
+                    parsedData = JSON.parse(req.body.data);
+                } catch (e) {
+                    // Sai định dạng JSON
+                    fs.unlinkSync(req.file.path);
+                    return ApiResponse.badRequest('Trường data không phải JSON hợp lệ').send(res);
+                }
+            } else {
+                parsedData = req.body || {};
+            }
+
+            // Chuẩn bị dữ liệu để tạo bảng kiểm
+            const bangDanhGiaData = {
+                data: parsedData,
+                originalFileName: req.file.originalname,
+                originalFilePath: req.file.path,
+                fileSize: req.file.size,
+                uploadedAt: new Date()
+            };
+
+
+            const result = await BangDanhGiaServices.createBangDanhGia(bangDanhGiaData);
+            if (result.success) {
+                return ApiResponse.success(result.data, result.message).send(res);
+            }
+            return ApiResponse.error(result.message, 409).send(res);
+        } catch (error) {
+            // Xóa file nếu có lỗi xảy ra
+            if (req.file && fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+            return ApiResponse.error(error.message, 400).send(res);
         }
-        
-        const bangDanhGiaList = await BangDanhGiaServices.searchBangDanhGia(search);
-        res.status(200).json({
-            success: true,
-            message: "Tìm kiếm bảng đánh giá thành công",
-            data: bangDanhGiaList
-        });
-    } catch (error) {
-        console.error("Lỗi SearchBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
     }
-};
 
-// Lấy bảng đánh giá theo phác đồ
-const GetBangDanhGiaByPhacDo = async (req, res) => {
-    try {
-        const { phacDoId } = req.params;
-        const bangDanhGiaList = await BangDanhGiaServices.getBangDanhGiaByPhacDo(phacDoId);
-        res.status(200).json({
-            success: true,
-            message: "Lấy bảng đánh giá theo phác đồ thành công",
-            data: bangDanhGiaList
-        });
-    } catch (error) {
-        console.error("Lỗi GetBangDanhGiaByPhacDo:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Lấy thống kê bảng đánh giá
-const GetThongKeBangDanhGia = async (req, res) => {
-    try {
-        const thongKe = await BangDanhGiaServices.getThongKe();
-        res.status(200).json({
-            success: true,
-            message: "Lấy thống kê bảng đánh giá thành công",
-            data: thongKe
-        });
-    } catch (error) {
-        console.error("Lỗi GetThongKeBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-// Cập nhật trạng thái bảng đánh giá
-const UpdateTrangThaiBangDanhGia = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { trangThai } = req.body;
-        
-        if (!trangThai) {
-            return res.status(400).json({
-                success: false,
-                message: "Thiếu trạng thái để cập nhật"
-            });
+    /**
+     * DELETE /api/bang-danh-gia/:id - Xóa bảng kiểm và file Word gốc
+     */
+    async remove(req, res) {
+        try {
+            const { id } = req.params;
+            const result = await BangDanhGiaServices.deleteBangDanhGia(id);
+            return ApiResponse.success(null, result.message).send(res);
+        } catch (error) {
+            return ApiResponse.error(error.message, 400).send(res);
         }
-        
-        const validStates = ['draft', 'completed', 'reviewed', 'approved'];
-        if (!validStates.includes(trangThai)) {
-            return res.status(400).json({
-                success: false,
-                message: "Trạng thái không hợp lệ"
-            });
-        }
-        
-        const result = await BangDanhGiaServices.updateBangDanhGia(id, { trangThai });
-        res.status(200).json(result);
-    } catch (error) {
-        console.error("Lỗi UpdateTrangThaiBangDanhGia:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
     }
-};
 
-module.exports = {
-    CreateBangDanhGia,
-    CreateBangDanhGiaFromPhacDo,
-    GetAllBangDanhGia,
-    GetBangDanhGiaById,
-    UpdateBangDanhGia,
-    DeleteBangDanhGia,
-    SearchBangDanhGia,
-    GetBangDanhGiaByPhacDo,
-    GetThongKeBangDanhGia,
-    UpdateTrangThaiBangDanhGia
-};
+    /**
+     * GET /api/bang-danh-gia/:id/download - Download file Word gốc
+     */
+    async downloadOriginalFile(req, res) {
+        try {
+            const { id } = req.params;
+            const result = await BangDanhGiaServices.getBangDanhGiaById(id);
+
+
+            if (!result.data || !result.data.originalFilePath) {
+                return ApiResponse.notFound('Không tìm thấy file gốc').send(res);
+            }
+
+            const filePath = result.data.originalFilePath;
+            const fileName = result.data.originalFileName || `bang-kiem-${id}.docx`;
+
+            // Kiểm tra file có tồn tại không
+            if (!fs.existsSync(filePath)) {
+                return ApiResponse.notFound('File không tồn tại trên server').send(res);
+            }
+
+            // Set headers cho download
+            res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(fileName)}"`);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+
+            // Stream file về client
+            const fileStream = fs.createReadStream(filePath);
+            fileStream.pipe(res);
+
+        } catch (error) {
+            return ApiResponse.error(error.message, 400).send(res);
+        }
+    }
+}
+
+module.exports = new BangDanhGiaController();

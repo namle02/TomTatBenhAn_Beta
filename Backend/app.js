@@ -7,6 +7,8 @@ const benhNhanRoutes = require('./src/Routes/BenhNhanRoutes');
 const dbConnect = require('./src/Repos/Database');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const healthRoutes = require('./src/Routes/healthRoutes');
+const aiRoutes = require('./src/Routes/AiRoutes');
 
 dbConnect();
 
@@ -28,6 +30,8 @@ app.use('/user', userRoutes);
 app.use('/phacdo', phacDoRoutes);
 app.use('/bangdanhgia', bangDanhGiaRoutes);
 app.use('/benhnhan', benhNhanRoutes);
+app.use('/health', healthRoutes);
+app.use('/ai', aiRoutes);
 
 
 

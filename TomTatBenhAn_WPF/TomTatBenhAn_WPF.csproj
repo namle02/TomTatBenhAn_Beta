@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Logo_benh_vien-removebg-preview.png" />
+    <None Remove="Assets\Male_Logo.png" />
     <None Remove="Promt\KetQuaXNPromt.txt" />
     <None Remove="Promt\QuaTrinhBenhLyPromt.txt" />
     <None Remove="Promt\TinhTrangNguoiBenhRaVienPromt.txt" />
@@ -36,6 +37,10 @@
     <None Remove="SqlScripts\BenhAnType\KhamBenhVaoVien.sql" />
     <None Remove="SqlScripts\DienBien.sql" />
     <None Remove="SqlScripts\KetQuaXetNghiemCLS.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruChamSoc.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruCLS.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruKhamBenh.sql" />
+    <None Remove="SqlScripts\PatientPhacDoData\NoiTruToaThuoc.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,6 +95,9 @@
     <Content Include="Assets\Logo_benh_vien-removebg-preview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Male_Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\ReportTemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -102,6 +110,10 @@
   <ItemGroup>
 	  <EmbeddedResource Include="SqlScripts\ChanDoanICD.sql" />
 	  <EmbeddedResource Include="SqlScripts\DienBien.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruChamSoc.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruCLS.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruKhamBenh.sql" />
+	  <EmbeddedResource Include="SqlScripts\PatientPhacDoData\NoiTruToaThuoc.sql" />
 	  <EmbeddedResource Include="SqlScripts\ThongTinHanhChinh.sql" />
 	  <EmbeddedResource Include="SqlScripts\KetQuaXetNghiemCLS.sql" />
   </ItemGroup>

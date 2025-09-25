@@ -1,0 +1,880 @@
+<UserControl
+    x:Class="TomTatBenhAn_WPF.View.PageView.BangKiemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:TomTatBenhAn_WPF.View.PageView"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    AllowDrop="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="ModernCard" TargetType="materialDesign:Card">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4" />
+        </Style>
+
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#2f84d0" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <Style
+            x:Key="ActionButton"
+            BasedOn="{StaticResource MaterialDesignRaisedButton}"
+            TargetType="Button">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+
+        <Style x:Key="InfoCard" TargetType="materialDesign:Card">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp2" />
+        </Style>
+
+        <!--  Viền ô bảng: kẻ lưới bên phải và bên dưới. Padding cho dễ đọc  -->
+        <Style x:Key="TableCell" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#DDD" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+
+        <!--  Ô header: đậm hơn, có viền trên  -->
+        <Style
+            x:Key="HeaderCell"
+            BasedOn="{StaticResource TableCell}"
+            TargetType="Border">
+            <Setter Property="Background" Value="#F5F5F5" />
+            <Setter Property="BorderThickness" Value="0,1,1,1" />
+            <Setter Property="Padding" Value="8,6" />
+        </Style>
+
+        <!--  Hàng tiêu chí: template dùng lại  -->
+        <DataTemplate x:Key="TieuChiRowTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource TableCell}">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding Stt}" />
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource TableCell}">
+                    <TextBlock
+                        FontSize="16"
+                        Text="{Binding YeuCauDatDuoc}"
+                        TextWrapping="Wrap" />
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource TableCell}">
+                    <CheckBox
+                        HorizontalAlignment="Center"
+                        Content="Đạt"
+                        FontSize="16"
+                        IsChecked="{Binding Dat}"
+                        IsEnabled="False" />
+                </Border>
+
+                <Border Grid.Column="3" Style="{StaticResource TableCell}">
+                    <CheckBox
+                        HorizontalAlignment="Center"
+                        Content="Không đạt"
+                        FontSize="16"
+                        IsChecked="{Binding KhongDat}"
+                        IsEnabled="False" />
+                </Border>
+
+                <Border Grid.Column="4" Style="{StaticResource TableCell}">
+                    <CheckBox
+                        HorizontalAlignment="Center"
+                        Content="Không áp dụng"
+                        FontSize="16"
+                        IsChecked="{Binding KhongApDung}"
+                        IsEnabled="False" />
+                </Border>
+
+                <Border Grid.Column="5" Style="{StaticResource TableCell}">
+                    <TextBlock
+                        Margin="4,0"
+                        FontSize="16"
+                        Text="{Binding LyDoKhongDat}"
+                        TextWrapping="Wrap" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Header Section  -->
+            <materialDesign:Card
+                Grid.Row="0"
+                Background="White"
+                Style="{StaticResource ModernCard}">
+                <StackPanel Margin="24,20">
+                    <TextBlock Style="{StaticResource HeaderStyle}" Text="QUẢN LÝ BẢNG KIỂM" />
+                    <TextBlock
+                        FontSize="14"
+                        Foreground="Gray"
+                        Text="Bảng kiểm đánh giá tuân thủ quy trình chuyên môn KCB theo phác đồ điều trị"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!--  Action Bar  -->
+            <materialDesign:Card
+                Grid.Row="1"
+                Background="White"
+                Style="{StaticResource ModernCard}">
+                <Grid Margin="24,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Search Box  -->
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,0,16,0"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Tìm kiếm bảng kiểm..."
+                        materialDesign:HintAssist.IsFloating="True"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        FontSize="14"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                    <!--  Action Buttons  -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button
+                            Background="#4CAF50"
+                            Command="{Binding OpenModalAddBangKiemrCommand}"
+                            Style="{StaticResource ActionButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Kind="Plus" />
+                                <TextBlock Text="Thêm mới" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button
+                            Background="#2196F3"
+                            Command="{Binding GetDanhSachBangKiemCommand}"
+                            Style="{StaticResource ActionButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Kind="Refresh" />
+                                <TextBlock Text="Làm mới" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+
+            <!--  Data Grid Bảng kiểm  -->
+            <materialDesign:Card
+                Grid.Row="2"
+                Background="White"
+                Style="{StaticResource ModernCard}">
+                <Grid Margin="24">
+                    <DataGrid
+                        materialDesign:DataGridAssist.CellPadding="8"
+                        materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        FontSize="14"
+                        GridLinesVisibility="Horizontal"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding DanhSachBangKiem}"
+                        SelectionMode="Single">
+
+                        <DataGrid.Columns>
+                            <!--  ID Column  -->
+                            <DataGridTextColumn
+                                Width="80"
+                                Binding="{Binding BangKiemId}"
+                                Header="ID"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <!--  Tên Bảng Kiểm  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                MinWidth="200"
+                                Binding="{Binding TenBangKiem}"
+                                Header="Tên Bảng Kiểm"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <!--  Phác Đồ Liên Kết  -->
+                            <DataGridTextColumn
+                                Width="200"
+                                Binding="{Binding TenPhacDo}"
+                                Header="Phác Đồ Liên Kết"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <!--  Ngày Tạo  -->
+                            <DataGridTextColumn
+                                Width="120"
+                                Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}"
+                                Header="Ngày Tạo"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+
+                            <!--  Actions  -->
+                            <DataGridTemplateColumn Width="180" Header="Thao Tác">
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <!--  View Button  -->
+                                            <Button
+                                                Margin="2"
+                                                Command="{Binding DataContext.XemNoiDungBangKiemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding BangKiemId}"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                ToolTip="Xem chi tiết">
+                                                <materialDesign:PackIcon Foreground="#2196F3" Kind="Eye" />
+                                            </Button>
+
+                                            <!--  Delete Button  -->
+                                            <Button
+                                                Margin="2"
+                                                Command="{Binding DataContext.XoaBangKiemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding BangKiemId}"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                ToolTip="Xóa">
+                                                <materialDesign:PackIcon Foreground="#F44336" Kind="Delete" />
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
+                                <Setter Property="Height" Value="56" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F5F5F5" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+
+                    <!--  Empty State  -->
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding IsEmptyDataGrid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <materialDesign:PackIcon
+                            Width="64"
+                            Height="64"
+                            Margin="0,0,0,16"
+                            HorizontalAlignment="Center"
+                            Foreground="Gray"
+                            Kind="FileDocumentOutline" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="18"
+                            Foreground="Gray"
+                            Text="Chưa có bảng kiểm nào" />
+                        <TextBlock
+                            Margin="0,8,0,24"
+                            HorizontalAlignment="Center"
+                            FontSize="14"
+                            Foreground="Gray"
+                            Text="Hãy tạo bảng kiểm đầu tiên" />
+                        <Button
+                            Background="#4CAF50"
+                            Command="{Binding DataContext.OpenModalAddBangKiemrCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            Content="Tạo Bảng Kiểm"
+                            Style="{StaticResource MaterialDesignRaisedButton}" />
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <!--  Add Bang Kiem Overlay  -->
+        <Grid
+            d:Visibility="Hidden"
+            Background="#80000000"
+            Visibility="{Binding IsAddBangKiem, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <materialDesign:Card Background="White" Style="{StaticResource ModernCard}">
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Header  -->
+                    <StackPanel Grid.Row="0">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="#2f84d0"
+                            Text="Thêm Bảng Kiểm Mới" />
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontSize="14"
+                            Foreground="Gray"
+                            Text="Nhập thông tin bảng kiểm đánh giá tuân thủ phác đồ" />
+                    </StackPanel>
+
+                    <!--  Form Content  -->
+                    <StackPanel Grid.Row="1" Margin="0,8">
+                        <!--  Tên Bảng Kiểm  -->
+                        <TextBlock
+                            Margin="0,10,0,4"
+                            FontWeight="Medium"
+                            Text="Tên Bảng Kiểm *" />
+                        <TextBox
+                            Margin="0,0,0,16"
+                            materialDesign:HintAssist.Hint="Nhập tên bảng kiểm..."
+                            materialDesign:HintAssist.IsFloating="True"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding BangKiemMoi.TenBangKiem}" />
+
+                        <!--  Chọn Phác Đồ  -->
+                        <TextBlock
+                            Margin="0,0,0,4"
+                            FontWeight="Medium"
+                            Text="Phác Đồ Liên Kết *" />
+                        <ComboBox
+                            Margin="0,0,0,24"
+                            materialDesign:HintAssist.Hint="Chọn phác đồ..."
+                            DisplayMemberPath="Protocol.Name"
+                            ItemsSource="{Binding DanhSachPhacDo}"
+                            SelectedValue="{Binding SelectedPhacDo, Mode=TwoWay}"
+                            SelectedValuePath="_id"
+                            Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+                        <!--  Chọn đường dẫn đến file Bảng kiểm docx hoặc kéo thả file  -->
+                        <TextBlock
+                            Margin="0,0,0,4"
+                            FontWeight="Medium"
+                            Text="Chọn đường dẫn bảng kiểm hoặc kéo thả *" />
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="0,0,10,0"
+                                materialDesign:HintAssist.Hint="Nhập đường dẫn bảng kiểm hoặc kéo thả file"
+                                materialDesign:HintAssist.IsFloating="True"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding BangKiemPath}" />
+                            <Button
+                                Grid.Column="1"
+                                Height="45"
+                                Margin="5"
+                                Command="{Binding OpenFileCommand}"
+                                Content="Duyệt" />
+                            <Button
+                                Grid.Column="2"
+                                Height="45"
+                                Margin="5"
+                                Background="White"
+                                Command="{Binding CancelFileCommand}"
+                                Content="Hủy" />
+                        </Grid>
+
+
+
+                    </StackPanel>
+                    <!--  Action Buttons  -->
+                    <StackPanel
+                        Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Margin="8,0,0,0"
+                            Command="{Binding CloseModalAddBangKiemrCommand}"
+                            Content="Hủy"
+                            Style="{StaticResource MaterialDesignOutlinedButton}" />
+                        <Button
+                            Width="120"
+                            Margin="8,0,0,0"
+                            Background="#4CAF50"
+                            Command="{Binding SaveBangKiemCommand}"
+                            Content="Lưu"
+                            Style="{StaticResource MaterialDesignRaisedButton}" />
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Drop">
+                    <i:InvokeCommandAction Command="{Binding DragFileCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Grid>
+
+        <!--  Loading Overlay  -->
+        <Border
+            d:Visibility="Hidden"
+            Background="#80000000"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar
+                        Width="50"
+                        Height="50"
+                        IsIndeterminate="True"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                    <TextBlock
+                        Margin="0,16,0,0"
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Foreground="White"
+                        Text="Đang xử lý..." />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  Preview bảng kiểm overlay  -->
+        <Border
+            Margin="10"
+            d:Visibility="Hidden"
+            Background="#80000000"
+            Visibility="{Binding IsViewBangKiem, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!--  Tên bảng kiểm  -->
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="5"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="#0277BD"
+                    Text="BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB ĐẺ THƯỜNG 1 THAI NGÔI ĐẦU (O80.0)"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                    <Grid MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ViewportWidth}" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="16*" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Margin="5,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+
+                            <!--  Hiển thị dữ liệu bảng kiểm  -->
+                            <materialDesign:Card Grid.Row="1" Style="{StaticResource ModernCard}">
+                                <!--  Viền ngoài khối chi tiết (góc bo nhẹ cho đẹp)  -->
+                                <Border
+                                    Padding="12"
+                                    BorderBrush="#CCC"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <!--  Bật đồng bộ cột giữa các hàng  -->
+                                        <Grid.IsSharedSizeScope>True</Grid.IsSharedSizeScope>
+
+                                        <ContentControl Content="{Binding SelectedBangKiem}">
+                                            <ContentControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+
+                                                        <!--  ==== ĐÁNH GIÁ & CHẨN ĐOÁN ====  -->
+                                                        <StackPanel Margin="0,0,0,16">
+                                                            <!--  Tiêu đề section  -->
+                                                            <TextBlock
+                                                                Margin="0,0,0,8"
+                                                                FontSize="16"
+                                                                FontWeight="SemiBold">
+                                                                <Run Text="{Binding DanhGiaVaChanDoan.Stt}" />
+                                                                <Run Text=" - " />
+                                                                <Run Text="{Binding DanhGiaVaChanDoan.TenHangMucKiemTra}" />
+                                                            </TextBlock>
+
+                                                            <!--  Header của bảng  -->
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="1.5*" />
+                                                                    <ColumnDefinition Width="2*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Border Grid.Column="0" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="#" />
+                                                                </Border>
+                                                                <Border Grid.Column="1" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Yêu cầu đạt được" />
+                                                                </Border>
+                                                                <Border Grid.Column="2" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="3" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="4" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không áp dụng" />
+                                                                </Border>
+                                                                <Border Grid.Column="5" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Lý do không đạt" />
+                                                                </Border>
+                                                            </Grid>
+
+                                                            <!--  Danh sách hàng  -->
+                                                            <ItemsControl ItemsSource="{Binding DanhGiaVaChanDoan.DanhSachNoiDung}">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel>
+                                                                            <!--  Tên nội dung  -->
+                                                                            <TextBlock
+                                                                                Margin="0,8,0,4"
+                                                                                FontWeight="SemiBold"
+                                                                                Foreground="{DynamicResource MaterialDesignBodySecondaryBrush}"
+                                                                                Text="{Binding TenNoiDungKiemTra}" />
+
+                                                                            <!--  Các tiêu chí của nội dung  -->
+                                                                            <ItemsControl ItemTemplate="{StaticResource TieuChiRowTemplate}" ItemsSource="{Binding DanhSachTieuChi}" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </StackPanel>
+
+                                                        <!--  ==== Điều trị ====  -->
+                                                        <StackPanel Margin="0,0,0,16">
+                                                            <!--  Tiêu đề section  -->
+                                                            <TextBlock
+                                                                Margin="0,0,0,8"
+                                                                FontSize="16"
+                                                                FontWeight="SemiBold">
+                                                                <Run Text="{Binding DieuTri.Stt}" />
+                                                                <Run Text=" - " />
+                                                                <Run Text="{Binding DieuTri.TenHangMucKiemTra}" />
+                                                            </TextBlock>
+
+                                                            <!--  Header của bảng  -->
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="1.5*" />
+                                                                    <ColumnDefinition Width="2*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Border Grid.Column="0" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="#" />
+                                                                </Border>
+                                                                <Border Grid.Column="1" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Yêu cầu đạt được" />
+                                                                </Border>
+                                                                <Border Grid.Column="2" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="3" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="4" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không áp dụng" />
+                                                                </Border>
+                                                                <Border Grid.Column="5" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Lý do không đạt" />
+                                                                </Border>
+                                                            </Grid>
+
+                                                            <!--  Danh sách hàng  -->
+                                                            <ItemsControl ItemsSource="{Binding DieuTri.DanhSachNoiDung}">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel>
+                                                                            <!--  Tên nội dung  -->
+                                                                            <TextBlock
+                                                                                Margin="0,8,0,4"
+                                                                                FontWeight="SemiBold"
+                                                                                Foreground="{DynamicResource MaterialDesignBodySecondaryBrush}"
+                                                                                Text="{Binding TenNoiDungKiemTra}" />
+
+                                                                            <!--  Các tiêu chí của nội dung  -->
+                                                                            <ItemsControl ItemTemplate="{StaticResource TieuChiRowTemplate}" ItemsSource="{Binding DanhSachTieuChi}" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </StackPanel>
+
+                                                        <!--  ==== Chăm sóc ====  -->
+                                                        <StackPanel Margin="0,0,0,16">
+                                                            <!--  Tiêu đề section  -->
+                                                            <TextBlock
+                                                                Margin="0,0,0,8"
+                                                                FontSize="16"
+                                                                FontWeight="SemiBold">
+                                                                <Run Text="{Binding ChamSoc.Stt}" />
+                                                                <Run Text=" - " />
+                                                                <Run Text="{Binding ChamSoc.TenHangMucKiemTra}" />
+                                                            </TextBlock>
+
+                                                            <!--  Header của bảng  -->
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="1.5*" />
+                                                                    <ColumnDefinition Width="2*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Border Grid.Column="0" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="#" />
+                                                                </Border>
+                                                                <Border Grid.Column="1" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Yêu cầu đạt được" />
+                                                                </Border>
+                                                                <Border Grid.Column="2" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="3" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="4" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không áp dụng" />
+                                                                </Border>
+                                                                <Border Grid.Column="5" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Lý do không đạt" />
+                                                                </Border>
+                                                            </Grid>
+
+                                                            <!--  Danh sách hàng  -->
+                                                            <ItemsControl ItemsSource="{Binding ChamSoc.DanhSachNoiDung}">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel>
+                                                                            <!--  Tên nội dung  -->
+                                                                            <TextBlock
+                                                                                Margin="0,8,0,4"
+                                                                                FontWeight="SemiBold"
+                                                                                Foreground="{DynamicResource MaterialDesignBodySecondaryBrush}"
+                                                                                Text="{Binding TenNoiDungKiemTra}" />
+
+                                                                            <!--  Các tiêu chí của nội dung  -->
+                                                                            <ItemsControl ItemTemplate="{StaticResource TieuChiRowTemplate}" ItemsSource="{Binding DanhSachTieuChi}" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </StackPanel>
+
+                                                        <!--  ==== Ra viện ====  -->
+                                                        <StackPanel Margin="0,0,0,16">
+                                                            <!--  Tiêu đề section  -->
+                                                            <TextBlock
+                                                                Margin="0,0,0,8"
+                                                                FontSize="16"
+                                                                FontWeight="SemiBold">
+                                                                <Run Text="{Binding RaVien.Stt}" />
+                                                                <Run Text=" - " />
+                                                                <Run Text="{Binding RaVien.TenHangMucKiemTra}" />
+                                                            </TextBlock>
+
+                                                            <!--  Header của bảng  -->
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="1.5*" />
+                                                                    <ColumnDefinition Width="2*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="3*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Border Grid.Column="0" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="#" />
+                                                                </Border>
+                                                                <Border Grid.Column="1" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Yêu cầu đạt được" />
+                                                                </Border>
+                                                                <Border Grid.Column="2" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="3" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không đạt" />
+                                                                </Border>
+                                                                <Border Grid.Column="4" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Center"
+                                                                        FontWeight="Bold"
+                                                                        Text="Không áp dụng" />
+                                                                </Border>
+                                                                <Border Grid.Column="5" Style="{StaticResource HeaderCell}">
+                                                                    <TextBlock FontWeight="Bold" Text="Lý do không đạt" />
+                                                                </Border>
+                                                            </Grid>
+
+                                                            <!--  Danh sách hàng  -->
+                                                            <ItemsControl ItemsSource="{Binding RaVien.DanhSachNoiDung}">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel>
+                                                                            <!--  Tên nội dung  -->
+                                                                            <TextBlock
+                                                                                Margin="0,8,0,4"
+                                                                                FontWeight="SemiBold"
+                                                                                Foreground="{DynamicResource MaterialDesignBodySecondaryBrush}"
+                                                                                Text="{Binding TenNoiDungKiemTra}" />
+
+                                                                            <!--  Các tiêu chí của nội dung  -->
+                                                                            <ItemsControl ItemTemplate="{StaticResource TieuChiRowTemplate}" ItemsSource="{Binding DanhSachTieuChi}" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ContentControl.ContentTemplate>
+                                        </ContentControl>
+                                    </Grid>
+                                </Border>
+                            </materialDesign:Card>
+
+
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+
+                <!--  Action Button  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="8"
+                        Background="Red"
+                        Command="{Binding ClosePreviewBangKiemCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Close" />
+                            <TextBlock Text="Đóng" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
+        </Border>
+    </Grid>
+
+
+</UserControl>

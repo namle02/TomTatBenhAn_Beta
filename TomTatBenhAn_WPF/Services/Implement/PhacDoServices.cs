@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using TomTatBenhAn_WPF.Services.Interface;
 using TomTatBenhAn_WPF.Repos.Dto;
+using TomTatBenhAn_WPF.Core;
 using System.Net;
 
 namespace TomTatBenhAn_WPF.Services.Implement
@@ -30,7 +31,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
         /// <summary>
         /// Lấy tất cả phác đồ từ server
         /// </summary>
-        public async Task<ApiResponseDTO<List<PhacDoItemDTO>>> GetAllPhacDoAsync()
+        public async Task<ApiResponse<List<PhacDoItemDTO>>> GetAllPhacDoAsync()
         {
             try
             {
@@ -40,37 +41,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<List<PhacDoItemDTO>>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<List<PhacDoItemDTO>>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<List<PhacDoItemDTO>>>(content, _jsonOptions);
+                    return apiResponse ?? ApiResponse<List<PhacDoItemDTO>>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<List<PhacDoItemDTO>>>(content, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<List<PhacDoItemDTO>>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<List<PhacDoItemDTO>>>(content, _jsonOptions);
+                    return errorResponse ?? ApiResponse<List<PhacDoItemDTO>>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<List<PhacDoItemDTO>>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<List<PhacDoItemDTO>>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Lấy phác đồ theo ID
         /// </summary>
-        public async Task<ApiResponseDTO<PhacDoItemDTO>> GetPhacDoByIdAsync(string id)
+        public async Task<ApiResponse<PhacDoItemDTO>> GetPhacDoByIdAsync(string id)
         {
             try
             {
@@ -80,37 +69,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(content, _jsonOptions);
+                    return apiResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(content, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(content, _jsonOptions);
+                    return errorResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<PhacDoItemDTO>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<PhacDoItemDTO>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Tìm kiếm phác đồ theo tên
         /// </summary>
-        public async Task<ApiResponseDTO<List<PhacDoItemDTO>>> SearchPhacDoAsync(string searchTerm)
+        public async Task<ApiResponse<List<PhacDoItemDTO>>> SearchPhacDoAsync(string searchTerm)
         {
             try
             {
@@ -120,37 +97,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<List<PhacDoItemDTO>>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<List<PhacDoItemDTO>>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<List<PhacDoItemDTO>>>(content, _jsonOptions);
+                    return apiResponse ?? ApiResponse<List<PhacDoItemDTO>>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<List<PhacDoItemDTO>>>(content, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<List<PhacDoItemDTO>>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<List<PhacDoItemDTO>>>(content, _jsonOptions);
+                    return errorResponse ?? ApiResponse<List<PhacDoItemDTO>>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<List<PhacDoItemDTO>>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<List<PhacDoItemDTO>>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Kiểm tra phác đồ có tồn tại hay không
         /// </summary>
-        public async Task<ApiResponseDTO<PhacDoItemDTO>> CheckProtocolExistsAsync(string name, string? code = null)
+        public async Task<ApiResponse<PhacDoItemDTO>> CheckProtocolExistsAsync(string name, string? code = null)
         {
             try
             {
@@ -165,37 +130,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(content, _jsonOptions);
+                    return apiResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(content, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(content, _jsonOptions);
+                    return errorResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<PhacDoItemDTO>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<PhacDoItemDTO>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Thêm phác đồ mới (phân tích từ text)
         /// </summary>
-        public async Task<ApiResponseDTO<ProtocolDTO>> AddPhacDoAsync(AddPhacDoRequestDTO request)
+        public async Task<ApiResponse<ProtocolDTO>> AddPhacDoAsync(AddPhacDoRequestDTO request)
         {
             try
             {
@@ -216,37 +169,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // API có thể trả về 409 (Conflict) nếu phác đồ đã tồn tại
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.Conflict)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<ProtocolDTO>>(responseContent, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<ProtocolDTO>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<ProtocolDTO>>(responseContent, _jsonOptions);
+                    return apiResponse ?? ApiResponse<ProtocolDTO>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<ProtocolDTO>>(responseContent, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<ProtocolDTO>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<ProtocolDTO>>(responseContent, _jsonOptions);
+                    return errorResponse ?? ApiResponse<ProtocolDTO>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<ProtocolDTO>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<ProtocolDTO>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Thêm phác đồ mới với tùy chọn ghi đè (gửi trực tiếp text/plain)
         /// </summary>
-        public async Task<ApiResponseDTO<ProtocolDTO>> AddPhacDoWithForceAsync(string rawText, bool force = false)
+        public async Task<ApiResponse<ProtocolDTO>> AddPhacDoWithForceAsync(string rawText, bool force = false)
         {
             try
             {
@@ -267,37 +208,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // API có thể trả về 409 (Conflict) nếu phác đồ đã tồn tại
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.Conflict)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<ProtocolDTO>>(responseContent, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<ProtocolDTO>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<ProtocolDTO>>(responseContent, _jsonOptions);
+                    return apiResponse ?? ApiResponse<ProtocolDTO>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<ProtocolDTO>>(responseContent, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<ProtocolDTO>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<ProtocolDTO>>(responseContent, _jsonOptions);
+                    return errorResponse ?? ApiResponse<ProtocolDTO>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<ProtocolDTO>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<ProtocolDTO>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Cập nhật phác đồ hiện có
         /// </summary>
-        public async Task<ApiResponseDTO<PhacDoItemDTO>> UpdatePhacDoAsync(string id, PhacDoItemDTO updateData)
+        public async Task<ApiResponse<PhacDoItemDTO>> UpdatePhacDoAsync(string id, PhacDoItemDTO updateData)
         {
             try
             {
@@ -310,37 +239,25 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(responseContent, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(responseContent, _jsonOptions);
+                    return apiResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<PhacDoItemDTO>>(responseContent, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<PhacDoItemDTO>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<PhacDoItemDTO>>(responseContent, _jsonOptions);
+                    return errorResponse ?? ApiResponse<PhacDoItemDTO>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<PhacDoItemDTO>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<PhacDoItemDTO>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
 
         /// <summary>
         /// Xóa phác đồ theo ID
         /// </summary>
-        public async Task<ApiResponseDTO<object>> DeletePhacDoAsync(string id)
+        public async Task<ApiResponse<object>> DeletePhacDoAsync(string id)
         {
             try
             {
@@ -350,30 +267,18 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponseDTO<object>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponseDTO<object>
-                    {
-                        Success = false,
-                        Message = "Không thể parse response từ server"
-                    };
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<object>>(content, _jsonOptions);
+                    return apiResponse ?? ApiResponse<object>.ErrorResult("Không thể parse response từ server");
                 }
                 else
                 {
-                    var errorResponse = JsonSerializer.Deserialize<ApiResponseDTO<object>>(content, _jsonOptions);
-                    return errorResponse ?? new ApiResponseDTO<object>
-                    {
-                        Success = false,
-                        Message = $"API trả về lỗi: {response.StatusCode}"
-                    };
+                    var errorResponse = JsonSerializer.Deserialize<ApiResponse<object>>(content, _jsonOptions);
+                    return errorResponse ?? ApiResponse<object>.ErrorResult($"API trả về lỗi: {response.StatusCode}", (int)response.StatusCode);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponseDTO<object>
-                {
-                    Success = false,
-                    Message = $"Lỗi khi gọi API: {ex.Message}"
-                };
+                return ApiResponse<object>.ErrorResult($"Lỗi khi gọi API: {ex.Message}");
             }
         }
     }

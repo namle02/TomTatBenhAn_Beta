@@ -2,6 +2,9 @@
 using Microsoft.Data.SqlClient;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Repos._Model.PatientData;
+using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo;
+using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo.PatientAllDataPhacDo;
+using TomTatBenhAn_WPF.Repos._Model.PatientTomTat.PatientData;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
 using TomTatBenhAn_WPF.Services.Interface;
 
@@ -19,10 +22,35 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
             _configServices = configServices;
         }
 
+        public async Task<PatientPhacDoAllData> GetAllPatientPhacDoData(string SoBenhAn)
+        {
+            string connectionString = _configServices.Get("Db_String")!;
+            connectionString += ";Connect Timeout=10";
+            string NoiTruChamSocQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruChamSoc.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string NoiTruCLSQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruCLS.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string NoiTruKhamBenhQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruKhamBenh.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string NoiTruToaThuocQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruToaThuoc.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string ChanDoanIcdQuery = (_fileServices.GetQuery("ChanDoanICD.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string ThongTinHanhChinhQuery = (_fileServices.GetQuery("ThongTinHanhChinh.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            PatientPhacDoAllData patient = new PatientPhacDoAllData();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                patient.ChanDoanICD =  (await connection.QueryAsync<ChanDoanICD>(ChanDoanIcdQuery)).FirstOrDefault();
+                patient.SoBenhAn = SoBenhAn;
+                patient.NoiTruKhamBenh = (await connection.QueryAsync<NoiTruKhamBenh>(NoiTruKhamBenhQuery)).ToList();
+                patient.NoiTruChamSoc = (await connection.QueryAsync<NoiTruChamSoc>(NoiTruChamSocQuery)).ToList();
+                patient.NoiTruCLS = (await connection.QueryAsync<NoiTruCls>(NoiTruCLSQuery)).ToList();
+                patient.NoiTruToaThuoc = (await connection.QueryAsync<NoiTruToaThuoc>(NoiTruToaThuocQuery)).ToList();
+                patient.ThongTinHanhChinh = (await connection.QueryAsync<ThongTinHanhChinhModel>(ThongTinHanhChinhQuery)).FirstOrDefault();
+            }
+            return patient;
+        }
 
         public async Task<PatientAllData> GetAllPatientData(string SoBenhAn)
         {
             string connectionString = _configServices.Get("Db_String")!;
+            connectionString += ";Connect Timeout=10";
 
             PatientAllData patient = new PatientAllData();
             using (SqlConnection connection = new SqlConnection(connectionString))
