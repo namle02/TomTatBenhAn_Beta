@@ -1,5 +1,6 @@
 ﻿SELECT 
     ba.SoBenhAn AS SoBenhAn,
+	nv.TenNhanVien AS BacSiDieuTri,
     dmbn.SoVaoVien AS SoVaoVien,
     dmbn.TenBenhNhan AS TenBN,
     CONVERT(VARCHAR(10), dmbn.NgaySinh, 103) AS NgaySinh,
@@ -37,4 +38,5 @@ LEFT JOIN ehosdict.Lst_Dictionary tdDanToc
 LEFT JOIN ehosdict.Lst_Dictionary tdKQDT
     ON ba.KetQuaDieuTri_Id = tdKQDT.Dictionary_Id
 LEFT JOIN vw_DM_BenhNhan dmbn_cccd on ba.BenhNhan_Id = dmbn_cccd.BenhNhan_Id
+LEFT JOIN vw_NhanVien nv ON ba.BacSiDieuTri_Id = nv.NhanVien_Id
 WHERE ba.SoBenhAn = N'@SoBenhAn_Params';

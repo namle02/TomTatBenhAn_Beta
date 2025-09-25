@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo;
 
 namespace TomTatBenhAn_WPF.Services.Interface
 {
@@ -23,8 +24,9 @@ namespace TomTatBenhAn_WPF.Services.Interface
         /// <param name="originalFilePath">Đường dẫn file Word gốc</param>
         /// <param name="outputFilePath">Đường dẫn file Word output sẽ tạo</param>
         /// <param name="bangKiemData">Dữ liệu bảng kiểm đã đánh giá</param>
+        /// <param name="patientData">Dữ liệu bệnh nhân (optional)</param>
         /// <returns>Đường dẫn file output (y như outputFilePath) hoặc null nếu lỗi</returns>
-        Task<string?> CreateOutputFileWithDataAsync(string originalFilePath, string outputFilePath, TomTatBenhAn_WPF.Repos.Dto.BangKiemResponseDTO bangKiemData);
+        Task<string?> CreateOutputFileWithDataAsync(string originalFilePath, string outputFilePath, TomTatBenhAn_WPF.Repos.Dto.BangKiemResponseDTO bangKiemData, PatientPhacDoAllData? patientData = null);
 
         /// <summary>
         /// Đếm số lượng tiêu chí đã được đánh dấu (đạt/không đạt/không áp dụng)

@@ -1,9 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace TomTatBenhAn_WPF.Repos._Model.PatientData
 {
@@ -11,6 +7,9 @@ namespace TomTatBenhAn_WPF.Repos._Model.PatientData
     {
         [ObservableProperty]
         private string? soBenhAn;
+
+        [ObservableProperty]
+        private string? bacSiDieuTri;
 
         [ObservableProperty]
         private string? soVaoVien;
