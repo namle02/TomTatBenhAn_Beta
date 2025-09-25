@@ -186,7 +186,7 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
                 }
 
                 // Tạo file output với dữ liệu đã đánh giá
-                var outputFileName = $"BangKiem_{bangKiemDaDanhGia.TenBangKiem}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
+                var outputFileName = $"{DateTime.Now:yyyyMMdd_HHmmss}_{PatientData.ThongTinHanhChinh!.SoBenhAn}.docx";
                 var outputPath = await CreateOutputFileWithData(tempFilePath, bangKiemDaDanhGia, outputFileName);
 
                 if (!string.IsNullOrWhiteSpace(outputPath))
@@ -221,22 +221,13 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
         {
             try
             {
-                // Mở dialog để chọn nơi lưu file
-                var saveDialog = new SaveFileDialog
-                {
-                    Title = "Lưu bảng kiểm đã đánh giá",
-                    FileName = outputFileName,
-                    Filter = "Word Documents (*.docx)|*.docx|All files (*.*)|*.*",
-                    DefaultExt = "docx"
-                };
+                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string thisYear = DateTime.Now.ToString("yyyy");
+                string thisMonth = DateTime.Now.ToString("MM");
+                string folderPath = Path.Combine(desktop, "Bảng kiểm tuân thủ phác đô", thisYear, thisMonth, outputFileName);
 
-                if (saveDialog.ShowDialog() != true)
-                {
-                    return null;
-                }
-
-                var outputPath = saveDialog.FileName;
-                var resultPath = await _phacDoReportServices.CreateOutputFileWithDataAsync(originalFilePath, outputPath, bangKiemData);
+                var outputPath = folderPath;
+                var resultPath = await _phacDoReportServices.CreateOutputFileWithDataAsync(originalFilePath, outputPath, bangKiemData, PatientData);
                 if (string.IsNullOrWhiteSpace(resultPath))
                 {
                     MessageBox.Show("Không thể tạo file Word output.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -246,27 +237,20 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tạo file output: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi tạo file đánh giá: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
         }
-        
+
         [RelayCommand]
         private void ClosePreviewBangKiem()
         {
             IsViewBangKiem = false;
         }
 
-        partial void OnDanhSachBangKiemDaDanhGiaChanged(ObservableCollection<BangKiemResponseDTO>? oldValue, ObservableCollection<BangKiemResponseDTO> newValue)
+        partial void OnDanhSachBangKiemChanged(ObservableCollection<BangKiemResponseDTO> value)
         {
-            if (newValue.Count != 0)
-            {
-                HasNoBangKiem = false;
-            }
-            else
-            {
-                HasNoBangKiem = true;
-            }
+            HasNoBangKiem = value.Count == 0;
         }
 
     }
