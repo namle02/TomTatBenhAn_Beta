@@ -23,15 +23,15 @@ namespace TomTatBenhAn_WPF.Services.Implement
             try
             {
                 string encryptedUrl = ConfigurationManager.AppSettings["ApiSheet"]!;
-                string key = ConfigurationManager.AppSettings["KeyDecrypt"]!;
+                //string key = ConfigurationManager.AppSettings["KeyDecrypt"]!;
 
-                if (string.IsNullOrWhiteSpace(encryptedUrl) || string.IsNullOrWhiteSpace(key))
-                    throw new ConfigurationErrorsException("ApiSheet hoặc KeyDecrypt bị thiếu trong App.config.");
+                //if (string.IsNullOrWhiteSpace(encryptedUrl) || string.IsNullOrWhiteSpace(key))
+                //    throw new ConfigurationErrorsException("ApiSheet hoặc KeyDecrypt bị thiếu trong App.config.");
 
-                string decryptedUrl = _fileServices.Decrypt(encryptedUrl, key);
+                //string decryptedUrl = _fileServices.Decrypt(encryptedUrl, key);
 
                 using var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync(decryptedUrl);
+                var response = await httpClient.GetAsync(encryptedUrl);
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
