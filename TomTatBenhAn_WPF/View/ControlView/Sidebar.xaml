@@ -219,6 +219,18 @@
                     FontWeight="Bold"
                     Foreground="White" />
 
+                <Button
+                    Height="45"
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Stretch"
+                    Background="#2f84d0"
+                    BorderThickness="0"
+                    Command="{Binding OpenUpdateWindowCommand}"
+                    Content="Cập nhật"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="White" />
+
             </StackPanel>
         </Grid>
     </Border>

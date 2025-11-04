@@ -3,9 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using TomTatBenhAn_WPF.Message;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Repos.Mappers.Interface;
+using TomTatBenhAn_WPF.View;
+using TomTatBenhAn_WPF.ViewModel.PageViewModel;
 
 
 namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
@@ -29,12 +32,14 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         [ObservableProperty] private string userUsageCount = "1952";
 
         private readonly IDataMapper _dataMapper;
+        private readonly IServiceProvider _serviceProvider;
      
 
 
-        public SideBarViewModel(IDataMapper dataMapper)
+        public SideBarViewModel(IDataMapper dataMapper, IServiceProvider serviceProvider)
         {
             _dataMapper = dataMapper;
+            _serviceProvider = serviceProvider;
           
             // Đăng ký nhận message loading status
             WeakReferenceMessenger.Default.Register<LoadingStatusMessage>(this);
@@ -142,6 +147,17 @@ namespace TomTatBenhAn_WPF.ViewModel.ControlViewModel
         private void SaveProgress()
         {
             WeakReferenceMessenger.Default.Send<string>("SaveProgress");
+        }
+
+        /// <summary>
+        /// Mở cửa sổ cập nhật
+        /// </summary>
+        [RelayCommand]
+        private void OpenUpdateWindow()
+        {
+            var updateViewModel = _serviceProvider.GetRequiredService<UpdateViewModel>();
+            var updateWindow = new UpdateWindow(updateViewModel);
+            updateWindow.ShowDialog();
         }
 
 

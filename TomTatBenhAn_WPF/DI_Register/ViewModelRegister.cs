@@ -20,6 +20,7 @@ namespace TomTatBenhAn_WPF.DI_Register
             services.AddTransient<BangKiemVM>();
             services.AddTransient<KiemTraPhacDoVM>();
             services.AddTransient<DashBoardVM>();
+            services.AddTransient<UpdateViewModel>();
         }
     }
 }

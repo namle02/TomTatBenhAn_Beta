@@ -29,8 +29,12 @@ namespace TomTatBenhAn_WPF.DI_Register
             });
 
             services.AddSingleton<IKiemTraPhacDoServices, KiemTraPhacDoServices>();
-       
-
+            
+            // Update service
+            services.AddSingleton<IUpdateService, UpdateService>();
+            
+            // Register IServiceProvider factory để có thể inject vào ViewModels
+            services.AddSingleton<IServiceProvider>(sp => sp);
         }
     }
 }
