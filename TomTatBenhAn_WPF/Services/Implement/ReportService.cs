@@ -86,8 +86,103 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
             try
             {
-                app = new Word.Application();
-                app.Visible = false; // Ẩn Word application
+                // Thử tạo Word Application với xử lý lỗi cụ thể
+                try
+                {
+                    app = new Word.Application();
+                    app.Visible = false; // Ẩn Word application
+                }
+                catch (System.IO.FileNotFoundException ex)
+                {
+                    // Kiểm tra xem có phải lỗi Office không
+                    string errorMsg = ex.Message.ToLower();
+                    if (errorMsg.Contains("office") || errorMsg.Contains("microsoft.office") || 
+                        ex.FileName?.ToLower().Contains("office") == true)
+                    {
+                        MessageBox.Show(
+                            "Không tìm thấy Microsoft Office (Word) trên máy tính này.\n\n" +
+                            "Vui lòng cài đặt Microsoft Office để sử dụng tính năng xuất file Word.\n\n" +
+                            $"Chi tiết lỗi: {ex.Message}",
+                            "Lỗi",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return;
+                    }
+                    throw; // Re-throw nếu không phải lỗi Office
+                }
+                catch (System.Runtime.InteropServices.COMException ex)
+                {
+                    MessageBox.Show(
+                        "Không thể khởi tạo Microsoft Office (Word).\n\n" +
+                        "Vui lòng đảm bảo Microsoft Office đã được cài đặt và đang hoạt động.\n\n" +
+                        $"Chi tiết: {ex.Message}",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
+                catch (System.Reflection.ReflectionTypeLoadException ex)
+                {
+                    // Lỗi khi không load được type từ assembly
+                    string officeError = ex.LoaderExceptions?
+                        .FirstOrDefault(e => e?.Message?.ToLower().Contains("office") == true)?.Message ?? "";
+                    
+                    MessageBox.Show(
+                        "Không thể tải Microsoft Office Interop assemblies.\n\n" +
+                        "Vui lòng cài đặt Microsoft Office để sử dụng tính năng xuất file Word.\n\n" +
+                        $"Chi tiết: {ex.Message}\n{(string.IsNullOrEmpty(officeError) ? "" : $"\n{officeError}")}",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    // Kiểm tra inner exception
+                    Exception? innerEx = ex.InnerException;
+                    while (innerEx != null)
+                    {
+                        if (innerEx.Message.ToLower().Contains("office") || 
+                            innerEx is System.IO.FileNotFoundException)
+                        {
+                            MessageBox.Show(
+                                "Không tìm thấy Microsoft Office (Word) trên máy tính này.\n\n" +
+                                "Vui lòng cài đặt Microsoft Office để sử dụng tính năng xuất file Word.\n\n" +
+                                $"Chi tiết: {innerEx.Message}",
+                                "Lỗi",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error
+                            );
+                            return;
+                        }
+                        innerEx = innerEx.InnerException;
+                    }
+
+                    MessageBox.Show(
+                        $"Không thể khởi tạo Microsoft Office (Word).\n\n" +
+                        $"Lỗi: {ex.Message}\n\n" +
+                        "Vui lòng kiểm tra Microsoft Office đã được cài đặt đúng cách.",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
+
+                if (app == null)
+                {
+                    MessageBox.Show(
+                        "Không thể khởi tạo Microsoft Office (Word).\n\n" +
+                        "Vui lòng đảm bảo Microsoft Office đã được cài đặt.",
+                        "Lỗi",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
 
                 // Tạo đường dẫn thư mục lưu file theo tháng
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

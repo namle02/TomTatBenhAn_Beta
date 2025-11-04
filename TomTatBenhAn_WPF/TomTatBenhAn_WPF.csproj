@@ -10,6 +10,8 @@
     <!-- PlatformTarget chỉ được set khi không có RuntimeIdentifier được chỉ định -->
     <PlatformTarget Condition="'$(RuntimeIdentifier)' == ''">x86</PlatformTarget>
     <ApplicationIcon>Assets\iconApp.ico</ApplicationIcon>
+    <!-- Đảm bảo NuGetPackageRoot được set -->
+    <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(UserProfile)\.nuget\packages</NuGetPackageRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -125,6 +127,16 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <!-- Microsoft.Office.Interop.Word package thay vì COMReference -->
     <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
+  </ItemGroup>
+
+  <!-- Thêm reference đến Office Interop assembly từ NuGet package -->
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Word">
+      <HintPath>$(NuGetPackageRoot)\microsoft.office.interop.word\15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

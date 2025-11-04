@@ -29,13 +29,13 @@ namespace TomTatBenhAn_WPF.Services.Implement
         #region Tạo bảng kiểm từ file word
         public BangKiemRequestDTO ExtractTableBangDanhGiaFromWord(string filePath, string phacDoId, string tenBangKiem)
         {
-            Word.Application? app = null;
-            Word.Document? doc = null;
+            Word.Application app = null!;
+            Word.Document doc = null!;
             try
             {
                 app = new Word.Application();
                 doc = app.Documents.Open(filePath, ReadOnly: true, Visible: false);
-                var parsed = ParseFirstTableAsMatrix(doc!);
+                var parsed = ParseFirstTableAsMatrix(doc);
                 var dto = MapMatrixToBangKiem(parsed, phacDoId, tenBangKiem);
                 return dto;
             }
@@ -51,13 +51,21 @@ namespace TomTatBenhAn_WPF.Services.Implement
             {
                 if (doc != null)
                 {
-                    doc.Close(false);
-                    doc = null;
+                    try
+                    {
+                        doc.Close(false);
+                    }
+                    catch { }
+                    doc = null!;
                 }
                 if (app != null)
                 {
-                    app.Quit(false);
-                    app = null;
+                    try
+                    {
+                        app.Quit(false);
+                    }
+                    catch { }
+                    app = null!;
                 }
             }
         }
