@@ -44,17 +44,8 @@
     <None Remove="SqlScripts\PatientPhacDoData\NoiTruToaThuoc.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Interop.Word">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>7</VersionMinor>
-      <VersionMajor>8</VersionMajor>
-      <Guid>00020905-0000-0000-c000-000000000046</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
+  <!-- Sử dụng PackageReference thay vì COMReference để tương thích với .NET Core MSBuild -->
+  <!-- COMReference không được hỗ trợ trong .NET Core MSBuild khi publish với RuntimeIdentifier -->
 
   <ItemGroup>
     <EmbeddedResource Include="Promt\KetQuaXNPromt.txt">
@@ -132,6 +123,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- Microsoft.Office.Interop.Word package thay vì COMReference -->
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
   </ItemGroup>
 
   <ItemGroup>
