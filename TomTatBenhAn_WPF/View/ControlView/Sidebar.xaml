@@ -226,7 +226,7 @@
                     Background="#2f84d0"
                     BorderThickness="0"
                     Command="{Binding OpenUpdateWindowCommand}"
-                    Content="Cập nhật"
+                    Content="Cập nhật ứng dụng"
                     FontSize="18"
                     FontWeight="Bold"
                     Foreground="White" />
