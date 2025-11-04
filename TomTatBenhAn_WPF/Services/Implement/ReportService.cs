@@ -4,6 +4,7 @@ using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using Microsoft.IdentityModel.Tokens;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace TomTatBenhAn_WPF.Services.Implement
 {
@@ -16,9 +17,69 @@ namespace TomTatBenhAn_WPF.Services.Implement
             _benhNhanService = benhNhanService;
         }
 
+        /// <summary>
+        /// Kiểm tra xem Microsoft Office (Word) có được cài đặt trên máy không
+        /// </summary>
+        private bool IsOfficeInstalled()
+        {
+            try
+            {
+                // Kiểm tra registry để xem Office có được cài đặt không
+                string[] officeKeys = new string[]
+                {
+                    @"SOFTWARE\Microsoft\Office\16.0\Word",  // Office 2016/2019/365
+                    @"SOFTWARE\Microsoft\Office\15.0\Word",  // Office 2013
+                    @"SOFTWARE\Microsoft\Office\14.0\Word",  // Office 2010
+                    @"SOFTWARE\WOW6432Node\Microsoft\Office\16.0\Word",
+                    @"SOFTWARE\WOW6432Node\Microsoft\Office\15.0\Word",
+                    @"SOFTWARE\WOW6432Node\Microsoft\Office\14.0\Word"
+                };
+
+                foreach (string keyPath in officeKeys)
+                {
+                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(keyPath))
+                    {
+                        if (key != null)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                // Thử tạo instance Word để kiểm tra
+                try
+                {
+                    var testApp = new Word.Application();
+                    testApp.Quit(false);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #region In bản tóm tắt ra file word
         public async void PrintFileWord(string templateFilePath, PatientAllData patient)
         {
+            // Kiểm tra Office có được cài đặt không
+            if (!IsOfficeInstalled())
+            {
+                MessageBox.Show(
+                    "Microsoft Office (Word) chưa được cài đặt trên máy tính này.\n\n" +
+                    "Vui lòng cài đặt Microsoft Office để sử dụng tính năng xuất file Word.",
+                    "Thông báo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+                return;
+            }
+
             Word.Application app = null;
             Word.Document doc = null;
             string outputFilePath = "";
@@ -107,10 +168,40 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 //// Lưu thông tin bệnh nhân vào database sau khi xuất file thành công
                 await SavePatientToDatabase(patient);
             }
+            catch (System.IO.FileNotFoundException ex) when (ex.Message.Contains("office") || ex.Message.Contains("Office"))
+            {
+                // Xử lý lỗi khi Office không được tìm thấy
+                MessageBox.Show(
+                    "Không tìm thấy Microsoft Office (Word) trên máy tính này.\n\n" +
+                    "Vui lòng cài đặt Microsoft Office để sử dụng tính năng xuất file Word.\n\n" +
+                    $"Chi tiết lỗi: {ex.Message}",
+                    "Lỗi",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                // Xử lý lỗi COM khi Office không khả dụng
+                MessageBox.Show(
+                    "Không thể kết nối với Microsoft Office (Word).\n\n" +
+                    "Vui lòng đảm bảo Microsoft Office đã được cài đặt và đang hoạt động.\n\n" +
+                    $"Chi tiết lỗi: {ex.Message}",
+                    "Lỗi",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
             catch (Exception ex)
             {
-                // Xử lý lỗi
-                MessageBox.Show($"Lỗi khi in file Word: {ex.Message}", ex.Message);
+                // Xử lý lỗi khác
+                MessageBox.Show(
+                    $"Lỗi khi xuất file Word: {ex.Message}\n\n" +
+                    $"Loại lỗi: {ex.GetType().Name}",
+                    "Lỗi",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
             finally
             {

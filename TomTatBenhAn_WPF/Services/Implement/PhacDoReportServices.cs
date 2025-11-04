@@ -29,22 +29,36 @@ namespace TomTatBenhAn_WPF.Services.Implement
         #region Tạo bảng kiểm từ file word
         public BangKiemRequestDTO ExtractTableBangDanhGiaFromWord(string filePath, string phacDoId, string tenBangKiem)
         {
-            var app = new Word.Application();
+            Word.Application? app = null;
             Word.Document? doc = null;
             try
             {
+                app = new Word.Application();
                 doc = app.Documents.Open(filePath, ReadOnly: true, Visible: false);
                 var parsed = ParseFirstTableAsMatrix(doc!);
                 var dto = MapMatrixToBangKiem(parsed, phacDoId, tenBangKiem);
                 return dto;
+            }
+            catch (System.IO.FileNotFoundException ex) when (ex.Message.Contains("office") || ex.Message.Contains("Office"))
+            {
+                throw new Exception("Microsoft Office (Word) chưa được cài đặt. Vui lòng cài đặt Microsoft Office để sử dụng tính năng này.", ex);
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                throw new Exception("Không thể kết nối với Microsoft Office (Word). Vui lòng đảm bảo Office đã được cài đặt và đang hoạt động.", ex);
             }
             finally
             {
                 if (doc != null)
                 {
                     doc.Close(false);
+                    doc = null;
                 }
-                app.Quit(false);
+                if (app != null)
+                {
+                    app.Quit(false);
+                    app = null;
+                }
             }
         }
 
