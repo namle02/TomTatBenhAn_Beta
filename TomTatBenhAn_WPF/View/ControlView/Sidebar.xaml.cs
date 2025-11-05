@@ -13,5 +13,6 @@ namespace TomTatBenhAn_WPF.View.ControlView
             InitializeComponent();
         }
 
+    
     }
 }
