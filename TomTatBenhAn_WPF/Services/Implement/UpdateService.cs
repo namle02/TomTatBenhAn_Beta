@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using System.Security.Principal;
 using TomTatBenhAn_WPF.Repos._Model;
 using TomTatBenhAn_WPF.Services.Interface;
 
@@ -24,8 +25,64 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
         public string GetCurrentVersion()
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            return $"{version.Major}.{version.Minor}.{version.Build}";
+            try
+            {
+                // Đọc trực tiếp từ file exe để đảm bảo lấy version mới nhất sau khi update
+                var exePath = Assembly.GetExecutingAssembly().Location;
+                if (string.IsNullOrEmpty(exePath))
+                {
+                    exePath = Process.GetCurrentProcess().MainModule?.FileName;
+                }
+                
+                if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                {
+                    // Đọc từ FileVersionInfo để lấy version chính xác từ file
+                    var fileVersionInfo = FileVersionInfo.GetVersionInfo(exePath);
+                    if (!string.IsNullOrEmpty(fileVersionInfo.FileVersion))
+                    {
+                        // Parse version string (ví dụ: "1.0.8.0" -> "1.0.8")
+                        var version = new Version(fileVersionInfo.FileVersion);
+                        if (version.Revision > 0)
+                        {
+                            return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+                        }
+                        else if (version.Build > 0)
+                        {
+                            return $"{version.Major}.{version.Minor}.{version.Build}";
+                        }
+                        else
+                        {
+                            return $"{version.Major}.{version.Minor}";
+                        }
+                    }
+                }
+                
+                // Fallback: đọc từ Assembly (có thể là version cũ nếu assembly chưa reload)
+                var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                if (assemblyVersion != null)
+                {
+                    if (assemblyVersion.Revision > 0)
+                    {
+                        return $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}.{assemblyVersion.Revision}";
+                    }
+                    else if (assemblyVersion.Build > 0)
+                    {
+                        return $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+                    }
+                    else
+                    {
+                        return $"{assemblyVersion.Major}.{assemblyVersion.Minor}";
+                    }
+                }
+                
+                return "1.0.0";
+            }
+            catch (Exception ex)
+            {
+                // Log error để debug
+                System.Diagnostics.Debug.WriteLine($"Error getting version: {ex.Message}");
+                return "1.0.0";
+            }
         }
 
         public async Task<(bool hasUpdate, string latestVersion, string downloadUrl, string releaseNotes)> CheckForUpdatesAsync()
@@ -35,18 +92,23 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 var response = await _httpClient.GetStringAsync(GITHUB_API_URL);
                 var release = JsonSerializer.Deserialize<GitHubRelease>(response);
 
-                var latestVersion = release.tag_name.TrimStart('v');
+                if (release == null)
+                    return (false, "", "", "");
+
+                var latestVersion = release.tag_name?.TrimStart('v') ?? "";
                 var currentVersion = GetCurrentVersion();
                 var hasUpdate = IsNewerVersion(currentVersion, latestVersion);
 
-                var zipAsset = release.assets.FirstOrDefault(a => a.name.EndsWith(".zip"));
+                var zipAsset = release.assets?.FirstOrDefault(a => a.name.EndsWith(".zip"));
                 var downloadUrl = zipAsset?.browser_download_url ?? "";
                 var releaseNotes = release.body ?? "";
 
                 return (hasUpdate, latestVersion, downloadUrl, releaseNotes);
             }
-            catch
+            catch (Exception ex)
             {
+                // Log error để debug
+                System.Diagnostics.Debug.WriteLine($"Error checking for updates: {ex.Message}");
                 return (false, "", "", "");
             }
         }
@@ -96,8 +158,9 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error downloading/installing update: {ex.Message}");
                 return false;
             }
         }
@@ -114,11 +177,103 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
         }
 
+        private bool RequiresAdmin(string appPath)
+        {
+            try
+            {
+                // Kiểm tra xem đường dẫn có nằm trong Program Files không
+                var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                
+                return appPath.StartsWith(programFiles, StringComparison.OrdinalIgnoreCase) ||
+                       appPath.StartsWith(programFilesX86, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool CanWriteToDirectory(string directoryPath)
+        {
+            try
+            {
+                var testFile = Path.Combine(directoryPath, $"test_write_{Guid.NewGuid():N}.tmp");
+                File.WriteAllText(testFile, "test");
+                File.Delete(testFile);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private async Task ReplaceApplicationFiles(string sourcePath)
         {
-            var appPath = AppDomain.CurrentDomain.BaseDirectory;
             var exeName = "TomTatBenhAn_WPF.exe";
+            
+            // Xác định đúng thư mục cài đặt ứng dụng
+            // Lấy đường dẫn từ process thực tế đang chạy
+            var currentExePath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(currentExePath))
+            {
+                currentExePath = Assembly.GetExecutingAssembly().Location;
+            }
+            
+            var appPath = Path.GetDirectoryName(currentExePath);
+            
+            // Nếu đang chạy từ thư mục temp (.net extraction), cần tìm thư mục gốc
+            // .NET single-file apps extract vào temp nhưng cần update vào thư mục gốc
+            if (appPath != null && appPath.Contains(@"\AppData\Local\Temp\.net\"))
+            {
+                // Thử tìm thư mục cài đặt thực sự
+                // Kiểm tra các vị trí thường gặp
+                var possiblePaths = new[]
+                {
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TomTatBenhAn_WPF"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TomTatBenhAn_WPF"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TomTatBenhAn_WPF"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "TomTatBenhAn_WPF"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "TomTatBenhAn_WPF")
+                };
+                
+                // Tìm thư mục nào có chứa file exe
+                foreach (var possiblePath in possiblePaths)
+                {
+                    if (Directory.Exists(possiblePath))
+                    {
+                        var possibleExePath = Path.Combine(possiblePath, exeName);
+                        if (File.Exists(possibleExePath))
+                        {
+                            appPath = possiblePath;
+                            System.Diagnostics.Debug.WriteLine($"Found installation directory: {appPath}");
+                            break;
+                        }
+                    }
+                }
+                
+                // Nếu không tìm thấy, sử dụng AppData làm thư mục cài đặt mặc định
+                if (appPath != null && appPath.Contains(@"\AppData\Local\Temp\.net\"))
+                {
+                    appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TomTatBenhAn_WPF");
+                    Directory.CreateDirectory(appPath);
+                    System.Diagnostics.Debug.WriteLine($"Using default installation directory: {appPath}");
+                }
+            }
+            
+            if (string.IsNullOrEmpty(appPath))
+            {
+                appPath = AppDomain.CurrentDomain.BaseDirectory;
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"Update target directory: {appPath}");
+            
             var exePath = Path.Combine(appPath, exeName);
+            
+            // Loại bỏ trailing backslash để tránh lỗi trong batch script
+            appPath = appPath.TrimEnd('\\', '/');
+            sourcePath = sourcePath.TrimEnd('\\', '/');
             
             // Kiểm tra xem có file exe trong thư mục extract không
             var extractedExePath = Path.Combine(sourcePath, exeName);
@@ -130,7 +285,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 {
                     // Nếu tìm thấy trong thư mục con, copy toàn bộ thư mục đó
                     var exeDir = Path.GetDirectoryName(allExes[0]);
-                    sourcePath = exeDir ?? sourcePath;
+                    sourcePath = (exeDir ?? sourcePath).TrimEnd('\\', '/');
                 }
             }
 
@@ -139,7 +294,26 @@ namespace TomTatBenhAn_WPF.Services.Implement
             var zipPath = Path.Combine(tempPath, "update.zip");
             var extractPath = Path.Combine(tempPath, "update_extracted");
 
+            // Kiểm tra xem có cần quyền admin không
+            var needsAdmin = RequiresAdmin(appPath);
+            var hasWriteAccess = CanWriteToDirectory(appPath);
+            
+            // Escape đường dẫn cho batch script (thay thế backslash và escape ký tự đặc biệt)
+            var escapedAppPath = appPath.Replace("\"", "\"\"");
+            var escapedSourcePath = sourcePath.Replace("\"", "\"\"");
+            var escapedExePath = exePath.Replace("\"", "\"\"");
+
             var batchContent = $@"@echo off
+title Update Application - {exeName}
+color 0A
+echo ================================================
+echo   UPDATE APPLICATION - {exeName}
+echo ================================================
+echo.
+echo Source: {escapedSourcePath}
+echo Target: {escapedAppPath}
+echo.
+
 echo Waiting for application to close...
 :wait
 tasklist /FI ""IMAGENAME eq {exeName}"" 2>NUL | find /I /N ""{exeName}"">NUL
@@ -149,76 +323,152 @@ if ""%ERRORLEVEL%""==""0"" (
     goto wait
 )
 echo Application closed, forcing cleanup...
-timeout /t 3 /nobreak > nul
+timeout /t 2 /nobreak > nul
 
 REM Force kill any remaining processes (just in case)
 taskkill /F /IM ""{exeName}"" 2>NUL
 timeout /t 2 /nobreak > nul
 
+REM Kiểm tra xem thư mục source có tồn tại không
+if not exist ""{escapedSourcePath}"" (
+    echo ERROR: Source folder does not exist: {escapedSourcePath}
+    pause
+    exit /b 1
+)
+
 REM Delete old exe file first to ensure it can be replaced
-if exist ""{exePath}"" (
+if exist ""{escapedExePath}"" (
     echo Deleting old executable...
-    del /F /Q ""{exePath}"" 2>NUL
+    del /F /Q ""{escapedExePath}"" 2>NUL
     timeout /t 1 /nobreak > nul
 )
 
 REM Copy all files from extracted folder to application folder using robocopy (more reliable)
-echo Copying files...
-robocopy ""{sourcePath}"" ""{appPath}"" /E /IS /IT /R:3 /W:2 /NP /NFL /NDL
-if %ERRORLEVEL% GTR 1 (
-    echo Copy completed with warnings (error code: %ERRORLEVEL%)
-) else if %ERRORLEVEL% EQU 1 (
-    echo Copy completed successfully
-) else (
-    echo Copy failed with error code %ERRORLEVEL%
+echo.
+echo Copying files from {escapedSourcePath} to {escapedAppPath}...
+echo This may take a few moments...
+robocopy ""{escapedSourcePath}"" ""{escapedAppPath}"" /E /IS /IT /R:3 /W:2 /NP /NFL /NDL
+set copyResult=%ERRORLEVEL%
+REM Robocopy return codes: 0-7 = success/warnings, 8+ = failure
+if %copyResult% GEQ 8 (
+    echo.
+    echo ERROR: Copy failed with error code %copyResult%
+    echo This may be due to insufficient permissions.
+    echo.
+    echo If you see this error, please try:
+    echo 1. Run the application as Administrator, or
+    echo 2. Ensure you have write permissions to the application folder
+    echo.
     pause
     exit /b 1
+) else if %copyResult% EQU 1 (
+    echo Copy completed successfully
+) else (
+    echo Copy completed with warnings (error code: %copyResult%)
+    echo Note: Error codes 0-7 usually indicate success with some warnings
 )
 
 REM Verify that the main exe file was copied
 timeout /t 1 /nobreak > nul
-if not exist ""{exePath}"" (
+if not exist ""{escapedExePath}"" (
     echo ERROR: Main executable was not copied!
+    echo Expected location: {escapedExePath}
     pause
     exit /b 1
 )
-echo Verification: Main executable exists at {exePath}
+echo Verification: Main executable exists at {escapedExePath}
 
 REM Clean up temp files
+echo.
 echo Cleaning up temporary files...
 if exist ""{zipPath}"" del /F /Q ""{zipPath}""
 if exist ""{extractPath}"" rmdir /S /Q ""{extractPath}""
 
 REM Start the updated application
+echo.
 echo Starting updated application...
-start """" /D ""{appPath}"" ""{exePath}""
+start """" /D ""{escapedAppPath}"" ""{escapedExePath}""
 
 REM Clean up batch file
-timeout /t 1 /nobreak > nul
+timeout /t 2 /nobreak > nul
+echo.
+echo ================================================
+echo   UPDATE COMPLETED SUCCESSFULLY!
+echo ================================================
+timeout /t 3 /nobreak > nul
 del ""%~f0""
-echo Update completed!
 ";
             await File.WriteAllTextAsync(batchFile, batchContent);
 
-            // Tạo process với quyền admin để đảm bảo có thể replace files
-            var processInfo = new ProcessStartInfo
+            // Kiểm tra xem batch file đã được tạo thành công
+            if (!File.Exists(batchFile))
             {
-                FileName = batchFile,
-                CreateNoWindow = false, // Hiển thị để debug
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                System.Diagnostics.Debug.WriteLine("ERROR: Failed to create batch file!");
+                return;
+            }
 
-            Process.Start(processInfo);
+            ProcessStartInfo processInfo;
+            
+            // Chỉ yêu cầu admin nếu thực sự cần thiết
+            if (needsAdmin && !hasWriteAccess)
+            {
+                // Tạo PowerShell script để chạy batch với quyền admin
+                var psScript = Path.Combine(Path.GetTempPath(), $"update_{Guid.NewGuid():N}.ps1");
+                var psContent = $@"
+Start-Process -FilePath '{batchFile}' -Verb RunAs -Wait
+";
+                await File.WriteAllTextAsync(psScript, psContent);
 
+                processInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = $"-ExecutionPolicy Bypass -File \"{psScript}\"",
+                    CreateNoWindow = false,
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+            }
+            else
+            {
+                // Chạy batch script trực tiếp không cần admin
+                processInfo = new ProcessStartInfo
+                {
+                    FileName = batchFile,
+                    CreateNoWindow = false,
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+            }
+
+            System.Diagnostics.Debug.WriteLine($"Starting update batch script: {batchFile}");
+            System.Diagnostics.Debug.WriteLine($"Source path: {sourcePath}");
+            System.Diagnostics.Debug.WriteLine($"App path: {appPath}");
+            System.Diagnostics.Debug.WriteLine($"Needs admin: {needsAdmin}, Has write access: {hasWriteAccess}");
+            
+            if (needsAdmin && !hasWriteAccess)
+            {
+                System.Diagnostics.Debug.WriteLine("Requesting admin privileges for update...");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Updating without admin privileges...");
+            }
+
+            var process = Process.Start(processInfo);
+
+            // Đợi một chút để đảm bảo batch file đã được tạo và chạy
+            await Task.Delay(1000);
+            
             // Đóng tất cả resources trước khi shutdown
+            _httpClient?.Dispose();
             GC.Collect();
             GC.WaitForPendingFinalizers();
             
-            // Đợi một chút để đảm bảo batch file đã được tạo và chạy
-            await Task.Delay(500);
-            
-            Application.Current.Shutdown();
+            // Shutdown application sau khi batch đã bắt đầu
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                Application.Current.Shutdown();
+            });
         }
     }
 }

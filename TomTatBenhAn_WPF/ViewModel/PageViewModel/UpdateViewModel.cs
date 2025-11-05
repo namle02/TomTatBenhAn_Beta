@@ -31,6 +31,9 @@ namespace TomTatBenhAn_WPF.ViewModel.PageViewModel
             IsChecking = true;
             StatusMessage = "Đang kiểm tra phiên bản mới...";
 
+            // Refresh current version để đảm bảo lấy version mới nhất
+            CurrentVersion = _updateService.GetCurrentVersion();
+
             var (hasUpdate, latestVersion, downloadUrl, releaseNotes) = await _updateService.CheckForUpdatesAsync();
 
             HasUpdate = hasUpdate;
