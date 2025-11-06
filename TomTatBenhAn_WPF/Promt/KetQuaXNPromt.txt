@@ -8,7 +8,12 @@ Kết quả xét nghiệm:
 @DanhSachKQXN
 [Danh sách các kết quả xét nghiệm được cung cấp dưới dạng JSON như trên, Lưu Ý: Đánh giá cả những dịch vụ X-Quang, chẩn đoán hình ảnh]
 Đầu ra:
-[Tên dịch vụ]: [Tóm tắt kết quả liên quan]
+[TenNhomDichVu 1]
+- [Tên dịch vụ 1]: [Tóm tắt kết quả liên quan] [dd/mm/yyyy hh:mm:ss]
+- [Tên dịch vụ 2]: [Tóm tắt kết quả liên quan] [dd/mm/yyyy hh:mm:ss]
+
+[TenNhomDichVu 2]
+- [Tên dịch vụ 3]: [Tóm tắt kết quả liên quan] [dd/mm/yyyy hh:mm:ss]
 Lưu Ý: 
 - Chỉ cần  đánh giá kết quả cho những xét nghiệm liên quan đến chẩn đoán nhất (Tuy nhiên lấy ra tất cả những xét nghiệm liên quan đến chẩn đoán hình ảnh nếu có), không cần  đưa ra đánh giá hay kết luận tổng hợp.
 - Đối với nhóm xét nghiệm liên quan đến xét nghiệm huyết học, sinh hóa, sinh học phân tử, nước tiểu chỉ lấy ra chỉ số mới nhất, không cần  đánh giá chi tiết về kết quả
@@ -20,6 +25,7 @@ Lưu Ý:
 - Các dịch vụ xét nghiệm kèm theo ngày tháng theo định dạng dd/mm/yyyy hh:mm:ss, nếu có dịch vụ xét nghiệm trùng nhau thì chỉ cần đưa ra dịch vụ vào ngày đầu tiên
 - Các dịch vụ bất thường là các dịch vụ có chỉ số chênh lệch so với mức min/max là 40%
 - Các dịch vụ cùng loại nếu cùng ngày tháng thì viết rút gọn lại trên cùng một dòng, ví dụ: NEU% 37.8 (thấp), EO% 26.8 (cao), BA% 1.5 (cao), EO# 2.4 (cao), MCV 101.3 (cao), MCH 34.4 (cao), MPV 6.6 (thấp) 26/07/2025 09:11:33
+
 Ví dụ đầu ra:
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái

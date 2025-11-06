@@ -151,7 +151,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                 ["20"] = "BenhAnSanKhoa.sql",
                 ["21"] = "BenhAnSoSinh.sql",
                 ["22"] = "BenhAnTaiMuiHong.sql",
-                ["23"] = "BenhAnTamBenh.sql",
+                ["43"] = "BenhAnTamBenh.sql",
                 ["50"] = "BenhAnUngBuou.sql",
                 ["51"] = "BenhAnYHCT_NgoaiTruMoi.sql",
                 ["54"] = "BenhAnYHCT_NoiTruMoi.sql",
