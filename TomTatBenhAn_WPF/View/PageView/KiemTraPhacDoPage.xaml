@@ -612,7 +612,7 @@
                     FontSize="16"
                     FontWeight="Bold"
                     Foreground="#0277BD"
-                    Text="BẢNG KIỂM ĐÁNH GIÁ TUÂN THỦ QUY TRÌNH CHUYÊN MÔN KCB ĐẺ THƯỜNG 1 THAI NGÔI ĐẦU (O80.0)"
+                    Text="{Binding BangKiemDaDanhGia.TenBangKiem}"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
 
