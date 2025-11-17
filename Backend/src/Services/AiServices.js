@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require("fs");
 
 class AiServices{
-    async DanhGiaTuanThuPhacDo(PhacDo, BangKiem, PatientData){
+    async DanhGiaTuanThuPhacDo(PhacDo, BangKiem, PatientData, Prompt){
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) {
             throw new Error("Thiếu biến môi trường GEMINI_API_KEY");
@@ -14,10 +14,13 @@ class AiServices{
             ? fs.readFileSync(promptPath, "utf8")
             : fs.readFileSync(fallbackPath, "utf8");
 
-        const prompt = template
+        const basePrompt = template
             .replace("{{PhacDo}}", JSON.stringify(PhacDo))
             .replace("{{BangKiem}}", JSON.stringify(BangKiem))
             .replace("{{PatientData}}", JSON.stringify(PatientData));
+        const prompt = Prompt
+            ? `${Prompt.trim()}\n\n${basePrompt}`
+            : basePrompt;
 
         const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
         const res = await fetch(url + `?key=${apiKey}`, {

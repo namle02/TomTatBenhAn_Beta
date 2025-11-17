@@ -10,9 +10,10 @@ Lưu ý:
 - Tuyệt đối không thêm những trường thông tin khác ngoài thông tin được yêu cầu.
 - Giữ lại những thông tin về bệnh lý, dấu hiệu lâm sàn nếu có.
 - Hướng điều trị và chế độ tiếp theo sẽ đánh giá từ lời dặn thầy thuốc (trường LoiDanThayThuoc) nếu có, nếu không có thì để mặc định là (Uống thuốc theo đơn, khám lại theo hẹn hoặc nếu có bất thường.)
+- Nếu trường DienBien không chứa mô tả chi tiết về tình trạng bệnh, chỉ sử dụng đúng nội dung có trong DienBien, không thêm, không suy diễn, không tạo mới bất kỳ thông tin nào.
 [Mô tả tình trạng người bệnh khi ra viện]
 Hướng điều trị tiếp theo: [Mô tả ngắn gọn hướng điều trị tiếp theo của người bệnh nếu có thông tin]
-Ví dụ đầu vào:
+Ví dụ đầu vào( lưu ý từ chỗ này là chỉ phần format kết quả mong muốn chứ không phải nội dung đầu vào nó chỉ là ví dụ ):
 Bệnh nhân tỉnh, tiếp xúc tốt
 Không sốt
 Đỡ đau khớp háng trái, khớp cổ tay, khớp vai trái tăng khi vận động

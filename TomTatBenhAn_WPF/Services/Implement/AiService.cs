@@ -74,10 +74,41 @@ namespace TomTatBenhAn_WPF.Services.Implement
             // Tìm vị trí bắt đầu của phần dấu hiệu lâm sàng
             int index = result.IndexOf(marker);
 
-            string QuaTrinhBenhLy = result.Substring(
-                "Quá trình bệnh lý và diễn biến lâm sàng:".Length,
-                index - "Quá trình bệnh lý và diễn biến lâm sàng:".Length
-            ).Trim();
+            // Kiểm tra nếu không tìm thấy marker
+            if (index < 0)
+            {
+                // Nếu không tìm thấy marker, lấy toàn bộ kết quả làm quá trình bệnh lý
+                tomTat.TomTatQuaTrinhBenhLy = result.Trim();
+                tomTat.TomTatDauHieuLamSang = "";
+                return;
+            }
+
+            string startMarker = "Quá trình bệnh lý và diễn biến lâm sàng:";
+            int startIndex = result.IndexOf(startMarker);
+            
+            string QuaTrinhBenhLy;
+            if (startIndex >= 0)
+            {
+                // Tìm thấy start marker, lấy phần từ sau marker đến trước marker "Những dấu hiệu lâm sàng chính:"
+                int quaTrinhStartIndex = startIndex + startMarker.Length;
+                int quaTrinhLength = index - quaTrinhStartIndex;
+                
+                // Đảm bảo length không âm
+                if (quaTrinhLength > 0)
+                {
+                    QuaTrinhBenhLy = result.Substring(quaTrinhStartIndex, quaTrinhLength).Trim();
+                }
+                else
+                {
+                    // Nếu length <= 0, lấy từ đầu đến marker
+                    QuaTrinhBenhLy = result.Substring(0, index).Trim();
+                }
+            }
+            else
+            {
+                // Không tìm thấy start marker, lấy từ đầu đến marker "Những dấu hiệu lâm sàng chính:"
+                QuaTrinhBenhLy = result.Substring(0, index).Trim();
+            }
 
             string DauHieuLamSang = result.Substring(index + marker.Length).Trim();
             tomTat.TomTatQuaTrinhBenhLy = QuaTrinhBenhLy;
@@ -96,6 +127,15 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string result = await CallGeminiApi(baseUri, apiKey, prompt);
             string marker = "Hướng điều trị tiếp theo:";
             int index = result.IndexOf(marker);
+
+            // Kiểm tra nếu không tìm thấy marker
+            if (index < 0)
+            {
+                // Nếu không tìm thấy marker, lấy toàn bộ kết quả làm tình trạng ra viện
+                tomTat.TomTatTinhTrangNguoiBenhRaVien = result.Trim();
+                tomTat.TomTatHuongDieuTriTiepTheo = "";
+                return;
+            }
 
             string TinhTrangNguoiBenhRaVien = result.Substring(0, index).Trim();
 

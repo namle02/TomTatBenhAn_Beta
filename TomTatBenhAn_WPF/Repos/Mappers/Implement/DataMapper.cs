@@ -32,6 +32,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
             string NoiTruToaThuocQuery = (_fileServices.GetQuery("PatientPhacDoData.NoiTruToaThuoc.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             string ChanDoanIcdQuery = (_fileServices.GetQuery("ChanDoanICD.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             string ThongTinHanhChinhQuery = (_fileServices.GetQuery("ThongTinHanhChinh.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
+            string BenhAnTypeQuery = (_fileServices.GetQuery("BenhAnType.sql")).Replace("@SoBenhAn_Params", SoBenhAn);
             PatientPhacDoAllData patient = new PatientPhacDoAllData();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -43,6 +44,16 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
                 patient.NoiTruCLS = (await connection.QueryAsync<NoiTruCls>(NoiTruCLSQuery)).ToList();
                 patient.NoiTruToaThuoc = (await connection.QueryAsync<NoiTruToaThuoc>(NoiTruToaThuocQuery)).ToList();
                 patient.ThongTinHanhChinh = (await connection.QueryAsync<ThongTinHanhChinhModel>(ThongTinHanhChinhQuery)).FirstOrDefault();
+                var loaiBenhAn = await connection.QueryFirstOrDefaultAsync<LoaiBenhAnModel>(BenhAnTypeQuery);
+                if (loaiBenhAn != null)
+                {
+                    PatientAllData tempPatient = new PatientAllData
+                    {
+                        LoaiBenhAn = loaiBenhAn
+                    };
+                    await GetThongTinKhamBenh(tempPatient, connection);
+                    patient.ThongTinKhamBenh = tempPatient.ThongTinKhamBenh;
+                }
             }
             return patient;
         }
@@ -138,7 +149,7 @@ namespace TomTatBenhAn_WPF.Repos.Mappers.Implement
 
             string id = patient.LoaiBenhAn.LoaiBenhAn_Id;
 
-            var sqlByType = new Dictionary<string, string>
+                var sqlByType = new Dictionary<string, string>
             {
                 ["1"] = "BenhAnTruyenNhiem.sql",
                 ["2"] = "BenhAnNoiKhoa.sql",

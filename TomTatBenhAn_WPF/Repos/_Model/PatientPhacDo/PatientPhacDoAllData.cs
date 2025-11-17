@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
 using TomTatBenhAn_WPF.Repos._Model.PatientData;
 using TomTatBenhAn_WPF.Repos._Model.PatientPhacDo.PatientAllDataPhacDo;
 
@@ -14,5 +15,6 @@ namespace TomTatBenhAn_WPF.Repos._Model.PatientPhacDo
         [ObservableProperty] private List<NoiTruCls>? noiTruCLS;
         [ObservableProperty] private List<NoiTruToaThuoc>? noiTruToaThuoc;
         [ObservableProperty] private List<NoiTruChamSoc>? noiTruChamSoc;
+        [ObservableProperty] private List<ThongTinKhamBenhModel>? thongTinKhamBenh;
     }
 }

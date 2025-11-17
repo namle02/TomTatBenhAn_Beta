@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using TomTatBenhAn_WPF.Core;
@@ -77,11 +79,23 @@ namespace TomTatBenhAn_WPF.Services.Implement
             try
             {
                 var url = $"{GetBaseUrl()}/ai/DanhGiaTuanThuPhacDo";
+                var promptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Promt", "KetQuaDanhGiaPhacDo.txt");
+                string? customPrompt = null;
+                if (File.Exists(promptPath))
+                {
+                    var promptContent = await File.ReadAllTextAsync(promptPath);
+                    if (!string.IsNullOrWhiteSpace(promptContent))
+                    {
+                        customPrompt = promptContent.Trim();
+                    }
+                }
+
                 using var content = new StringContent(JsonSerializer.Serialize(new
                 {
                     PhacDo = phacDo,
                     BangKiem = bangKiem,
-                    PatientData = patient
+                    PatientData = patient,
+                    Prompt = customPrompt
                 }, _jsonOptions), System.Text.Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PostAsync(url, content);
