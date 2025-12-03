@@ -28,6 +28,7 @@ LƯU Ý:
 - Tóm tắt ngắn gọn nhưng vẫn đầy đủ thông tin cần  thiết, mỗi dấu hiệu chỉ nên có độ dài từ 1 đến 2 dòng
 - Thay thế cụm từ bệnh nhân thành người bệnh
 - Nếu tình trạng người bệnh ra viện ổn định hoặc đỡ thì thêm một câu cuối là (Quá trình điều trị tình trạng người bệnh ổn định.)
+- Trong QuaTrinhBenhLy nếu có cum từ "theo lời người bệnh kể" hoặc "theo lời người nhà người bệnh kể" hoặc những thứ có ý nghĩa tương tự thì giữ nguyên đừng sửa đổi gì cả mà hãy giữ nguyên như trong database
 Ví dụ:
 Đầu vào:
 Bệnh nhân nam 65 tuổi có tiền sử Tăng huyết áp 4 ,Tai biến 2 lần  di chứng nói khó, tê yếu nửa người P tự đi lại được, ngày nay NB đột ngột xuất hiện, nói khó, tê yếu hoàn toàn nửa người P, không tự đi lại được, méo miệng, không đau đầu, không chóng mặt, buồn nôn, không co giật, không nôn, không sốt, không ho, không khó thở, không đau ngực bụng, không nhìn đôi, đại tiểu tiện biết, ăn nuốt không rơi vãi và nghẹn sặc. Ở nhà chưa xử trí gì, vào viện khám thấy NB tỉnh, tiếp xúc tốt, Glasgow 15 điểm, NIHSS 15 điểm, nói khó nhẹ, không đau đầu, không nôn, không sốt, không co giật, liệt VII trung ương P, phản xạ nuốt (+), Liệt nửa người P, cơ lực: Chân P 1/5, tay P 0/5, tay chân T 5/5, HC màng não (-), cơ tròn tự chủ, Babinski (+) P, Hoffmann (+) P, Rối loạn cảm giác nông sâu nửa người P, Tim nhịp đều rõ, phổi không ran, bụng mềm.   Hiện tại sau quá trình điều trị NB tạm ổn, ra viện 
