@@ -9,4 +9,5 @@ LEFT JOIN dbo.BenhAnTongQuat batq
 LEFT JOIN ehosdict.DM_LoaiBenhAn lba 
     ON batq.LoaiBenhAn_Id = lba.LoaiBenhAn_Id
 WHERE ba.SoBenhAn = N'@SoBenhAn_Params'
+and batq.LoaiBenhAn_Id not like N'41'
 ORDER BY batq.NgayTao ASC;
