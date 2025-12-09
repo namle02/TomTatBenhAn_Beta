@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
             // Cấu hình URL và API Key
             string baseUri = ConfigurationManager.AppSettings["URL_gemini"] ??
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
             string apiKey1 = ConfigurationManager.AppSettings["API_gemini_1"] ?? "";
             string apiKey2 = ConfigurationManager.AppSettings["API_gemini_2"] ?? "";
             string apiKey3 = ConfigurationManager.AppSettings["API_gemini_3"] ?? "";
@@ -143,6 +143,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             tomTat.TomTatTinhTrangNguoiBenhRaVien = TinhTrangNguoiBenhRaVien;
             tomTat.TomTatHuongDieuTriTiepTheo = HuongDieuTri;
         }
+        
 
         private async Task TomTatKetQuaXetNghiem(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
         {
@@ -206,7 +207,8 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 }
                 else
                 {
-                    throw new HttpRequestException($"API call failed with status: {response.StatusCode}");
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"API call failed with status: {response.StatusCode}. Response: {errorContent}");
                 }
             }
             catch (Exception ex)
