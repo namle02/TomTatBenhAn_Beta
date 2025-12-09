@@ -23,6 +23,21 @@ namespace TomTatBenhAn_WPF.Services.Implement
             return Encoding.UTF8.GetString(result);
         }
 
+        // hàm mã hóa thông tin để lưu vào file config
+        public string Encrypt(string input, string key)
+        {
+            var inputBytes = Encoding.UTF8.GetBytes(input);
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+            var result = new byte[inputBytes.Length];
+
+            for (int i = 0; i < inputBytes.Length; i++)
+            {
+                result[i] = (byte)(inputBytes[i] ^ keyBytes[i % keyBytes.Length]);
+            }
+
+            return Convert.ToBase64String(result);
+        }
+
         // Hàm đọc file resources và lấy câu truy vấn
         public string GetQuery(string FileName)
         {

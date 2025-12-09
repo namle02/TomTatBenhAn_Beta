@@ -33,21 +33,34 @@ namespace TomTatBenhAn_WPF.Services.Implement
             // Cấu hình URL và API Key
             string baseUri = ConfigurationManager.AppSettings["URL_gemini"] ??
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-            string apiKey1 = ConfigurationManager.AppSettings["API_gemini_1"] ?? "";
-            string apiKey2 = ConfigurationManager.AppSettings["API_gemini_2"] ?? "";
-            string apiKey3 = ConfigurationManager.AppSettings["API_gemini_3"] ?? "";
+            
+            // Lấy key để giải mã
+            string decryptKey = ConfigurationManager.AppSettings["KeyDecrypt"] ?? "TomTatBenhAn";
+            
+            // Đọc và giải mã API keys từ config
+            string encryptedApiKey1 = ConfigurationManager.AppSettings["API_gemini_1"] ?? "";
+            string encryptedApiKey2 = ConfigurationManager.AppSettings["API_gemini_2"] ?? "";
+            string encryptedApiKey3 = ConfigurationManager.AppSettings["API_gemini_3"] ?? "";
+            
+            // Giải mã API keys (nếu là Base64 thì decrypt, nếu không thì dùng trực tiếp để tương thích ngược)
+            string apiKey1 = TryDecryptApiKey(encryptedApiKey1, decryptKey);
+            string apiKey2 = TryDecryptApiKey(encryptedApiKey2, decryptKey);
+            string apiKey3 = TryDecryptApiKey(encryptedApiKey3, decryptKey);
 
-            // Tóm tắt quá trình bệnh lý
-            await TomTatQuaTrinhBenhLy(patient, tomTat, baseUri, apiKey1);
+            // Tạo danh sách API keys để fallback
+            var apiKeys = new[] { apiKey1, apiKey2, apiKey3 }.Where(k => !string.IsNullOrEmpty(k)).ToArray();
 
-            // Tóm tắt tình trạng người bệnh ra viện
-            await TomTatTinhTrangRaVien(patient, tomTat, baseUri, apiKey2);
+            // Tóm tắt quá trình bệnh lý (với fallback)
+            await TomTatQuaTrinhBenhLy(patient, tomTat, baseUri, apiKeys);
 
-            // Tóm tắt kết quả xét nghiệm
-            await TomTatKetQuaXetNghiem(patient, tomTat, baseUri, apiKey3);
+            // Tóm tắt tình trạng người bệnh ra viện (với fallback)
+            await TomTatTinhTrangRaVien(patient, tomTat, baseUri, apiKeys);
+
+            // Tóm tắt kết quả xét nghiệm (với fallback)
+            await TomTatKetQuaXetNghiem(patient, tomTat, baseUri, apiKeys);
         }
 
-        private async Task TomTatQuaTrinhBenhLy(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        private async Task TomTatQuaTrinhBenhLy(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
             if (patient.ThongTinKhamBenh == null || !patient.ThongTinKhamBenh.Any())
                 return;
@@ -67,7 +80,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string chanDoanPhuhRaVien = patient.ChanDoanIcd?.FirstOrDefault()?.BenhKemTheoRaVien ?? "";
             prompt = prompt.Replace("@ChanDoanPhuRaVie", chanDoanPhuhRaVien);
 
-            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+            string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
 
             string marker = "Những dấu hiệu lâm sàng chính:";
 
@@ -115,7 +128,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             tomTat.TomTatDauHieuLamSang = DauHieuLamSang;
         }
 
-        private async Task TomTatTinhTrangRaVien(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        private async Task TomTatTinhTrangRaVien(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
             if (patient.TinhTrangNguoiBenhRaVien == null || !patient.TinhTrangNguoiBenhRaVien.Any())
                 return;
@@ -124,7 +137,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string dienBien = patient.TinhTrangNguoiBenhRaVien[0].DienBien ?? "";
             string prompt = rawPrompt.Replace("@DienBien", dienBien);
 
-            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+            string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
             string marker = "Hướng điều trị tiếp theo:";
             int index = result.IndexOf(marker);
 
@@ -145,7 +158,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
         }
         
 
-        private async Task TomTatKetQuaXetNghiem(PatientAllData patient, DataTomTat tomTat, string baseUri, string apiKey)
+        private async Task TomTatKetQuaXetNghiem(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
             if (patient.KetQuaXetNghien == null || !patient.KetQuaXetNghien.Any())
                 return;
@@ -165,8 +178,76 @@ namespace TomTatBenhAn_WPF.Services.Implement
             prompt = prompt.Replace("@ChanDoanRaVien", chanDoanKemTheo);
             prompt = prompt.Replace("@DanhSachKQXN", danhSachKQXN);
 
-            string result = await CallGeminiApi(baseUri, apiKey, prompt);
+            string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
             tomTat.TomTatKetQuaXN = result;
+        }
+
+        private async Task<string> CallGeminiApiWithFallback(string baseUri, string[] apiKeys, string prompt)
+        {
+            if (apiKeys == null || apiKeys.Length == 0)
+            {
+                throw new Exception("Không có API key nào được cấu hình");
+            }
+
+            Exception lastException = null;
+
+            // Thử từng API key cho đến khi thành công hoặc hết key
+            foreach (var apiKey in apiKeys)
+            {
+                try
+                {
+                    return await CallGeminiApi(baseUri, apiKey, prompt);
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                    // Tiếp tục thử API key tiếp theo
+                    continue;
+                }
+            }
+
+            // Nếu tất cả API keys đều thất bại, throw exception cuối cùng
+            throw new Exception($"Tất cả API keys đều thất bại. Lỗi cuối cùng: {lastException?.Message}", lastException);
+        }
+
+        private string TryDecryptApiKey(string encryptedKey, string decryptKey)
+        {
+            if (string.IsNullOrEmpty(encryptedKey))
+                return "";
+
+            // Kiểm tra xem có phải là Base64 string không (thường Base64 có độ dài > 20 và chỉ chứa A-Z, a-z, 0-9, +, /, =)
+            // Nếu là Base64 và có thể decrypt thì decrypt, nếu không thì dùng trực tiếp (tương thích ngược)
+            try
+            {
+                // Thử giải mã nếu là Base64
+                if (encryptedKey.Length > 20 && IsBase64String(encryptedKey))
+                {
+                    return _fileServices.Decrypt(encryptedKey, decryptKey);
+                }
+            }
+            catch
+            {
+                // Nếu decrypt thất bại, có thể là plain text, trả về nguyên bản
+            }
+
+            // Nếu không phải Base64 hoặc decrypt thất bại, trả về nguyên bản (tương thích ngược)
+            return encryptedKey;
+        }
+
+        private bool IsBase64String(string s)
+        {
+            if (string.IsNullOrEmpty(s) || s.Length % 4 != 0)
+                return false;
+
+            try
+            {
+                Convert.FromBase64String(s);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private async Task<string> CallGeminiApi(string baseUri, string apiKey, string prompt)
@@ -208,6 +289,27 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
+                    
+                    // Kiểm tra nếu là lỗi 403 - API key bị leaked
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    {
+                        try
+                        {
+                            var errorObj = JsonConvert.DeserializeObject<dynamic>(errorContent);
+                            string errorMessage = errorObj?.error?.message?.ToString() ?? "";
+                            string errorStatus = errorObj?.error?.status?.ToString() ?? "";
+                            
+                            if (errorMessage.Contains("leaked") || errorStatus == "PERMISSION_DENIED")
+                            {
+                                throw new Exception($"API key đã bị đánh dấu là rò rỉ (leaked) và không thể sử dụng. Vui lòng tạo API key mới từ Google Cloud Console. Status: {errorStatus}");
+                            }
+                        }
+                        catch
+                        {
+                            // Nếu không parse được JSON, vẫn throw lỗi gốc
+                        }
+                    }
+                    
                     throw new HttpRequestException($"API call failed with status: {response.StatusCode}. Response: {errorContent}");
                 }
             }
