@@ -1,27 +1,16 @@
 ﻿SELECT 
   Field_1 AS LyDoVaoVien, 
-  N'Quá Trình bệnh lý: ' + CAST(
-    Field_3 AS NVARCHAR(MAX)
-  ) + N' Khám bệnh: ' + CAST(
-    Field_11 AS NVARCHAR(MAX)
-  ) + N'Tuần  hoàn: ' + CAST(
-    Field_18 AS NVARCHAR(MAX)
-  ) + N'Hô Hấp: ' + CAST(
-    Field_19 AS NVARCHAR(MAX)
-  ) + N'Tiêu hóa: ' + CAST(
-    Field_20 AS NVARCHAR(MAX)
-  ) + N'Thận-tiết niệu-sinh dục: ' + CAST(
-    Field_21 AS NVARCHAR(MAX)
-  ) + N'Thần  kinh: ' + CAST(
-    Field_22 AS NVARCHAR(MAX)
-  ) + N'Cơ Xương khớp: ' + CAST(
-    Field_23 AS NVARCHAR(MAX)
-  ) + N', Huyết áp: ' + CAST(
-	Field_14 AS NVARCHAR(MAX)
-  ) + '/' + CAST(
-	Field_15 as NVARCHAR(MAX)
-  ) + N' mmHG, Các dấu hiệu bệnh lý khác: ' + CAST(
-    Field_24 AS NVARCHAR(MAX)
+  -- Tối ưu string concatenation bằng CONCAT (tự động handle NULL)
+  CONCAT(
+    N'Quá Trình bệnh lý: ', Field_3,
+    N' Khám bệnh: ', Field_11,
+    N'Tuần  hoàn: ', Field_18,
+    N'Hô Hấp: ', Field_19,
+    N'Tiêu hóa: ', Field_20,
+    N'Thận-tiết niệu-sinh dục: ', Field_21,
+    N'Thần  kinh: ', Field_22,
+    N'Cơ Xương khớp: ', Field_23,
+    N', Huyết áp: ', Field_14, '/', Field_15, N' mmHG, Các dấu hiệu bệnh lý khác: ', Field_24
   ) AS QuaTrinhBenhLy, 
   Field_4 AS TienSuBenh, 
   Field_9 AS HuongDieuTri 

@@ -402,7 +402,7 @@
                                 AcceptsReturn="True"
                                 FontSize="18"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                Text="{Binding Patient.ThongTinKhamBenh[0].HuongDieuTri_PTTT, Mode=TwoWay}"
+                                Text="{Binding Patient.ThongTinKhamBenh[0].HuongDieuTri_PTTT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextWrapping="Wrap" />
                         </CheckBox>
 

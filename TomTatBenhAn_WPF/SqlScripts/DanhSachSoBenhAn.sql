@@ -1,4 +1,9 @@
-﻿select ba.SoBenhAn SoBenhAn, ba.BenhAn_Id BenhAnId, batq.BenhAnTongQuat_Id BenhAnTongQuatId From DM_BenhNhan dmbn
-left join BenhAn ba on dmbn.BenhNhan_Id = ba.BenhNhan_Id
-left join BenhAnTongQuat batq on ba.BenhAn_Id = batq.BenhAn_Id
-where dmbn.SoVaoVien = @MaYTe_Params
+﻿SELECT 
+    ba.SoBenhAn AS SoBenhAn, 
+    ba.BenhAn_Id AS BenhAnId, 
+    batq.BenhAnTongQuat_Id AS BenhAnTongQuatId 
+FROM ehosdict.DM_BenhNhan dmbn
+    INNER JOIN dbo.BenhAn ba ON dmbn.BenhNhan_Id = ba.BenhNhan_Id
+    LEFT JOIN dbo.BenhAnTongQuat batq ON ba.BenhAn_Id = batq.BenhAn_Id
+WHERE dmbn.SoVaoVien = @MaYTe_Params
+ORDER BY ba.NgayVaoVien DESC

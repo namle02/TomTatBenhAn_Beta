@@ -6,7 +6,7 @@ Chẩn đoán ra viện:
 @ChanDoanRaVien
 Kết quả xét nghiệm:
 @DanhSachKQXN
-[Danh sách các kết quả xét nghiệm được cung cấp dưới dạng JSON như trên, Lưu Ý: Đánh giá cả những dịch vụ X-Quang, chẩn đoán hình ảnh]
+[Danh sách các kết quả xét nghiệm được cung cấp dưới dạng JSON với các field rút gọn: g=TenNhomDichVu (nhóm dịch vụ), dv=TenDichVu (tên dịch vụ), kq=KetQua (kết quả), bt=BatThuong (bất thường), min=MucBinhThuongMin, max=MucBinhThuongMax, mb=MucBinhThuong (mức bình thường), tg=ThoiGianThucHien (thời gian), kl=KetLuan (kết luận), mt=MoTa_Text (mô tả), pb=TenPhongBan (phòng ban), nd=NoiDungChiTiet (nội dung). Lưu Ý: Đánh giá cả những dịch vụ X-Quang, chẩn đoán hình ảnh]
 Đầu ra:
 [TenNhomDichVu 1]
 - [Tên dịch vụ 1]: [Tóm tắt kết quả liên quan] [dd/mm/yyyy hh:mm:ss]
@@ -25,8 +25,8 @@ Lưu Ý:
 - Các dịch vụ xét nghiệm kèm theo ngày tháng theo định dạng dd/mm/yyyy hh:mm:ss, nếu có dịch vụ xét nghiệm trùng nhau thì chỉ cần đưa ra dịch vụ vào ngày đầu tiên
 - Các dịch vụ bất thường là các dịch vụ có chỉ số chênh lệch so với mức min/max là 40%
 - Các dịch vụ cùng loại nếu cùng ngày tháng thì viết rút gọn lại trên cùng một dòng, ví dụ: NEU% 37.8 (thấp), EO% 26.8 (cao), BA% 1.5 (cao), EO# 2.4 (cao), MCV 101.3 (cao), MCH 34.4 (cao), MPV 6.6 (thấp) 26/07/2025 09:11:33
-
-Ví dụ đầu ra:
+- Không được tự ý loại bỏ bất kể dịch vụ nào
+Ví dụ đầu ra :
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái
 Xét nghiệm máu: Cholesterol 5,36 mmol/l; LDL-C 3,66 mmol/l; triglceria 2,42 mmol/l"
