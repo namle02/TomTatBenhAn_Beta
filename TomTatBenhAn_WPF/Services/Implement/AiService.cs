@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,12 +21,19 @@ namespace TomTatBenhAn_WPF.Services.Implement
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly IFileServices _fileServices;
         private readonly Dictionary<string, string> _promptCache = new Dictionary<string, string>();
+        // Rate limiting: Dictionary để track thời gian request cuối cùng của mỗi key
+        private readonly Dictionary<string, DateTime> _lastRequestTime = new Dictionary<string, DateTime>();
+        private readonly SemaphoreSlim _rateLimitSemaphore = new SemaphoreSlim(1, 1); // Đảm bảo thread-safe
 
         public AiService(IFileServices fileServices, IConfigServices configServices)
         {
             _fileServices = fileServices;
             // Thiết lập timeout cho HttpClient để tránh chờ quá lâu
             _httpClient.Timeout = TimeSpan.FromSeconds(60); // Giảm xuống 60s để fail nhanh hơn nếu có vấn đề
+            
+            // Thiết lập User-Agent hợp lý để tránh bị coi là bot
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+            
             // Preload prompts để tăng tốc độ
             PreloadPrompts();
         }
@@ -83,52 +91,58 @@ namespace TomTatBenhAn_WPF.Services.Implement
             // Lấy key để giải mã
             string decryptKey = ConfigurationManager.AppSettings["KeyDecrypt"] ?? "TomTatBenhAn";
             
-            // Đọc và giải mã API keys từ config (3 keys chính + 3 keys backup)
+            // Đọc và giải mã API keys từ config (3 keys)
             string encryptedApiKey1 = ConfigurationManager.AppSettings["API_gemini_1"] ?? "";
             string encryptedApiKey2 = ConfigurationManager.AppSettings["API_gemini_2"] ?? "";
             string encryptedApiKey3 = ConfigurationManager.AppSettings["API_gemini_3"] ?? "";
-            string encryptedApiKey4 = ConfigurationManager.AppSettings["API_gemini_4"] ?? "";
-            string encryptedApiKey5 = ConfigurationManager.AppSettings["API_gemini_5"] ?? "";
-            string encryptedApiKey6 = ConfigurationManager.AppSettings["API_gemini_6"] ?? "";
             
             // Giải mã API keys (nếu là Base64 thì decrypt, nếu không thì dùng trực tiếp để tương thích ngược)
             string apiKey1 = TryDecryptApiKey(encryptedApiKey1, decryptKey);
             string apiKey2 = TryDecryptApiKey(encryptedApiKey2, decryptKey);
             string apiKey3 = TryDecryptApiKey(encryptedApiKey3, decryptKey);
-            string apiKey4 = TryDecryptApiKey(encryptedApiKey4, decryptKey);
-            string apiKey5 = TryDecryptApiKey(encryptedApiKey5, decryptKey);
-            string apiKey6 = TryDecryptApiKey(encryptedApiKey6, decryptKey);
 
-            // Tạo danh sách API keys: 3 keys chính (primary) và 3 keys backup
-            var primaryKeys = new[] { apiKey1, apiKey2, apiKey3 }.Where(k => !string.IsNullOrEmpty(k)).ToArray();
-            var backupKeys = new[] { apiKey4, apiKey5, apiKey6 }.Where(k => !string.IsNullOrEmpty(k)).ToArray();
-            var allApiKeys = primaryKeys.Concat(backupKeys).ToArray();
+            // Tạo danh sách API keys (3 keys)
+            var allApiKeys = new[] { apiKey1, apiKey2, apiKey3 }.Where(k => !string.IsNullOrEmpty(k)).ToArray();
 
             // Phân bổ keys cho từng task để tránh rate limit khi chạy song song
-            // Mỗi task sẽ dùng 3 keys chính trước, sau đó fallback sang 3 keys backup nếu cần
-            // Task1: key1, key2, key3 (primary) -> key4, key5, key6 (backup)
-            var apiKeys1 = primaryKeys.Concat(backupKeys).Where(k => !string.IsNullOrEmpty(k)).ToArray();
+            // Task1: key1, key2, key3
+            var apiKeys1 = allApiKeys;
             
-            // Task2: key2, key3, key1 (primary) -> key5, key6, key4 (backup)
-            var apiKeys2 = primaryKeys.Length >= 3
-                ? new[] { primaryKeys[1], primaryKeys[2], primaryKeys[0] }
-                    .Concat(backupKeys.Length >= 3 ? new[] { backupKeys[1], backupKeys[2], backupKeys[0] } : backupKeys)
+            // Task2: key2, key3, key1 (rotate để phân tán load)
+            var apiKeys2 = allApiKeys.Length >= 3
+                ? new[] { allApiKeys[1], allApiKeys[2], allApiKeys[0] }
                     .Where(k => !string.IsNullOrEmpty(k)).ToArray()
-                : apiKeys1; // Fallback về apiKeys1 nếu không đủ primary keys
+                : allApiKeys; // Fallback về apiKeys1 nếu không đủ keys
             
-            // Task3: key3, key1, key2 (primary) -> key6, key4, key5 (backup)
-            var apiKeys3 = primaryKeys.Length >= 3
-                ? new[] { primaryKeys[2], primaryKeys[0], primaryKeys[1] }
-                    .Concat(backupKeys.Length >= 3 ? new[] { backupKeys[2], backupKeys[0], backupKeys[1] } : backupKeys)
+            // Task3: key3, key1, key2 (rotate để phân tán load)
+            var apiKeys3 = allApiKeys.Length >= 3
+                ? new[] { allApiKeys[2], allApiKeys[0], allApiKeys[1] }
                     .Where(k => !string.IsNullOrEmpty(k)).ToArray()
-                : apiKeys1; // Fallback về apiKeys1 nếu không đủ primary keys
+                : allApiKeys; // Fallback về apiKeys1 nếu không đủ keys
 
-            // Chạy song song 3 API calls để tăng tốc độ (thay vì chạy tuần tự)
-            // Các method này modify các properties khác nhau của tomTat nên an toàn khi chạy parallel
-            // Mỗi task dùng keys khác nhau để tránh rate limit
-            // Bỏ delay giữa các tasks để tăng tốc độ - các keys khác nhau sẽ tự phân tán load
+            
+            // Staggered start: Khởi động các tasks với delay nhỏ để tránh burst requests
+            // Đọc delay từ config, mặc định 150ms giữa mỗi task
+            int staggerDelayMs = 150;
+            try
+            {
+                string staggerDelayConfig = ConfigurationManager.AppSettings["API_StaggerDelayMs"];
+                if (!string.IsNullOrEmpty(staggerDelayConfig) && int.TryParse(staggerDelayConfig, out int parsedDelay))
+                {
+                    staggerDelayMs = Math.Max(50, Math.Min(500, parsedDelay)); // Giới hạn từ 50ms đến 500ms
+                }
+            }
+            catch { }
+
+            // Khởi động task1 ngay lập tức
             var task1 = TomTatQuaTrinhBenhLy(patient, tomTat, baseUri, apiKeys1);
+            
+            // Khởi động task2 sau staggerDelayMs
+            await Task.Delay(staggerDelayMs);
             var task2 = TomTatTinhTrangRaVien(patient, tomTat, baseUri, apiKeys2);
+            
+            // Khởi động task3 sau thêm staggerDelayMs nữa
+            await Task.Delay(staggerDelayMs);
             var task3 = TomTatKetQuaXetNghiem(patient, tomTat, baseUri, apiKeys3);
 
             // Đợi tất cả các task hoàn thành
@@ -137,9 +151,14 @@ namespace TomTatBenhAn_WPF.Services.Implement
 
         private async Task TomTatQuaTrinhBenhLy(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
+            var taskStopwatch = Stopwatch.StartNew();
+            
             if (patient.ThongTinKhamBenh == null || !patient.ThongTinKhamBenh.Any())
+            {
                 return;
+            }
 
+            var prepPromptStopwatch = Stopwatch.StartNew();
             string rawPrompt = GetCachedPrompt("QuaTrinhBenhLyPromt.txt");
             string prompt = rawPrompt.Replace("@QuaTrinhBenhLy", patient.ThongTinKhamBenh[0].QuaTrinhBenhLy);
 
@@ -153,9 +172,12 @@ namespace TomTatBenhAn_WPF.Services.Implement
             prompt = prompt.Replace("@ChanDoanChinhRaVien", chanDoanChinhRaVien);
 
             string chanDoanPhuhRaVien = patient.ChanDoanIcd?.FirstOrDefault()?.BenhKemTheoRaVien ?? "";
-            prompt = prompt.Replace("@ChanDoanPhuRaVie", chanDoanPhuhRaVien);
+            prompt = prompt.Replace("@ChanDoanPhuRaVien", chanDoanPhuhRaVien);
+            prepPromptStopwatch.Stop();
 
+            var apiCallStopwatch = Stopwatch.StartNew();
             string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
+            apiCallStopwatch.Stop();
 
             string marker = "Những dấu hiệu lâm sàng chính:";
 
@@ -168,6 +190,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Nếu không tìm thấy marker, lấy toàn bộ kết quả làm quá trình bệnh lý
                 tomTat.TomTatQuaTrinhBenhLy = result.Trim();
                 tomTat.TomTatDauHieuLamSang = "";
+                taskStopwatch.Stop();
                 return;
             }
 
@@ -201,18 +224,28 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string DauHieuLamSang = result.Substring(index + marker.Length).Trim();
             tomTat.TomTatQuaTrinhBenhLy = QuaTrinhBenhLy;
             tomTat.TomTatDauHieuLamSang = DauHieuLamSang;
+            
+            taskStopwatch.Stop();
         }
 
         private async Task TomTatTinhTrangRaVien(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
+            var taskStopwatch = Stopwatch.StartNew();
+            
             if (patient.TinhTrangNguoiBenhRaVien == null || !patient.TinhTrangNguoiBenhRaVien.Any())
+            {
                 return;
+            }
 
+            var prepPromptStopwatch = Stopwatch.StartNew();
             string rawPrompt = GetCachedPrompt("TinhTrangNguoiBenhRaVienPromt.txt");
             string dienBien = patient.TinhTrangNguoiBenhRaVien[0].DienBien ?? "";
             string prompt = rawPrompt.Replace("@DienBien", dienBien);
+            prepPromptStopwatch.Stop();
 
+            var apiCallStopwatch = Stopwatch.StartNew();
             string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
+            apiCallStopwatch.Stop();
             string marker = "Hướng điều trị tiếp theo:";
             int index = result.IndexOf(marker);
 
@@ -222,6 +255,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 // Nếu không tìm thấy marker, lấy toàn bộ kết quả làm tình trạng ra viện
                 tomTat.TomTatTinhTrangNguoiBenhRaVien = result.Trim();
                 tomTat.TomTatHuongDieuTriTiepTheo = "";
+                taskStopwatch.Stop();
                 return;
             }
 
@@ -230,14 +264,21 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string HuongDieuTri = result.Substring(index + marker.Length).Trim();
             tomTat.TomTatTinhTrangNguoiBenhRaVien = TinhTrangNguoiBenhRaVien;
             tomTat.TomTatHuongDieuTriTiepTheo = HuongDieuTri;
+            
+            taskStopwatch.Stop();
         }
         
 
         private async Task TomTatKetQuaXetNghiem(PatientAllData patient, DataTomTat tomTat, string baseUri, string[] apiKeys)
         {
+            var taskStopwatch = Stopwatch.StartNew();
+            
             if (patient.KetQuaXetNghien == null || !patient.KetQuaXetNghien.Any())
+            {
                 return;
+            }
 
+            var prepPromptStopwatch = Stopwatch.StartNew();
             string rawPrompt = GetCachedPrompt("KetQuaXNPromt.txt");
 
             // Lấy chẩn đoán chính từ danh sách chẩn đoán ICD
@@ -247,9 +288,12 @@ namespace TomTatBenhAn_WPF.Services.Implement
             string chanDoanKemTheo = patient.ChanDoanIcd?.FirstOrDefault()?.BenhKemTheoRaVien ?? "";
 
             // Tối ưu dữ liệu trước khi serialize để giảm token
+            var optimizeStopwatch = Stopwatch.StartNew();
             var optimizedData = OptimizeKetQuaXetNghiemData(patient.KetQuaXetNghien);
+            optimizeStopwatch.Stop();
             
             // Chuyển đổi danh sách kết quả xét nghiệm thành JSON với format compact
+            var serializeStopwatch = Stopwatch.StartNew();
             var settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
@@ -257,13 +301,19 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 Formatting = Formatting.None // Compact format, không xuống dòng
             };
             string danhSachKQXN = JsonConvert.SerializeObject(optimizedData, settings);
+            serializeStopwatch.Stop();
 
             string prompt = rawPrompt.Replace("@ChanDoanVaoVien", chanDoanChinh);
             prompt = prompt.Replace("@ChanDoanRaVien", chanDoanKemTheo);
             prompt = prompt.Replace("@DanhSachKQXN", danhSachKQXN);
+            prepPromptStopwatch.Stop();
 
+            var apiCallStopwatch = Stopwatch.StartNew();
             string result = await CallGeminiApiWithFallback(baseUri, apiKeys, prompt);
+            apiCallStopwatch.Stop();
             tomTat.TomTatKetQuaXN = result;
+            
+            taskStopwatch.Stop();
         }
 
         private async Task<string> CallGeminiApiWithFallback(string baseUri, string[] apiKeys, string prompt)
@@ -410,10 +460,59 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
         }
 
-        private async Task<string> CallGeminiApi(string baseUri, string apiKey, string prompt)
+        /// <summary>
+        /// Rate limiting: Đảm bảo không gọi API quá nhanh với cùng một key
+        /// Trả về số milliseconds cần delay trước khi gọi API
+        /// </summary>
+        private async Task EnforceRateLimit(string apiKey)
         {
+            if (string.IsNullOrEmpty(apiKey))
+                return;
+
+            // Đọc min delay giữa các requests từ config, mặc định 200ms
+            int minDelayMs = 200;
             try
             {
+                string minDelayConfig = ConfigurationManager.AppSettings["API_MinDelayMs"];
+                if (!string.IsNullOrEmpty(minDelayConfig) && int.TryParse(minDelayConfig, out int parsedDelay))
+                {
+                    minDelayMs = Math.Max(50, Math.Min(1000, parsedDelay)); // Giới hạn từ 50ms đến 1000ms
+                }
+            }
+            catch { }
+
+            await _rateLimitSemaphore.WaitAsync();
+            try
+            {
+                if (_lastRequestTime.TryGetValue(apiKey, out DateTime lastTime))
+                {
+                    var timeSinceLastRequest = DateTime.UtcNow - lastTime;
+                    var delayNeeded = minDelayMs - (int)timeSinceLastRequest.TotalMilliseconds;
+                    
+                    if (delayNeeded > 0)
+                    {
+                        // Cần delay để đảm bảo không gọi quá nhanh
+                        await Task.Delay(delayNeeded);
+                    }
+                }
+                
+                // Cập nhật thời gian request cuối cùng cho key này
+                _lastRequestTime[apiKey] = DateTime.UtcNow;
+            }
+            finally
+            {
+                _rateLimitSemaphore.Release();
+            }
+        }
+
+        private async Task<string> CallGeminiApi(string baseUri, string apiKey, string prompt)
+        {
+            var totalStopwatch = Stopwatch.StartNew();
+            
+            try
+            {
+                // Bước 1: Chuẩn bị request data
+                var prepDataStopwatch = Stopwatch.StartNew();
                 var requestData = new
                 {
                     contents = new[] {
@@ -426,8 +525,10 @@ namespace TomTatBenhAn_WPF.Services.Implement
                         }
                     }
                 };
+                prepDataStopwatch.Stop();
 
-                // Tối ưu JSON serialization: không format, bỏ null values
+                // Bước 2: Serialize JSON
+                var serializeStopwatch = Stopwatch.StartNew();
                 var settings = new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
@@ -435,28 +536,54 @@ namespace TomTatBenhAn_WPF.Services.Implement
                     Formatting = Formatting.None
                 };
                 string jsonContent = JsonConvert.SerializeObject(requestData, settings);
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                serializeStopwatch.Stop();
 
-                // Thiết lập headers theo yêu cầu của Gemini API
+                // Bước 3: Tạo HTTP content
+                var createContentStopwatch = Stopwatch.StartNew();
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                createContentStopwatch.Stop();
+
+                // Bước 4: Thiết lập headers
+                var headerStopwatch = Stopwatch.StartNew();
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Add("X-goog-api-key", apiKey);
+                headerStopwatch.Stop();
 
-                // Sử dụng PostAsync với cancellation token để có thể cancel nếu cần
+                // Bước 5: Rate limiting
+                var rateLimitStopwatch = Stopwatch.StartNew();
+                await EnforceRateLimit(apiKey);
+                rateLimitStopwatch.Stop();
+
+                // Bước 6: Gửi HTTP request (PHẦN QUAN TRỌNG - Network I/O)
+                var networkStopwatch = Stopwatch.StartNew();
                 var response = await _httpClient.PostAsync($"{baseUri}?key={apiKey}", content);
+                networkStopwatch.Stop();
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Bước 7: Đọc response content
+                    var readResponseStopwatch = Stopwatch.StartNew();
                     string responseContent = await response.Content.ReadAsStringAsync();
+                    readResponseStopwatch.Stop();
 
-                    // Parse response để lấy text từ Gemini API
+                    // Bước 8: Parse JSON response
+                    var parseStopwatch = Stopwatch.StartNew();
                     var responseObj = JsonConvert.DeserializeObject<dynamic>(responseContent);
                     string result = responseObj?.candidates?[0]?.content?.parts?[0]?.text ?? "";
+                    parseStopwatch.Stop();
+
+                    totalStopwatch.Stop();
 
                     return result;
                 }
                 else
                 {
+                    // Bước 7 (Error): Đọc error content
+                    var readErrorStopwatch = Stopwatch.StartNew();
                     string errorContent = await response.Content.ReadAsStringAsync();
+                    readErrorStopwatch.Stop();
+                    
+                    totalStopwatch.Stop();
                     
                     // Kiểm tra nếu là lỗi 429 - Rate limit (TooManyRequests)
                     if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
@@ -540,6 +667,7 @@ namespace TomTatBenhAn_WPF.Services.Implement
             }
             catch (Exception ex)
             {
+                totalStopwatch.Stop();
                 throw new Exception($"Lỗi khi gọi Gemini API: {ex.Message}", ex);
             }
         }
