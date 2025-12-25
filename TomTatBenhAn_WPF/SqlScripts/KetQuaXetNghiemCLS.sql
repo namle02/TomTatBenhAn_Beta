@@ -7,7 +7,7 @@ SELECT
   clskqct.MucBinhThuong,
   clskqct.MucBinhThuongMin,
   clskqct.MucBinhThuongMax,
-  clskqct.DonViTinh,
+  dv.DonViTinh,
   clskqct.BatThuong,
   clskq.ThoiGianThucHien,
   clskq.KetLuan,

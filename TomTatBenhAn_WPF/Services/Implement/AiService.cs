@@ -707,6 +707,9 @@ namespace TomTatBenhAn_WPF.Services.Implement
                 if (!string.IsNullOrEmpty(x.MucBinhThuong))
                     obj["mb"] = CompressText(x.MucBinhThuong); // muc binh thuong (mức bình thường)
                     
+                if (!string.IsNullOrEmpty(x.DonViTinh))
+                    obj["dvt"] = CompressText(x.DonViTinh); // don vi tinh (đơn vị tính)
+                    
                 if (x.ThoiGianThucHien.HasValue)
                     obj["tg"] = x.ThoiGianThucHien.Value.ToString("dd/MM/yyyy HH:mm:ss"); // thoi gian
                     
