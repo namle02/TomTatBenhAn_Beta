@@ -16,7 +16,7 @@ Kết quả xét nghiệm:
 - [Tên dịch vụ 3]: [dd/mm/yyyy hh:mm:ss] [Tóm tắt kết quả liên quan] [DonViTinh]
 Lưu Ý: 
 - Chỉ cần  đánh giá kết quả cho những xét nghiệm liên quan đến chẩn đoán nhất (Tuy nhiên lấy ra tất cả những xét nghiệm liên quan đến chẩn đoán hình ảnh nếu có), không cần  đưa ra đánh giá hay kết luận tổng hợp.
-- Đối với nhóm xét nghiệm liên quan đến xét nghiệm huyết học, sinh hóa, sinh học phân tử, nước tiểu chỉ lấy ra chỉ số mới nhất, không cần  đánh giá chi tiết về kết quả
+- Đối với nhóm xét nghiệm liên quan đến xét nghiệm huyết học, sinh hóa, sinh học phân tử, nước tiểu không cần  đánh giá chi tiết về kết quả
 - Đối với nhóm xét nghiệm liên quan đến siêu âm, điện tim, x-quang, mri,nội soi, ... (nhóm dịch vụ liên quan đến CHẨN ĐOÁN HÌNH ẢNH) thì tóm tắt kết quả một cách ngắn gọn, chỉ cần  nói những nội dung chính.
 - Mỗi đánh giá chia thành từng gạch đầu dòng, không cần  viết hoa toàn bộ tên dịch vụ xét nghiệm, 
 - Không cần  cách dòng với từng xét nghiệm, chỉ cần  xuống dòng
@@ -25,8 +25,8 @@ Lưu Ý:
 - Các dịch vụ xét nghiệm kèm theo ngày tháng theo định dạng dd/mm/yyyy hh:mm:ss, nếu có dịch vụ xét nghiệm trùng nhau thì chỉ cần đưa ra dịch vụ vào ngày đầu tiên
 - Các dịch vụ bất thường là các dịch vụ có chỉ số chênh lệch so với mức min/max là 40%
 - Các dịch vụ cùng loại nếu cùng ngày tháng thì viết rút gọn lại trên cùng một dòng, ví dụ: NEU% 37.8 (thấp), EO% 26.8 (cao), BA% 1.5 (cao), EO# 2.4 (cao), MCV 101.3 (cao), MCH 34.4 (cao), MPV 6.6 (thấp) 26/07/2025 09:11:33
-- phần đơn vin tính của từng dịch vụ là không được thiếu trừ trường hợp nó null
-- các dịch vụ có Ketqua nằm ngoài MucBinhThuong thì phải show ra còn lại thì có thể lược bỏ 
+- phần đơn vị tính của từng dịch vụ là không được thiếu trừ trường hợp nó null
+- trong trường hợp có 2 dịch vụ tên dịch vụ giống nhau thì được coi là 2 dịch vụ riêng biệt và phải hiện thị cả hai 
 Ví dụ đầu ra :
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái

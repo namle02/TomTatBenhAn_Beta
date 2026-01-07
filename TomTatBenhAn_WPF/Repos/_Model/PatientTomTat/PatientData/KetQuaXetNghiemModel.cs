@@ -29,9 +29,6 @@ namespace TomTatBenhAn_WPF.Repos._Model.PatientData
         private string? mucBinhThuongMax;
 
         [ObservableProperty]
-        private string? donViTinh;
-
-        [ObservableProperty]
         private string? batThuong;
 
         [ObservableProperty]
