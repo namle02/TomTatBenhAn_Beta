@@ -27,6 +27,7 @@ Lưu Ý:
 - Các dịch vụ cùng loại nếu cùng ngày tháng thì viết rút gọn lại trên cùng một dòng, ví dụ: NEU% 37.8 (thấp), EO% 26.8 (cao), BA% 1.5 (cao), EO# 2.4 (cao), MCV 101.3 (cao), MCH 34.4 (cao), MPV 6.6 (thấp) 26/07/2025 09:11:33
 - phần đơn vị tính của từng dịch vụ là không được thiếu trừ trường hợp nó null
 - trong trường hợp có 2 dịch vụ tên dịch vụ giống nhau thì được coi là 2 dịch vụ riêng biệt và phải hiện thị cả hai 
+- đối với dịch vụ có tên là "Xét nghiệm đường máu mao mạch tại giường (một lần)" thì chỉ cần hiện ra 1 lần và chỉ ra giá trị thấp nhất và giá trị cao nhất 
 Ví dụ đầu ra :
 CT-scanner sọ não: xuất huyết nhân bèo trái, nhồi máu ổ khuyết bao ngoài phải
 Siêu âm ổ bụng: Hình ảnh nhiễm cholesterol thành túi mật, Nang thận hai bên, sỏi thận trái
